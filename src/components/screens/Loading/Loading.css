@@ -1,0 +1,79 @@
+#loading-coin {
+	width: 50%;
+	max-width: 400px;
+	max-height: 400px;
+	height: auto;
+	margin: auto auto;
+}
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.title {
+	position: absolute;
+	font-size: 2.8rem;
+}
+.title.first {
+	top: 10%;
+}
+.title.second {
+	bottom: 5%;
+}
+.ton {
+	position: absolute;
+	width: 60px;
+	right: 0;
+	bottom: 50px;
+}
+h4 {
+	font-size: 1.8em;
+}
+h4:nth-child(3) {
+	/* krex */
+	transform: rotate(-20deg);
+	position: absolute;
+	left: 10%;
+	bottom: 30%;
+}
+h4:nth-child(4) {
+	/* fex */
+	transform: rotate(10deg);
+	position: absolute;
+	bottom: 25%;
+}
+h4:nth-child(5) {
+	/* pex */
+	transform: rotate(-10deg);
+	position: absolute;
+	right: 10%;
+	bottom: 25%;
+}
+
+/* Бесконечные анимационные классы */
+.infinite-rotate {
+	animation: infinite-rotate 3s linear infinite;
+}
+/* Вращение */
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.pulse {
+	animation: pulse 2s ease-in-out infinite;
+}
+
+/* Плавное увеличение и уменьшение (пульсация) */
+@keyframes pulse {
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+}

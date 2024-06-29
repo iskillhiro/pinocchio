@@ -1,0 +1,173 @@
+.day-boosts {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+.block.day-boost {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 48%;
+}
+.block.day-boost #boost-info {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	text-align: left;
+}
+.block.day-boost .icon {
+	width: fit-content;
+}
+.boost-menu {
+	height: 60%;
+	position: relative;
+	width: 100%;
+	padding-top: 25%;
+}
+.boost-list {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	height: 100%;
+	overflow-y: auto;
+	gap: var(--gap);
+	z-index: 1;
+}
+.boost-list::-webkit-scrollbar {
+	display: none;
+}
+.boost-list .boost,
+.coin-boost {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.boost-list .boost .block,
+.coin-boost .block {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 35%;
+}
+.boost-list .boost #level {
+	display: flex;
+	align-items: center;
+	gap: var(--gap);
+}
+.boost-list .boost #level p,
+.boost-list .boost #price {
+	font-weight: var(--fontBold) !important;
+}
+
+/* coin-boosts */
+.coin-boost #price {
+	display: flex;
+	gap: var(--gap);
+	color: var(--textColor);
+}
+.coin-boost #price .icon {
+	width: 20px;
+	height: 20px;
+}
+.coin-boost .block {
+	position: relative;
+}
+.coin-boost .block .icon.star {
+	position: absolute;
+	width: 20px;
+	right: -30px;
+	top: 0;
+	height: 20px;
+}
+/* menu */
+
+.menu {
+	display: flex;
+	position: absolute;
+	background-color: var(--windowDarkColor);
+	top: 0;
+	width: 100%;
+	border-radius: 8px;
+	overflow: hidden;
+	z-index: 999;
+}
+
+.menu-item {
+	padding: var(--padding);
+	width: 100%;
+	text-align: center;
+	text-wrap: nowrap;
+	color: #fff;
+	cursor: pointer;
+	position: relative;
+	font-size: 90%;
+	z-index: 1;
+}
+
+.menu .menu-block {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	background-color: var(--windowColor);
+	width: 50%;
+	transition: all 0.3s ease;
+	border-radius: 8px;
+	z-index: 0;
+}
+
+/* modal */
+.popup-overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5); /* Тёмный полупрозрачный фон */
+	top: 0;
+	left: 0;
+	justify-content: center;
+	align-items: center;
+	z-index: 9998;
+}
+.popup #boost-info {
+	display: flex;
+	text-transform: uppercase;
+	align-items: center;
+	width: fit-content;
+	margin: auto;
+}
+.popup button {
+	width: 100%;
+}
+.popup {
+	background: var(--windowColor);
+	height: fit-content;
+	width: 80%;
+	padding: 20px;
+	border-radius: 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 9999;
+	transform: translateX(-50%) translateY(-50%);
+	gap: var(--gap);
+}
+
+.popup-icon img {
+	width: 30px;
+	height: 30px;
+}
+.post-title.life-boosts {
+	position: relative;
+	margin: auto;
+	width: fit-content;
+}
+.post-title.life-boosts .icon {
+	position: absolute;
+	height: 20px;
+	width: 20px;
+	left: -10px;
+	top: 10px;
+}

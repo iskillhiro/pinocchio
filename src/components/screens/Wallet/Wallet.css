@@ -1,0 +1,68 @@
+.stats.wallet {
+	background: #ffffffcc;
+	border-radius: var(--radius);
+	border: solid 2px var(--borderColor);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 5px;
+	cursor: pointer;
+	text-decoration: none;
+}
+.stats.wallet * {
+	pointer-events: none;
+}
+.stats.wallet p {
+	color: #000000;
+}
+.stats.wallet #coins {
+	position: relative;
+	display: flex;
+	width: 50px;
+	height: 20px;
+	height: 100%;
+}
+.stats.wallet span {
+	display: flex;
+	align-items: center;
+	color: #00000080;
+}
+.stats.wallet span .row {
+	height: 13px;
+}
+.stats.wallet #coins .icon {
+	position: relative;
+	height: 20px;
+}
+.stats.wallet #coins .icon:nth-child(1) {
+	left: 0px;
+}
+.stats.wallet #coins .icon:nth-child(2) {
+	left: -7px;
+}
+.stats.wallet #coins .icon:nth-child(3) {
+	left: -14px;
+}
+.block.user-balance {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+	width: 100%;
+}
+.balance-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.user-block {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--gap);
+	padding-bottom: var(--padding);
+	padding-top: var(--padding);
+}
+.user-block .icon {
+	width: 30%;
+	height: 30%;
+}

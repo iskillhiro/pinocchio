@@ -1,0 +1,282 @@
+/* animations */
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+/* Бесконечные анимационные классы */
+.infinite-rotate {
+	animation: infinite-rotate 3s linear infinite;
+}
+
+.pulse {
+	animation: pulse 2s ease-in-out infinite;
+}
+
+.bounce {
+	animation: bounce 2s ease-in-out infinite;
+}
+.side-to-side {
+	animation: side-to-side 2s ease-in-out infinite;
+}
+
+.rotate-scale-up {
+	animation: rotate-scale-up 4s ease-in-out infinite;
+}
+
+.rotate-scale-down {
+	animation: rotate-scale-down 4s ease-in-out infinite;
+}
+.spin {
+	animation: spin infinite linear 10s;
+}
+/* forwards */
+.rotate {
+	animation: rotate 2s forwards;
+}
+
+.scale-up {
+	animation: scale-up 1s forwards;
+}
+
+.scale-down {
+	animation: scale-down 1s forwards;
+}
+
+.fade-in {
+	animation: fade-in 1s forwards;
+}
+
+.fade-out {
+	animation: fade-out 1s forwards;
+}
+
+.slide-up {
+	animation: slide-up 1s forwards;
+}
+
+.slide-down {
+	animation: slide-down 1s forwards;
+}
+
+.slide-left {
+	animation: slide-left 1s forwards;
+}
+
+.slide-right {
+	animation: slide-right 1s forwards;
+}
+
+.shake {
+	animation: shake 0.5s forwards;
+}
+
+.rotate-scale-up {
+	animation: rotate-scale-up 2s forwards;
+}
+
+.rotate-scale-down {
+	animation: rotate-scale-down 2s forwards;
+}
+/* Определение ключевых кадров для анимаций */
+
+/* Вращение */
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* Плавное увеличение */
+@keyframes scale-up {
+	0% {
+		transform: scale(0.5);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+/* Плавное уменьшение */
+@keyframes scale-down {
+	0% {
+		transform: scale(1.5);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+/* Появление (fade-in) */
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+/* Исчезновение (fade-out) */
+@keyframes fade-out {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+/* Сдвиг вверх */
+@keyframes slide-up {
+	0% {
+		transform: translateY(100%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+/* Сдвиг вниз */
+@keyframes slide-down {
+	0% {
+		transform: translateY(-100%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+/* Сдвиг влево */
+@keyframes slide-left {
+	0% {
+		transform: translateX(100%);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
+
+/* Сдвиг вправо */
+@keyframes slide-right {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
+
+/* Встряска (shake) */
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-5px);
+	}
+	50% {
+		transform: translateX(5px);
+	}
+	75% {
+		transform: translateX(-5px);
+	}
+}
+
+/* Вращение и увеличение */
+@keyframes rotate-scale-up {
+	0% {
+		transform: rotate(0deg) scale(0.5);
+	}
+	100% {
+		transform: rotate(360deg) scale(1);
+	}
+}
+
+/* Вращение и уменьшение */
+@keyframes rotate-scale-down {
+	0% {
+		transform: rotate(360deg) scale(1.5);
+	}
+	100% {
+		transform: rotate(0deg) scale(1);
+	}
+}
+
+/* Определение ключевых кадров для бесконечных анимаций */
+
+/* Вращение */
+@keyframes infinite-rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* Плавное увеличение и уменьшение (пульсация) */
+@keyframes pulse {
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+}
+
+/* Сдвиг вверх-вниз (колебание) */
+@keyframes bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-20px);
+	}
+}
+
+/* Сдвиг влево-вправо (колебание) */
+@keyframes side-to-side {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(-20px);
+	}
+}
+
+/* Повороты и увеличение */
+@keyframes rotate-scale-up {
+	0% {
+		transform: rotate(0deg) scale(1);
+	}
+	50% {
+		transform: rotate(180deg) scale(1.2);
+	}
+	100% {
+		transform: rotate(360deg) scale(1);
+	}
+}
+
+/* Повороты и уменьшение */
+@keyframes rotate-scale-down {
+	0% {
+		transform: rotate(0deg) scale(1);
+	}
+	50% {
+		transform: rotate(180deg) scale(0.8);
+	}
+	100% {
+		transform: rotate(360deg) scale(1);
+	}
+}

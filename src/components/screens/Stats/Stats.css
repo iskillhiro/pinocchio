@@ -1,0 +1,15 @@
+.container.stats {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.container.stats h1 {
+	font-size: 2rem;
+}
+.row.stats {
+	position: absolute;
+	transform: rotate(-180deg);
+	left: var(--padding);
+	top: var(--padding);
+}

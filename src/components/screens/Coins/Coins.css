@@ -1,0 +1,101 @@
+#loading-coin {
+	width: 50%;
+	max-width: 400px;
+	max-height: 400px;
+	height: auto;
+	margin: auto auto;
+}
+.title {
+	position: absolute;
+	top: 5%;
+	font-size: 2.5em;
+}
+#balance {
+	position: absolute;
+	display: flex;
+	gap: var(--gap);
+	top: 13%;
+	font-size: 2.5em;
+}
+.container.coins {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-image: url(../../../assets/pictures/gradientBg.svg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.main-tree {
+	width: 70%;
+	height: auto;
+	max-width: 350px;
+}
+.group.coins {
+	position: absolute;
+	bottom: 15%;
+	display: flex;
+	justify-content: space-between;
+	padding: 20px;
+	width: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	max-height: 100px;
+}
+.group.coins .block,
+.tools .block {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.group.coins .gradient-btn {
+	width: 50%;
+}
+.tools {
+	position: absolute;
+	bottom: 25%;
+	display: flex;
+	justify-content: space-between;
+	padding: 20px;
+	width: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+.tools .block {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 60px;
+	height: 60px;
+}
+.tools .block p {
+	font-size: 100%;
+	text-transform: uppercase;
+}
+.tools .block .icon {
+	height: 100%;
+	width: 100%;
+}
+#planted-coins {
+	position: absolute;
+	right: var(--padding);
+	bottom: 40%;
+	display: flex;
+	align-items: center;
+	gap: var(--gap);
+	font-size: 100%;
+}
+#planted-coins #coin-count {
+	display: flex;
+	gap: 5px;
+}
+#planted-coins #percent-count {
+	display: flex;
+	color: var(--textColor);
+}
+#planted-coins .icon {
+	width: 20px;
+	height: 20px;
+}

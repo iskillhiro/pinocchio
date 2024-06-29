@@ -1,0 +1,47 @@
+.navigation {
+	display: flex;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: var(--padding);
+	justify-content: space-between;
+	align-items: center;
+	width: 90%;
+	height: 90px;
+	z-index: 999;
+}
+.navigation .nav-elem {
+	position: relative;
+	cursor: pointer;
+	height: 100%;
+	border-right: 2px solid var(--borderColor);
+	padding-bottom: 20px;
+	padding: 0 4%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+}
+.nav-elem .nav-icon {
+	padding-bottom: var(--padding);
+	display: flex;
+	justify-content: center;
+}
+.nav-elem .nav-icon .icon {
+	height: auto;
+	width: 100%;
+}
+.nav-elem h3 {
+	position: absolute;
+	text-transform: uppercase;
+	font-size: 100%;
+	bottom: 0;
+}
+.navigation .nav-elem:first-child {
+	border-left: none;
+	padding-left: 0;
+}
+.navigation .nav-elem:last-child {
+	border-right: none;
+	padding-right: 0;
+}
