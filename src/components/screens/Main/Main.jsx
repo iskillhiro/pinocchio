@@ -11,12 +11,13 @@ const Main = () => {
 	const maxEnergy = 3000
 	const energyReduction = 50
 
-	const updateProgressBar = () => {
-		const progressPercent = (currentEnergy / maxEnergy) * 100
-		document.querySelector('.progress-bar').style.width = `${progressPercent}%`
-	}
-
 	useEffect(() => {
+		const updateProgressBar = () => {
+			const progressPercent = (currentEnergy / maxEnergy) * 100
+			document.querySelector(
+				'.progress-bar'
+			).style.width = `${progressPercent}%`
+		}
 		updateProgressBar()
 	}, [currentEnergy])
 
