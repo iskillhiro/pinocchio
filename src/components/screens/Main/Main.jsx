@@ -17,7 +17,6 @@ const Main = () => {
 	const [stage, setStage] = useState(1)
 	const [coins, setCoins] = useState(0)
 	const [loading, setLoading] = useState(true)
-	const energyReduction = 3
 	const energyRegenRate = 1 // Скорость восстановления энергии
 	const telegramId = '1145622789'
 
@@ -62,7 +61,7 @@ const Main = () => {
 				telegramId={telegramId}
 				currentEnergy={currentEnergy}
 				setCurrentEnergy={setCurrentEnergy}
-				energyReduction={energyReduction}
+				energyReduction={3}
 				stage={stage}
 				currentCoins={coins}
 				setCurrentCoins={setCoins}

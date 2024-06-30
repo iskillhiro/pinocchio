@@ -23,6 +23,7 @@ const TapZone = ({
 				setCurrentEnergy(newEnergy)
 
 				const updatedCoins = currentCoins + energySpent
+				setCurrentCoins(updatedCoins) // Оптимистическое обновление на клиенте
 
 				try {
 					const response = await axiosDB.put('/user/update', {
@@ -33,14 +34,16 @@ const TapZone = ({
 							: { zecchino: updatedCoins }),
 					})
 
+					// Фактическое обновление состояния после успешного ответа
+					setCurrentEnergy(response.data.energy)
 					if (stage === 1) {
 						setCurrentCoins(response.data.soldo)
 					} else {
 						setCurrentCoins(response.data.zecchino)
 					}
-					setCurrentEnergy(response.data.energy)
 				} catch (error) {
 					console.error('Error updating user:', error)
+					// В случае ошибки можно добавить логику для отката изменений на клиенте
 				}
 
 				if (tg.HapticFeedback) {
@@ -51,10 +54,10 @@ const TapZone = ({
 		[
 			telegramId,
 			currentEnergy,
+			setCurrentEnergy,
 			energyReduction,
 			stage,
 			currentCoins,
-			setCurrentEnergy,
 			setCurrentCoins,
 		]
 	)
