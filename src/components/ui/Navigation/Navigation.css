@@ -3,7 +3,6 @@
 	position: fixed;
 	left: 50%;
 	transform: translateX(-50%);
-	bottom: var(--padding);
 	justify-content: space-between;
 	align-items: center;
 	width: 90%;

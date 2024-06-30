@@ -8,7 +8,7 @@ import Stats from './components/screens/Stats/Stats'
 import Tasks from './components/screens/Tasks/Tasks'
 import Wallet from './components/screens/Wallet/Wallet'
 
-const tg = window.Telegram.WebApp
+const tg = window.Telegram.WebApps
 
 const App = () => {
 	useEffect(() => {
