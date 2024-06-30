@@ -1,6 +1,8 @@
 import goldenCoin from '../../../assets/pictures/coins/golden/coin.svg'
 import silverCoin from '../../../assets/pictures/coins/silver/coin.svg'
+
 const tg = window.Telegram.WebApp
+
 const TapZone = ({
 	currentEnergy,
 	setCurrentEnergy,
@@ -10,23 +12,14 @@ const TapZone = ({
 	const handlePress = () => {
 		if (currentEnergy > 0) {
 			setCurrentEnergy(prev => Math.max(0, prev - energyReduction))
-			tg.HapticFeedback.impactOccurred('light')
+			if (tg.HapticFeedback) {
+				tg.HapticFeedback.impactOccurred('light')
+			}
 		}
 	}
 
-	const handleTouchStart = e => {
-		e.preventDefault()
-		handlePress()
-	}
-
 	return (
-		<div
-			className='tap-zone'
-			onMouseDown={handlePress}
-			onTouchStart={handleTouchStart}
-			onMouseUp={e => e.currentTarget.classList.remove('active')}
-			onTouchEnd={e => e.currentTarget.classList.remove('active')}
-		>
+		<div className='tap-zone' onClick={handlePress}>
 			<img src={state === 1 ? silverCoin : goldenCoin} alt='coin' />
 		</div>
 	)
