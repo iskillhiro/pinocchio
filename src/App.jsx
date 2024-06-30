@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Boosts from './components/screens/Boosts/Boosts'
 import Coins from './components/screens/Coins/Coins'
@@ -8,7 +8,16 @@ import Stats from './components/screens/Stats/Stats'
 import Tasks from './components/screens/Tasks/Tasks'
 import Wallet from './components/screens/Wallet/Wallet'
 
+const tg = window.Telegram.WebApp
+
 const App = () => {
+	useEffect(() => {
+		tg.ready()
+	}, [])
+
+	const onclose = () => {
+		tg.close()
+	}
 	return (
 		<>
 			<BrowserRouter>
@@ -19,7 +28,7 @@ const App = () => {
 					<Route path='/stats' element={<Stats />} />
 					<Route path='/tasks' element={<Tasks />} />
 					<Route path='/wallet' element={<Wallet />} />
-					<Route path='/boosts' element={<Boosts />} />
+					<Route onClick={onclose} path='/boosts' element={<Boosts />} />
 				</Routes>
 			</BrowserRouter>
 		</>
