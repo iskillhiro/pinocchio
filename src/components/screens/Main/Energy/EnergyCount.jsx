@@ -4,3 +4,4 @@ const EnergyCount = ({ currentEnergy }) => (
 		<h1>{currentEnergy}</h1>
 	</div>
 )
+export default EnergyCount
