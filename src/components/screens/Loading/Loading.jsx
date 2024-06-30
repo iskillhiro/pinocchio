@@ -7,7 +7,7 @@ import './Loading.css'
 
 const Loading = () => {
 	return (
-		<div className='container'>
+		<div className='container loading'>
 			<h1 className='title first gradient up-case no-wrap fade-in'>
 				pinocchio coin
 			</h1>
