@@ -7,14 +7,11 @@ import Referrals from './components/screens/Referrals/Referrals'
 import Stats from './components/screens/Stats/Stats'
 import Tasks from './components/screens/Tasks/Tasks'
 import Wallet from './components/screens/Wallet/Wallet'
-
+const tg = window.Telegram.WebApp
 const App = () => {
 	useEffect(() => {
-		if (window.Telegram && window.Telegram.webApp) {
-			window.Telegram.webApp.ready()
-		} else {
-			console.error('Telegram Web App is not available')
-		}
+		tg.ready()
+		console.log('TG ready!')
 	}, [])
 
 	return (

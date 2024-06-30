@@ -6,6 +6,7 @@
 	justify-content: space-between;
 	align-items: center;
 	width: 90%;
+	bottom: 0;
 	height: 90px;
 	z-index: 999;
 }
