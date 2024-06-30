@@ -11,7 +11,7 @@ const tg = window.Telegram.WebApp
 const App = () => {
 	useEffect(() => {
 		tg.ready()
-		console.log('TG ready!')
+		tg.expand()
 	}, [])
 
 	return (
