@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 const EnergyBar = ({ currentEnergy, maxEnergy }) => {
 	useEffect(() => {
 		const progressPercent = (currentEnergy / maxEnergy) * 100
