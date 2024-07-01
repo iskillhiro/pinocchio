@@ -12,12 +12,13 @@ const Referrals = () => {
 	const telegramId = '1145622789'
 
 	const inviteLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`
+	const copyLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}`
 
 	const onSendRef = () => {
 		window.location.href = inviteLink
 	}
 	const onCopyLink = () => {
-		copy(inviteLink)
+		copy(copyLink)
 	}
 	const [referralData, setReferralData] = useState([])
 	useEffect(() => {
