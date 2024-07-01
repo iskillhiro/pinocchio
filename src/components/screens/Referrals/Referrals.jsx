@@ -1,3 +1,4 @@
+import copy from 'copy-to-clipboard'
 import React, { useEffect, useState } from 'react'
 import copyIcon from '../../../assets/pictures/copy.svg'
 import personIcon from '../../../assets/pictures/person.svg'
@@ -6,7 +7,6 @@ import axiosDB from '../../../utils/axios/axiosConfig.js'
 import Navigation from '../../ui/Navigation/Navigation.jsx'
 import Loading from '../Loading/Loading.jsx'
 import './Referrals.css'
-
 const Referrals = () => {
 	const [loading, setLoading] = useState(true)
 	const telegramId = '1145622789'
@@ -15,6 +15,9 @@ const Referrals = () => {
 
 	const onSendRef = () => {
 		window.location.href = inviteLink
+	}
+	const onCopyLink = () => {
+		copy(inviteLink)
 	}
 	const [referralData, setReferralData] = useState([])
 	useEffect(() => {
@@ -58,7 +61,7 @@ const Referrals = () => {
 				<button onClick={onSendRef} className='gradient-btn'>
 					Send invite
 				</button>
-				<button className='gray-btn'>
+				<button onClick={onCopyLink} className='gray-btn'>
 					<div className='icon'>
 						<img src={copyIcon} alt='copy' />
 					</div>
