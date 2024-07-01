@@ -11,14 +11,12 @@ const Referrals = () => {
 	const [loading, setLoading] = useState(true)
 	const telegramId = '1145622789'
 
-	const inviteLink = `https://t.me/share/url?url=@isKillhiroBot&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀&user_id=${telegramId}`
+	const inviteLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`
 
 	const onSendRef = () => {
 		window.location.href = inviteLink
 	}
-
 	const [referralData, setReferralData] = useState([])
-
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
@@ -32,16 +30,16 @@ const Referrals = () => {
 				setLoading(false)
 			}
 		}
+		console.log(referralData)
 		fetchUserData()
-	}, [telegramId])
+	}, [])
 
 	if (loading) {
 		return <Loading />
 	}
-
 	return (
 		<div className='container'>
-			<h1 className='main-title'>Referrals</h1>
+			<h1 className='main-title'>referrals</h1>
 			<h3 className='post-title'>REFERRALS GREY COUNT</h3>
 			<div className='block referrals'>
 				{referralData.map((referral, index) => (
