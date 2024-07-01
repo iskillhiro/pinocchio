@@ -17,7 +17,7 @@ const TapZone = ({
 	const handleTouchStart = useCallback(
 		async e => {
 			const touches = e.touches.length
-			if (currentEnergy > 0) {
+			if (currentEnergy > energyReduction) {
 				const energySpent = energyReduction * touches
 				const newEnergy = Math.max(0, currentEnergy - energySpent)
 				setCurrentEnergy(newEnergy)

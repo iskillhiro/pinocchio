@@ -1,22 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import copyIcon from '../../../assets/pictures/copy.svg'
 import personIcon from '../../../assets/pictures/person.svg'
 import '../../../assets/style/global.css'
+import axiosDB from '../../../utils/axios/axiosConfig.js'
 import Navigation from '../../ui/Navigation/Navigation.jsx'
+import Loading from '../Loading/Loading.jsx'
 import './Referrals.css'
 
 const Referrals = () => {
-	const referralData = [
-		{ username: 'USERNAME', moneyCount: 'MONEY COUNT' },
-		{ username: 'USERNAME', moneyCount: 'MONEY COUNT' },
-		{ username: 'USERNAME', moneyCount: 'MONEY COUNT' },
-		{ username: 'USERNAME', moneyCount: 'MONEY COUNT' },
-		{ username: 'USERNAME', moneyCount: 'MONEY COUNT' },
-		{ username: 'USERNAME', moneyCount: 'MONEY COUNT' },
-		{ username: 'USERNAME', moneyCount: 'MONEY COUNT' },
-		{ username: 'USERNAME', moneyCount: 'MONEY COUNT' },
-	]
+	const [loading, setLoading] = useState(true)
+	const telegramId = '1145622789'
 
+	const inviteLink = `https://t.me/share/url?url=@isKillhiroBot&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀&user_id=${telegramId}`
+
+	const onSendRef = () => {
+		window.location.href = inviteLink
+	}
+	const [referralData, setReferralData] = useState([])
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const response = await axiosDB.get(`/user/${telegramId}`)
+				const user = response.data
+				console.log(user)
+				setReferralData(user.referrals)
+			} catch (error) {
+				console.error('Error fetching user data:', error)
+			} finally {
+				setLoading(false)
+			}
+		}
+		console.log(referralData)
+		fetchUserData()
+	}, [])
+
+	if (loading) {
+		return <Loading />
+	}
 	return (
 		<div className='container'>
 			<h1 className='main-title'>referrals</h1>
@@ -30,12 +50,14 @@ const Referrals = () => {
 							</div>
 							<p id='username'>{referral.username}</p>
 						</div>
-						<p id='money-count'>{referral.moneyCount}</p>
+						<p id='money-count'>{referral.money_count}</p>
 					</div>
 				))}
 			</div>
 			<div className='group referrals'>
-				<button className='gradient-btn'>Send invite</button>
+				<button onClick={onSendRef} className='gradient-btn'>
+					Send invite
+				</button>
 				<button className='gray-btn'>
 					<div className='icon'>
 						<img src={copyIcon} alt='copy' />

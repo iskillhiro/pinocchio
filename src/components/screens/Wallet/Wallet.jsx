@@ -1,17 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import bronzeCoinIcon from '../../../assets/pictures/coins/bronze/coin_front.svg'
 import goldenCoinIcon from '../../../assets/pictures/coins/golden/coin_front.svg'
 import silverCoinIcon from '../../../assets/pictures/coins/silver/coin_front.svg'
 import goldenKeyIcon from '../../../assets/pictures/keys/golden.svg'
 import silverKeyIcon from '../../../assets/pictures/keys/silver.svg'
 import personIcon from '../../../assets/pictures/person.svg'
+import axiosDB from '../../../utils/axios/axiosConfig'
+import formatDate from '../../../utils/formatDate/formatDate'
 import Navigation from '../../ui/Navigation/Navigation'
+import Loading from '../Loading/Loading'
 import './Wallet.css'
-
 const Wallet = () => {
+	const telegramId = '1145622789'
+	const [loading, setLoading] = useState(true)
+	const [userData, setUserData] = useState({})
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const response = await axiosDB.get(`/user/${telegramId}`)
+				const user = response.data
+				setUserData(user)
+			} catch (error) {
+				console.error('Error fetching user data:', error)
+			} finally {
+				setLoading(false)
+			}
+		}
+
+		fetchUserData()
+	}, [telegramId])
+	if (loading) {
+		return <Loading />
+	}
 	return (
 		<div className='container wallet'>
-			<a href='/stats' className='stats wallet'>
+			<Link to='/stats' className='stats wallet'>
 				<div id='coins'>
 					<div className='icon'>
 						<img src={personIcon} alt='' />
@@ -44,44 +69,45 @@ const Wallet = () => {
 						/>
 					</svg>
 				</span>
-			</a>
+			</Link>
 			<div className='user-block'>
 				<div className='icon'>
 					<img src={bronzeCoinIcon} alt='' />
 				</div>
-				<h3 id='username'>@killhiro</h3>
-				<p id='started-date'>24.06.2024</p>
+				<h3 id='username'>@{userData.username}</h3>
+				<p id='started-date'>{formatDate(userData.createdAt)}</p>
 			</div>
+
 			<div className='block user-balance'>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={silverKeyIcon} alt='' />
 					</div>
-					<p className='count'>3</p>
+					<p className='count'>{userData.soldo}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={goldenKeyIcon} alt='' />
 					</div>
-					<p className='count'>3</p>
+					<p className='count'>{userData.zecchino}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={silverCoinIcon} alt='' />
 					</div>
-					<p className='count'>3</p>
+					<p className='count'>{userData.soldo}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={goldenCoinIcon} alt='' />
 					</div>
-					<p className='count'>3</p>
+					<p className='count'>{userData.zecchino}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={bronzeCoinIcon} alt='' />
 					</div>
-					<p className='count'>3</p>
+					<p className='count'>{userData.coins}</p>
 				</div>
 			</div>
 			<Navigation />

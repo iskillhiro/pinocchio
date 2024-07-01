@@ -12,7 +12,9 @@ import './Coins.css'
 const Coins = () => {
 	return (
 		<div className='container coins'>
-			<h1 className='title gradient up-case no-wrap fade-in'>pinocchio coin</h1>
+			<h1 className='title coins gradient up-case no-wrap fade-in'>
+				pinocchio coin
+			</h1>
 			<h1 id='balance'>
 				4.046.100{' '}
 				<div className='icon'>

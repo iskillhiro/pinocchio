@@ -5,7 +5,7 @@
 	height: auto;
 	margin: auto auto;
 }
-.title {
+.title.coins {
 	position: absolute;
 	top: 5%;
 	font-size: 2.5em;
