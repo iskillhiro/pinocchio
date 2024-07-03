@@ -165,3 +165,6 @@ p {
 	width: 24px;
 	background-repeat: no-repeat;
 }
+a {
+	text-decoration: none;
+}

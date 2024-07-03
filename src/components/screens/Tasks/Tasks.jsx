@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
+import TaskWindow from './TaskWindow'
 import './Tasks.css'
 
 const Tasks = () => {
-	const [taskData, setTaskData] = useState(null) // Изменено с [] на null
+	const [taskData, setTaskData] = useState(null)
+	const [selectedTask, setSelectedTask] = useState(null)
 	const [loading, setLoading] = useState(true)
 
 	const telegramId = '1145622789'
@@ -30,9 +31,16 @@ const Tasks = () => {
 		return <Loading />
 	}
 
-	// Проверка наличия данных перед рендерингом
 	if (!taskData) {
 		return <div>No tasks available</div>
+	}
+
+	const showTaskWindow = task => {
+		setSelectedTask(task)
+	}
+
+	const closeTaskWindow = () => {
+		setSelectedTask(null)
 	}
 
 	return (
@@ -42,7 +50,7 @@ const Tasks = () => {
 				{taskData.incompleteTasks?.map((task, index) => (
 					<div key={index} id='task-container'>
 						<div className='block tasks'>
-							<Link to={task.link} className='task'>
+							<div onClick={() => showTaskWindow(task)} className='task'>
 								<div id='task-block'>
 									<div className='task-logo'>
 										<img src={task.iconSrc} alt='task' />
@@ -55,12 +63,11 @@ const Tasks = () => {
 									</div>
 								</div>
 								<div className='row icon'></div>
-							</Link>
+							</div>
 						</div>
 					</div>
 				))}
 
-				{/* Выполненные задания */}
 				{taskData.completedTasks?.map((task, index) => (
 					<div key={index} id='task-container'>
 						<div className='block tasks'>
@@ -81,6 +88,13 @@ const Tasks = () => {
 				))}
 			</div>
 			<Navigation />
+			{selectedTask && (
+				<TaskWindow
+					showTaskWindow={closeTaskWindow}
+					taskData={selectedTask}
+					buttonText={'Перейти'}
+				/>
+			)}
 		</div>
 	)
 }
