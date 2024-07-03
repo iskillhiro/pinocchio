@@ -51,5 +51,9 @@
 	min-height: 50px;
 	min-width: 50px;
 	border-radius: var(--radius);
+	overflow: hidden;
 	background-color: blue;
+}
+.task-logo img {
+	width: 100%;
 }
