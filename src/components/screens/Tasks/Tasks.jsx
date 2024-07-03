@@ -42,9 +42,11 @@ const Tasks = () => {
 				{taskData.incompleteTasks?.map((task, index) => (
 					<div key={index} id='task-container'>
 						<div className='block tasks'>
-							<div className='task'>
+							<Link to={task.link} className='task'>
 								<div id='task-block'>
-									<div className='task-logo'></div>
+									<div className='task-logo'>
+										<img src={task.iconSrc} alt='task' />
+									</div>
 									<div id='task-info'>
 										<p id='name'>{task.taskType}</p>
 										<p id='reward'>
@@ -53,12 +55,14 @@ const Tasks = () => {
 									</div>
 								</div>
 								<div className='row icon'></div>
-							</div>
+							</Link>
 						</div>
 					</div>
 				))}
+
+				{/* Выполненные задания */}
 				{taskData.completedTasks?.map((task, index) => (
-					<Link to={task.link} key={index} id='task-container'>
+					<div key={index} id='task-container'>
 						<div className='block tasks'>
 							<div className='task'>
 								<div id='task-block'>
@@ -73,7 +77,7 @@ const Tasks = () => {
 								<div className='row icon'></div>
 							</div>
 						</div>
-					</Link>
+					</div>
 				))}
 			</div>
 			<Navigation />
