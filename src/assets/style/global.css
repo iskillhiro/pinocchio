@@ -84,6 +84,11 @@ button {
 	justify-content: center;
 	align-items: center;
 }
+.gradient-btn:disabled {
+	background: linear-gradient(84.52deg, #67767d 35.3%, #afcaca 100%);
+	box-shadow: none;
+	cursor: not-allowed;
+}
 .gray-btn {
 	position: relative;
 	border-radius: var(--radius);
@@ -159,6 +164,14 @@ p {
 }
 .row {
 	background-image: url(../pictures/row.svg);
+	background-size: contain;
+	background-position: center;
+	height: 24px;
+	width: 24px;
+	background-repeat: no-repeat;
+}
+.success.icon {
+	background-image: url(../pictures/success.svg);
 	background-size: contain;
 	background-position: center;
 	height: 24px;

@@ -11,12 +11,13 @@ const Tasks = () => {
 	const [loading, setLoading] = useState(true)
 
 	const telegramId = '1145622789'
+
 	useEffect(() => {
 		const getTasks = async () => {
 			try {
 				const response = await axiosDB.get(`/tasks/${telegramId}`)
+				console.log('Fetched task data:', response.data) // Log the fetched data
 				setTaskData(response.data)
-				console.log('TASKDATA: ', response.data)
 			} catch (error) {
 				console.error('Error fetching tasks:', error)
 			} finally {
@@ -27,12 +28,54 @@ const Tasks = () => {
 		getTasks()
 	}, [telegramId])
 
+	const completeTask = async taskId => {
+		try {
+			await axiosDB.post(`/tasks/complete`, {
+				id: taskId,
+				telegramId: telegramId,
+			})
+
+			// Update task state after a successful request
+			setTaskData(prevData => {
+				const updatedIncompleteTasks = prevData.incompleteTasks.map(
+					taskBlock => {
+						const updatedTasks = taskBlock.tasksBlock.map(task => {
+							if (task._id === taskId) {
+								return { ...task, isComplete: true }
+							}
+							return task
+						})
+
+						return { ...taskBlock, tasksBlock: updatedTasks } // !
+					}
+				)
+
+				return {
+					...prevData,
+					incompleteTasks: updatedIncompleteTasks.filter(taskBlock =>
+						taskBlock.tasksBlock.some(task => !task.isComplete)
+					),
+				}
+			})
+		} catch (error) {
+			console.error('Error completing task:', error)
+		}
+	}
+
 	if (loading) {
 		return <Loading />
 	}
 
-	if (!taskData) {
-		return <div>No tasks available</div>
+	if (!taskData || !taskData.incompleteTasks.length) {
+		return (
+			<div className='container'>
+				<h1 className='main-title'>Tasks</h1>
+				<div className='tasks-content'>
+					<h1 className='text-center gradient'>Soon...</h1>
+				</div>
+				<Navigation />
+			</div>
+		)
 	}
 
 	const showTaskWindow = task => {
@@ -47,43 +90,30 @@ const Tasks = () => {
 		<div className='container'>
 			<h1 className='main-title'>Tasks</h1>
 			<div className='tasks-content'>
-				{taskData.incompleteTasks?.map((task, index) => (
-					<div key={index} id='task-container'>
-						<div className='block tasks'>
-							<div onClick={() => showTaskWindow(task)} className='task'>
+				{taskData.incompleteTasks.map((taskBlock, blockIndex) => (
+					<div key={`block-${blockIndex}`} className='block tasks'>
+						{taskBlock.tasksBlock.map((task, taskIndex) => (
+							<div
+								key={`task-${taskIndex}`}
+								className='task'
+								onClick={() => showTaskWindow(task)}
+							>
 								<div id='task-block'>
 									<div className='task-logo'>
-										<img src={task.iconSrc} alt='task' />
+										<img src={`/${task.iconSrc}`} alt='task' />
 									</div>
 									<div id='task-info'>
 										<p id='name'>{task.taskType}</p>
-										<p id='reward'>
-											{task.isComplete ? 'Completed' : task.reward}
-										</p>
+										<p id='reward'>{task.reward}</p>
 									</div>
 								</div>
-								<div className='row icon'></div>
+								{!task.isComplete ? (
+									<div className='row icon'></div>
+								) : (
+									<div className='success icon'></div>
+								)}
 							</div>
-						</div>
-					</div>
-				))}
-
-				{taskData.completedTasks?.map((task, index) => (
-					<div key={index} id='task-container'>
-						<div className='block tasks'>
-							<div className='task'>
-								<div id='task-block'>
-									<div className='task-logo'></div>
-									<div id='task-info'>
-										<p id='name'>{task.taskType}</p>
-										<p id='reward'>
-											{task.isComplete ? 'Completed' : task.reward}
-										</p>
-									</div>
-								</div>
-								<div className='row icon'></div>
-							</div>
-						</div>
+						))}
 					</div>
 				))}
 			</div>
@@ -93,6 +123,7 @@ const Tasks = () => {
 					showTaskWindow={closeTaskWindow}
 					taskData={selectedTask}
 					buttonText={'Перейти'}
+					completeTask={completeTask}
 				/>
 			)}
 		</div>

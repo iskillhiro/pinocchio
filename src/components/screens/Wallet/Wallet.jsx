@@ -83,13 +83,13 @@ const Wallet = () => {
 					<div className='icon'>
 						<img src={silverKeyIcon} alt='' />
 					</div>
-					<p className='count'>{userData.soldo}</p>
+					<p className='count'>{userData.soldoTaps}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={goldenKeyIcon} alt='' />
 					</div>
-					<p className='count'>{userData.zecchino}</p>
+					<p className='count'>{userData.zecchinoTaps}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>

@@ -30,16 +30,16 @@ const TapZone = ({
 						telegramId,
 						energy: newEnergy,
 						...(stage === 1
-							? { soldo: updatedCoins }
-							: { zecchino: updatedCoins }),
+							? { soldoTaps: updatedCoins }
+							: { zecchinoTaps: updatedCoins }),
 					})
 
 					// Фактическое обновление состояния после успешного ответа
 					setCurrentEnergy(response.data.energy)
 					if (stage === 1) {
-						setCurrentCoins(response.data.soldo)
+						setCurrentCoins(response.data.soldoTaps)
 					} else {
-						setCurrentCoins(response.data.zecchino)
+						setCurrentCoins(response.data.zecchinoTaps)
 					}
 				} catch (error) {
 					console.error('Error updating user:', error)

@@ -28,7 +28,9 @@ const Main = () => {
 				setCurrentEnergy(user.energy)
 				setCurrentMaxEnergy(user.maxEnergy)
 				setStage(user.stage)
-				user.stage === 1 ? setCoins(user.soldo) : setCoins(user.zecchino)
+				user.stage === 1
+					? setCoins(user.soldoTaps)
+					: setCoins(user.zecchinoTaps)
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			} finally {

@@ -1,10 +1,12 @@
-import { Link } from 'react-router-dom'
+import React from 'react'
 import './TaskWindow.css'
 
-const TaskWindow = ({ showTaskWindow, taskData, buttonText }) => {
+const TaskWindow = ({ showTaskWindow, taskData, buttonText, completeTask }) => {
 	const goToLink = e => {
 		e.stopPropagation()
-		window.location.href = taskData.link
+		window.location.href = taskData.link // You can optionally navigate to a link
+		completeTask(taskData._id)
+		showTaskWindow() // Close the task window
 	}
 
 	return (
@@ -21,11 +23,9 @@ const TaskWindow = ({ showTaskWindow, taskData, buttonText }) => {
 							<p>{taskData.reward}</p>
 						</div>
 					</div>
-					<Link to={taskData.link}>
-						<button onClick={goToLink} className='gradient-btn'>
-							{buttonText}
-						</button>
-					</Link>
+					<button onClick={goToLink} className='gradient-btn'>
+						{buttonText}
+					</button>
 				</div>
 			</div>
 		</div>

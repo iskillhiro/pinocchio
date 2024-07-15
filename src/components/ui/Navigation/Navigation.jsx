@@ -6,7 +6,7 @@ import tapIcon from '../../../assets/pictures/navigation/tap.svg'
 import tasksIcon from '../../../assets/pictures/navigation/tasks.svg'
 import coinsIcon from '../../../assets/pictures/navigation/tree.svg'
 import './Navigation.css'
-
+// TODO: Реализовать систему с красной точкой над иконкой задания, если есть новые
 const Navigation = () => {
 	return (
 		<div className='block navigation'>
