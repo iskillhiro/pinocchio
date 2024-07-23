@@ -9,7 +9,7 @@ import Loading from '../Loading/Loading.jsx'
 import './Referrals.css'
 const Referrals = () => {
 	const [loading, setLoading] = useState(true)
-	const telegramId = tg.initDataUnsafe.user.id
+	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
 
 	const inviteLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`
 	const copyLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}`
