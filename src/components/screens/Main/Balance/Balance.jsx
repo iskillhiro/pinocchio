@@ -6,6 +6,7 @@ const MainBalance = ({ stage, coins }) => {
 	const [displayedCoins, setDisplayedCoins] = useState(coins)
 
 	useEffect(() => {
+		// добавляет эффект постепенного обновления баланса
 		let start = displayedCoins
 		let end = coins
 		let increment = (end - start) / 5 // Делим на количество шагов, например, 30 шагов

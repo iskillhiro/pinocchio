@@ -61,35 +61,3 @@
 	border-radius: var(--radius);
 	transition: width 0.3s ease;
 }
-/* coins */
-.main-coins {
-	display: flex;
-	align-items: center;
-}
-.main-coins #coin:nth-child(1) {
-	z-index: 5;
-}
-.main-coins #coin:nth-child(2) {
-	z-index: 4;
-}
-.main-coins #coin:nth-child(3) {
-	z-index: 3;
-}
-.main-coins #coin:nth-child(4) {
-	z-index: 2;
-}
-.main-coins #coin:nth-child(5) {
-	z-index: 1;
-}
-#coin {
-	width: 50px;
-	height: 50px;
-	margin-left: -25px;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-}
-
-#coin:first-child {
-	margin-left: 0;
-}

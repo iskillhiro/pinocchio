@@ -7,8 +7,6 @@ const Popup = ({
 	userData,
 	updateBoostData,
 }) => {
-	console.log(userData)
-
 	const activateBoost = async () => {
 		try {
 			const response = await axiosDB.get(
@@ -22,6 +20,14 @@ const Popup = ({
 	}
 
 	const boost = userData.boosts.find(boost => boost.name === popupInfo.name)
+	const isBoostExpired =
+		boost.usesToday - boost.level === 0 &&
+		boost.lastUsed != null &&
+		Math.floor(
+			(new Date() - new Date(boost.lastUsed)) / (1000 * 60 * 60 * 24)
+		) <= 0
+	const isBoostActive = new Date(boost.endTime) > Date.now()
+
 	return (
 		<div className='popup-overlay' onClick={handlePopupClose}>
 			<div className='popup block'>
@@ -31,19 +37,15 @@ const Popup = ({
 					</div>
 					<h3 className='popup-title'>{popupInfo.title}</h3>
 				</div>
-				{(boost.usesToday - boost.level == 0 &&
-					boost.lastUsed != null &&
-					Math.floor(
-						(new Date() - new Date(boost.lastUsed)) / (1000 * 60 * 60 * 24)
-					) <= 0 && (
-						<button
-							disabled={true}
-							onClick={activateBoost}
-							className='gradient-btn'
-						>
-							{buttonText}
-						</button>
-					)) || (
+				{isBoostExpired || isBoostActive ? (
+					<button
+						disabled={true}
+						onClick={activateBoost}
+						className='gradient-btn'
+					>
+						{buttonText}
+					</button>
+				) : (
 					<button onClick={activateBoost} className='gradient-btn'>
 						{buttonText}
 					</button>

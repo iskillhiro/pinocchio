@@ -10,7 +10,7 @@ const Tasks = () => {
 	const [selectedTask, setSelectedTask] = useState(null)
 	const [loading, setLoading] = useState(true)
 
-	const telegramId = '1145622789'
+	const telegramId = tg.initDataUnsafe.user.id
 
 	useEffect(() => {
 		const getTasks = async () => {

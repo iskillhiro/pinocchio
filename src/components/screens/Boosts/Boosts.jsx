@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from 'react'
-import bucketIcon from '../../../assets/pictures/bucket.svg'
-import robotIcon from '../../../assets/pictures/robot.svg'
-import saltIcon from '../../../assets/pictures/salt.svg'
-import shovelIcon from '../../../assets/pictures/shovel.svg'
-import skinIcon from '../../../assets/pictures/skin.svg'
 import starIcon from '../../../assets/pictures/star.svg'
-import tapIcon from '../../../assets/pictures/tap.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Boosts.css'
 import Popup from './Popup'
-
+import UpgradeBoostPopup from './UpgradeBoost.jsx'
 const Boosts = () => {
 	const telegramId = '1145622789'
 	const [activeMenuItem, setActiveMenuItem] = useState('SoldoZecchino')
+	const [upgradeBoosts, setUpgradeBoosts] = useState([])
 	const [boostData, setBoostData] = useState([])
 	const [userData, setUserData] = useState({})
 	const [loading, setLoading] = useState(true)
-
 	const [popupInfo, setPopupInfo] = useState({
 		title: '',
 		iconSrc: '',
 		boostType: '',
 		name: '',
 	})
-
+	const [upgradePopupInfo, setUpgradePopupInfo] = useState([])
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				const response = await axiosDB.get(`/boost/${telegramId}`)
-				setBoostData(response.data.userData[0].boosts)
-				setUserData(response.data.userData[0])
+				const { data } = await axiosDB.get(`/boost/${telegramId}`)
+				if (data) {
+					const userData = data.userData[0]
+					setBoostData(userData.boosts)
+					setUserData(userData)
+					setUpgradeBoosts([
+						...userData.upgradeBoosts,
+						...userData.treeCoinBoosts,
+					])
+				}
 			} catch (error) {
 				console.error('Failed to fetch boost data:', error)
 			} finally {
@@ -40,65 +41,18 @@ const Boosts = () => {
 		}
 		fetchUserData()
 	}, [telegramId])
+	console.log(upgradeBoosts)
 
 	const updateBoostData = async () => {
 		try {
-			const response = await axiosDB.get(`/boost/${telegramId}`)
-			setBoostData(response.data.userData[0].boosts)
-			setUserData(response.data.userData[0])
+			const { data } = await axiosDB.get(`/boost/${telegramId}`)
+			const userData = data.userData[0]
+			setBoostData(userData.boosts)
+			setUserData(userData)
+			setUpgradeBoosts([...userData.upgradeBoosts, ...userData.treeCoinBoosts])
 		} catch (error) {
 			console.error('Failed to fetch updated boost data:', error)
 		}
-	}
-
-	const allBoosts = [
-		{
-			name: 'energy',
-			icon: 'lightning.svg',
-			boostType: 'SoldoZecchino',
-			price: '10000',
-		},
-		{
-			name: 'turbo',
-			icon: 'golden.svg',
-			boostType: 'SoldoZecchino',
-			price: '10000',
-		},
-		{ name: 'tap', icon: tapIcon, boostType: 'SoldoZecchino', price: '10000' },
-		{
-			name: 'auto',
-			icon: robotIcon,
-			boostType: 'SoldoZecchino',
-			price: '10000',
-		},
-		{
-			name: 'skin',
-			icon: skinIcon,
-			boostType: 'SoldoZecchino',
-			price: '10000',
-		},
-		{
-			name: 'shovel',
-			icon: shovelIcon,
-			boostType: 'PinocchioCoin',
-			price: '1 zecchino',
-		},
-		{
-			name: 'bucket',
-			icon: bucketIcon,
-			boostType: 'PinocchioCoin',
-			price: '1 zecchino',
-		},
-		{
-			name: 'salt',
-			icon: saltIcon,
-			boostType: 'PinocchioCoin',
-			price: '1 zecchino',
-		},
-	]
-
-	const handleMenuItemClick = name => {
-		setActiveMenuItem(name)
 	}
 
 	const handleBoostClick = (
@@ -109,30 +63,37 @@ const Boosts = () => {
 	) => {
 		setPopupInfo({ title, iconSrc, boostType, name })
 	}
-
-	const handlePopupClose = () => {
-		setPopupInfo({ title: '', iconSrc: '', boostType: '', name: '' })
-	}
-
-	const filteredBoosts = allBoosts.filter(
-		boost =>
-			boost.boostType === activeMenuItem || boost.boostType === 'daily-boost'
+	const filteredBoosts = upgradeBoosts.filter(
+		activeMenuItem === 'SoldoZecchino'
+			? boost => boost.currency === 'soldo'
+			: boost => boost.currency === 'zecchino'
 	)
 
 	if (loading) {
 		return <Loading />
 	}
+
 	return (
 		<div className='container'>
 			{popupInfo.title && (
 				<Popup
-					handlePopupClose={handlePopupClose}
+					handlePopupClose={() =>
+						setPopupInfo({ title: '', iconSrc: '', boostType: '', name: '' })
+					}
 					popupInfo={popupInfo}
 					buttonText={
-						popupInfo.boostType != 'SoldoZecchino' ? 'Get' : 'Upgrade'
+						popupInfo.boostType !== 'SoldoZecchino' ? 'Get' : 'Upgrade'
 					}
 					userData={userData}
-					updateBoostData={updateBoostData} // Pass the function to update boost data
+					updateBoostData={updateBoostData}
+				/>
+			)}
+			{upgradePopupInfo.length > 0 && (
+				<UpgradeBoostPopup
+					handlePopupClose={() => setUpgradePopupInfo([])}
+					updateBoostData={updateBoostData}
+					boost={upgradePopupInfo}
+					userData={userData}
 				/>
 			)}
 
@@ -158,31 +119,36 @@ const Boosts = () => {
 								{boost.name} {boost.level - boost.usesToday}
 							</h3>
 							<h3 className='up-case' id='timer'>
-								{boost.lastUsed != null && (
-									<span>
-										{Math.floor(
-											24 -
-												(Date.now() - new Date(boost.lastUsed)) /
-													1000 /
-													60 /
-													60 /
-													24
-										)}{' '}
-										hours
-									</span>
-								)}
+								<span>
+									{boost.lastUsed != null &&
+										boost.level - boost.usesToday === 0 && (
+											<span>
+												{Math.floor(
+													24 -
+														(Date.now() - new Date(boost.lastUsed)) /
+															1000 /
+															60 /
+															60 /
+															24
+												)}{' '}
+												hours
+											</span>
+										)}
+								</span>
+								<span>
+									{new Date(boost.endTime) > Date.now() && (
+										<span>
+											{Math.floor(
+												(new Date(boost.endTime) - Date.now()) / 1000 / 60
+											)}{' '}
+											minutes
+										</span>
+									)}
+								</span>
 							</h3>
 						</div>
 						<div className='icon'>
-							{boost.name === 'turbo' &&
-								(userData.stage === 1 ? (
-									<img src={'/boosts/' + boost.icon} alt={boost.name} />
-								) : (
-									<img src={'/boosts/' + 'golden.svg'} alt={boost.name} />
-								))}
-							{boost.name !== 'turbo' && (
-								<img src={'/boosts/' + boost.icon} alt={boost.name} />
-							)}
+							<img src={`/boosts/${boost.icon}`} alt={boost.name} />
 						</div>
 					</button>
 				))}
@@ -191,50 +157,55 @@ const Boosts = () => {
 			<h3 className='up-case text-center post-title'>Boosts</h3>
 			<div className='boost-menu'>
 				<div className='menu'>
-					<div
-						className={`menu-item up-case ${
-							activeMenuItem === 'SoldoZecchino' ? 'active' : ''
-						}`}
-						data-name='SoldoZecchino'
-						onClick={() => handleMenuItemClick('SoldoZecchino')}
-					>
-						Soldo & Zecchino
-					</div>
-					<div
-						className={`menu-item up-case ${
-							activeMenuItem === 'PinocchioCoin' ? 'active' : ''
-						}`}
-						data-name='PinocchioCoin'
-						onClick={() => handleMenuItemClick('PinocchioCoin')}
-					>
-						Pinocchio Coin
-					</div>
+					{['SoldoZecchino', 'PinocchioCoin'].map(menu => (
+						<div
+							key={menu}
+							className={`menu-item up-case ${
+								activeMenuItem === menu ? 'active' : ''
+							}`}
+							onClick={() => setActiveMenuItem(menu)}
+						>
+							{menu.replace(/([A-Z])/g, ' $1').trim()}
+						</div>
+					))}
 					<div
 						className='menu-block'
 						style={{ left: activeMenuItem === 'PinocchioCoin' ? '50%' : '0%' }}
-					></div>
+					/>
 				</div>
 
 				<div className='boost-list'>
 					{filteredBoosts.map(boost => (
 						<div key={boost.name} className='boost'>
 							<button
+								disabled={boost.status === true ? true : false}
 								className='block'
-								onClick={() =>
-									handleBoostClick(boost.name, boost.icon, boost.boostType)
-								}
+								onClick={() => setUpgradePopupInfo([boost])}
 							>
 								<h3 className='up-case'>{boost.name}</h3>
 								<div className='icon'>
-									<img src={boost.icon} alt={boost.name} />
+									<img src={'/boosts/' + boost.icon} alt={boost.name} />
 								</div>
 							</button>
 							<p className='up-case' id='price'>
-								{boost.price}
+								{boost.currency === 'soldo'
+									? boost.level * 10000 + ' soldo'
+									: 1 + ' zechhino'}
 							</p>
 							<div id='level'>
-								<p id='level-count'>1</p>
-								<p className='up-case'>level</p>
+								{boost.currency === 'soldo' &&
+									boost.boostType !== 'one-time' && (
+										<>
+											<p id='level-count'>{boost.level}</p>
+											<p className='up-case'>level</p>
+										</>
+									)}
+								{boost.currency === 'zecchino' && (
+									<p>{boost.status === false ? 'INACTIVE' : 'ACTIVE'}</p>
+								)}
+								{boost.boostType === 'one-time' && (
+									<p>{boost.level === 1 ? 'UNBOUGHT' : 'BOUGHT'}</p>
+								)}
 							</div>
 						</div>
 					))}
