@@ -37,14 +37,6 @@ const TapZone = ({
 							? { soldoTaps: updatedCoins }
 							: { zecchinoTaps: updatedCoins }),
 					})
-
-					// Фактическое обновление состояния после успешного ответа
-					setCurrentEnergy(response.data.energy)
-					if (stage === 1) {
-						setCurrentCoins(response.data.soldoTaps)
-					} else {
-						setCurrentCoins(response.data.zecchinoTaps)
-					}
 				} catch (error) {
 					console.error('Error updating user:', error)
 					// В случае ошибки можно добавить логику для отката изменений на клиенте
