@@ -13,6 +13,7 @@ import TapZone from './TapZone'
 
 const Main = () => {
 	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
+	console.log(telegramId)
 	const [currentEnergy, setCurrentEnergy] = useState(0)
 	const [currentMaxEnergy, setCurrentMaxEnergy] = useState(100)
 	const [stage, setStage] = useState(1)
