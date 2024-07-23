@@ -20,7 +20,7 @@ const Main = () => {
 	const [loading, setLoading] = useState(true)
 	const [energyRegeneRate, setEnergyRegeneRate] = useState(1) // Скорость восстановления энергии
 	const [taps, setTaps] = useState(1)
-	const telegramId = tg.initDataUnsafe.user.id
+	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
 
 	useEffect(() => {
 		const fetchUserData = async () => {

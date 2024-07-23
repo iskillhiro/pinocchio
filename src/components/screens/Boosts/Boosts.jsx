@@ -7,7 +7,7 @@ import './Boosts.css'
 import Popup from './Popup'
 import UpgradeBoostPopup from './UpgradeBoost.jsx'
 const Boosts = () => {
-	const telegramId = '1145622789'
+	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
 	const [activeMenuItem, setActiveMenuItem] = useState('SoldoZecchino')
 	const [upgradeBoosts, setUpgradeBoosts] = useState([])
 	const [boostData, setBoostData] = useState([])
