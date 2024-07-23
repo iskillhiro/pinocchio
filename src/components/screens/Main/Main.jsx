@@ -12,6 +12,7 @@ import './Main.css'
 import TapZone from './TapZone'
 
 const Main = () => {
+	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
 	const [currentEnergy, setCurrentEnergy] = useState(0)
 	const [currentMaxEnergy, setCurrentMaxEnergy] = useState(100)
 	const [stage, setStage] = useState(1)
@@ -20,7 +21,6 @@ const Main = () => {
 	const [loading, setLoading] = useState(true)
 	const [energyRegeneRate, setEnergyRegeneRate] = useState(1) // Скорость восстановления энергии
 	const [taps, setTaps] = useState(1)
-	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
 
 	useEffect(() => {
 		const fetchUserData = async () => {
