@@ -15,13 +15,13 @@ const TapZone = ({
 	setCurrentCoins,
 	updateUserData,
 }) => {
+	if (currentCoins === 1000000 || currentCoins > 1000000) {
+		updateUserData()
+	}
 	const handleTouchStart = useCallback(
 		async e => {
 			const touches = e.touches.length
 			if (currentEnergy >= energyReduction) {
-				if (currentCoins === 1000000) {
-					updateUserData()
-				}
 				const energySpent = energyReduction * touches
 				const newEnergy = Math.max(0, currentEnergy - energySpent)
 				setCurrentEnergy(newEnergy)
