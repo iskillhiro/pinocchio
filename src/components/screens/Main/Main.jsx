@@ -48,7 +48,7 @@ const Main = () => {
 	}, [telegramId])
 	const updateUserData = async () => {
 		try {
-			setLoading(false)
+			setLoading(true)
 			const response = await axiosDB.get(`/user/${telegramId}`)
 			const user = response.data
 			setStage(user.stage)
