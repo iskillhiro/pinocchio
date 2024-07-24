@@ -19,7 +19,7 @@ const TapZone = ({
 		async e => {
 			const touches = e.touches.length
 			if (currentEnergy >= energyReduction) {
-				if (currentCoins >= 1000000) {
+				if (currentCoins === 1000000) {
 					updateUserData()
 				}
 				const energySpent = energyReduction * touches
