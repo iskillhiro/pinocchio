@@ -47,26 +47,19 @@ const Main = () => {
 		fetchUserData()
 	}, [telegramId])
 	const updateUserData = async () => {
-		setLoading(true)
-		useEffect(() => {
-			const getUpdate = async () => {
-				try {
-					const response = await axiosDB.get(`/user/${telegramId}`)
-					const user = response.data
-					setStage(user.stage)
-					setTaps(user.upgradeBoosts[0].level)
-					setCoinStage(user.coinStage)
-					user.stage === 1
-						? setCoins(user.soldoTaps)
-						: setCoins(user.zecchinoTaps)
-				} catch (error) {
-					console.error('Error fetching user data:', error)
-				} finally {
-					setLoading(false)
-				}
-			}
-			getUpdate()
-		})
+		try {
+			setLoading(false)
+			const response = await axiosDB.get(`/user/${telegramId}`)
+			const user = response.data
+			setStage(user.stage)
+			setTaps(user.upgradeBoosts[0].level)
+			setCoinStage(user.coinStage)
+			user.stage === 1 ? setCoins(user.soldoTaps) : setCoins(user.zecchinoTaps)
+		} catch (error) {
+			console.error('Error fetching user data:', error)
+		} finally {
+			setLoading(false)
+		}
 	}
 	useEffect(() => {
 		const intervalId = setInterval(() => {
