@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axiosDB from '../../../utils/axios/axiosConfig'
+import { getId } from '../../../utils/config'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import TaskWindow from './TaskWindow'
 import './Tasks.css'
 
 const Tasks = () => {
-	let tg = window.Telegram.WebApp
-	const telegramId = tg.initDataUnsafe.user.id
+	const telegramId = getId()
 	const [taskData, setTaskData] = useState(null)
 	const [selectedTask, setSelectedTask] = useState(null)
 	const [loading, setLoading] = useState(true)

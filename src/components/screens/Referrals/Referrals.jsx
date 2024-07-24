@@ -4,12 +4,12 @@ import copyIcon from '../../../assets/pictures/copy.svg'
 import personIcon from '../../../assets/pictures/person.svg'
 import '../../../assets/style/global.css'
 import axiosDB from '../../../utils/axios/axiosConfig.js'
+import { getId } from '../../../utils/config.js'
 import Navigation from '../../ui/Navigation/Navigation.jsx'
 import Loading from '../Loading/Loading.jsx'
 import './Referrals.css'
 const Referrals = () => {
-	let tg = window.Telegram.WebApp
-	const telegramId = tg.initDataUnsafe.user.id
+	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
 
 	const inviteLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`

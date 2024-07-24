@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import starIcon from '../../../assets/pictures/star.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
+import { getId } from '../../../utils/config.js'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Boosts.css'
 import Popup from './Popup'
 import UpgradeBoostPopup from './UpgradeBoost.jsx'
 const Boosts = () => {
-	let tg = window.Telegram.WebApp
-	const telegramId = tg.initDataUnsafe.user.id
+	const telegramId = getId()
 	const [activeMenuItem, setActiveMenuItem] = useState('SoldoZecchino')
 	const [upgradeBoosts, setUpgradeBoosts] = useState([])
 	const [boostData, setBoostData] = useState([])

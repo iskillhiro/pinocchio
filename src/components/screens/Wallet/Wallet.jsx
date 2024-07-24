@@ -7,13 +7,13 @@ import goldenKeyIcon from '../../../assets/pictures/keys/golden.svg'
 import silverKeyIcon from '../../../assets/pictures/keys/silver.svg'
 import personIcon from '../../../assets/pictures/person.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
+import { getId } from '../../../utils/config'
 import formatDate from '../../../utils/formatDate/formatDate'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Wallet.css'
 const Wallet = () => {
-	let tg = window.Telegram.WebApp
-	const telegramId = tg.initDataUnsafe.user.id
+	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
 	const [userData, setUserData] = useState({})
 

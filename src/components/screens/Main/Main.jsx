@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import wallet from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
+import { getId } from '../../../utils/config'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import MainBalance from './Balance/Balance'
@@ -12,8 +13,7 @@ import './Main.css'
 import TapZone from './TapZone'
 
 const Main = () => {
-	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
-	console.log(telegramId)
+	const telegramId = getId()
 	const [currentEnergy, setCurrentEnergy] = useState(0)
 	const [currentMaxEnergy, setCurrentMaxEnergy] = useState(100)
 	const [stage, setStage] = useState(1)
@@ -52,6 +52,7 @@ const Main = () => {
 			const user = response.data
 			setStage(user.stage)
 			setTaps(user.upgradeBoosts[0].level)
+			setCoinStage(user.coinStage)
 			user.stage === 1 ? setCoins(user.soldoTaps) : setCoins(user.zecchinoTaps)
 		} catch (error) {
 			console.error('Error fetching user data:', error)
