@@ -12,7 +12,8 @@ import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Wallet.css'
 const Wallet = () => {
-	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
+	let tg = window.Telegram.WebApp
+	const telegramId = tg.initDataUnsafe.user.id
 	const [loading, setLoading] = useState(true)
 	const [userData, setUserData] = useState({})
 

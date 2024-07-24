@@ -8,8 +8,9 @@ import Navigation from '../../ui/Navigation/Navigation.jsx'
 import Loading from '../Loading/Loading.jsx'
 import './Referrals.css'
 const Referrals = () => {
+	let tg = window.Telegram.WebApp
+	const telegramId = tg.initDataUnsafe.user.id
 	const [loading, setLoading] = useState(true)
-	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
 
 	const inviteLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`
 	const copyLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}`
@@ -54,7 +55,9 @@ const Referrals = () => {
 							</div>
 							<p id='username'>{referral.username}</p>
 						</div>
-						<p id='money-count'>{referral.money_count}</p>
+						<p id='money-count'>{referral.soldo_count}</p>
+						<p id='money-count'>{referral.zecchino_count}</p>
+						<p id='money-count'>{referral.coin_count}</p>
 					</div>
 				))}
 			</div>

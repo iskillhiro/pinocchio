@@ -6,11 +6,11 @@ import TaskWindow from './TaskWindow'
 import './Tasks.css'
 
 const Tasks = () => {
+	let tg = window.Telegram.WebApp
+	const telegramId = tg.initDataUnsafe.user.id
 	const [taskData, setTaskData] = useState(null)
 	const [selectedTask, setSelectedTask] = useState(null)
 	const [loading, setLoading] = useState(true)
-
-	const telegramId = window.Telegram.WebApp.initDataUnsafe.user.id
 
 	useEffect(() => {
 		const getTasks = async () => {
