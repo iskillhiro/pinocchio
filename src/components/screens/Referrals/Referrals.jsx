@@ -8,6 +8,7 @@ import { getId } from '../../../utils/config.js'
 import Navigation from '../../ui/Navigation/Navigation.jsx'
 import Loading from '../Loading/Loading.jsx'
 import './Referrals.css'
+
 const Referrals = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)

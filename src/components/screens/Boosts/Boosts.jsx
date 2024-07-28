@@ -7,6 +7,7 @@ import Loading from '../Loading/Loading'
 import './Boosts.css'
 import Popup from './Popup'
 import UpgradeBoostPopup from './UpgradeBoost.jsx'
+
 const Boosts = () => {
 	const telegramId = getId()
 	const [activeMenuItem, setActiveMenuItem] = useState('SoldoZecchino')

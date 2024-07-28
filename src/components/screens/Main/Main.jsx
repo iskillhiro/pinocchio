@@ -11,13 +11,13 @@ import EnergyBar from './Energy/EnergyBar'
 import EnergyCount from './Energy/EnergyCount'
 import './Main.css'
 import TapZone from './TapZone'
-
 const Main = () => {
 	const telegramId = getId()
 	const [currentEnergy, setCurrentEnergy] = useState(0)
 	const [currentMaxEnergy, setCurrentMaxEnergy] = useState(100)
 	const [stage, setStage] = useState(1)
 	const [coinStage, setCoinStage] = useState(0)
+	const [boostData, setBoostData] = useState({})
 	const [coins, setCoins] = useState(0)
 	const [loading, setLoading] = useState(true)
 	const [energyRegeneRate, setEnergyRegeneRate] = useState(1) // Скорость восстановления энергии
@@ -30,10 +30,14 @@ const Main = () => {
 				const user = response.data
 				setCurrentEnergy(user.energy)
 				setCurrentMaxEnergy(user.maxEnergy)
-				setEnergyRegeneRate(user.upgradeBoosts[0].level)
+				setEnergyRegeneRate(user.upgradeBoosts[2].level)
 				setStage(user.stage)
+				setBoostData({
+					upgradeBoosts: user.upgradeBoosts,
+					dailyBoosts: user.boosts,
+				})
 				setCoinStage(user.coinStage)
-				setTaps(user.upgradeBoosts[0].level)
+				setTaps(user.upgradeBoosts[2].level)
 				user.stage === 1
 					? setCoins(user.soldoTaps)
 					: setCoins(user.zecchinoTaps)
@@ -48,7 +52,6 @@ const Main = () => {
 	}, [telegramId])
 	const updateUserData = async () => {
 		try {
-			setLoading(true)
 			const response = await axiosDB.get(`/user/${telegramId}`)
 			const user = response.data
 			setStage(user.stage)
@@ -85,6 +88,7 @@ const Main = () => {
 				setCurrentEnergy={setCurrentEnergy}
 				energyReduction={taps}
 				stage={stage}
+				boostData={boostData}
 				currentCoins={coins}
 				setCurrentCoins={setCoins}
 				updateUserData={updateUserData}
