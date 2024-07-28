@@ -34,6 +34,7 @@ const UpgradeBoostPopup = ({
 	}
 	console.log(boost[0])
 	const activateTreeBoost = async () => {
+		setProcess(true)
 		try {
 			const boostElem = boost[0]
 			const response = await axiosDB.put(
@@ -45,6 +46,12 @@ const UpgradeBoostPopup = ({
 			}
 		} catch (error) {
 			console.log(error)
+		} finally {
+			setProcess(false)
+			if (tg.HapticFeedback) {
+				tg.HapticFeedback.impactOccurred('light')
+			}
+			handlePopupClose()
 		}
 	}
 	const handlePopupClick = event => {
