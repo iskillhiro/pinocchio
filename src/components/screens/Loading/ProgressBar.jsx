@@ -8,7 +8,7 @@ const ProgressBar = ({ min = 0, max = 100 }) => {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setProgress(prevProgress => {
-				const newProgress = Math.min(prevProgress + 1, max)
+				const newProgress = Math.min(prevProgress + 10, max)
 				return newProgress
 			})
 		}, 100) // Обновляем каждую 100 мс

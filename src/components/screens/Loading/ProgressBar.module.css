@@ -10,4 +10,5 @@
 	height: 20px;
 	background-color: yellow;
 	width: 0;
+	transition: 0.5s all linear;
 }

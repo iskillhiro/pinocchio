@@ -44,7 +44,6 @@ const Boosts = () => {
 		}
 		fetchUserData()
 	}, [telegramId])
-	console.log(upgradeBoosts)
 
 	const updateBoostData = async () => {
 		try {

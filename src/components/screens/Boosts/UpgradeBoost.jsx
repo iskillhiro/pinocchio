@@ -62,7 +62,7 @@ const UpgradeBoostPopup = ({
 			<div className='popup block' onClick={handlePopupClick}>
 				<div id='boost-info'>
 					<div className='popup-icon'>
-						<img src={boost[0].icon} alt='boost icon' />
+						<img src={'boosts/' + boost[0].icon} alt='boost icon' />
 					</div>
 					<h3 className='popup-title'>{boost[0].name}</h3>
 					{boost[0].boostType !== 'one-time' && (
