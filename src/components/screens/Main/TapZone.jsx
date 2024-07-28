@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import goldenCoin from '../../../assets/pictures/coins/golden/coin.svg'
 import silverCoin from '../../../assets/pictures/coins/silver/coin.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
@@ -17,7 +17,6 @@ const TapZone = ({
 	setCurrentCoins,
 	updateUserData,
 }) => {
-	const [pendingTouches, setPendingTouches] = useState(0)
 	const [lastTapTime, setLastTapTime] = useState(0)
 	const lastTapTimeRef = useRef(lastTapTime)
 
@@ -50,13 +49,12 @@ const TapZone = ({
 						telegramId,
 						touches,
 					})
-					// handle response if necessary
 				} catch (error) {
 					console.error('Error updating user:', error)
-					// Rollback changes on error if necessary
+					// В случае ошибки можно добавить логику для отката изменений на клиенте
 				}
 			}
-		}, 300), // Debounce time in milliseconds
+		}, 300),
 		[
 			currentEnergy,
 			energyReduction,
@@ -68,22 +66,18 @@ const TapZone = ({
 		]
 	)
 
-	const handleTouchStart = useCallback(e => {
-		const now = Date.now()
-		if (now - lastTapTimeRef.current > 100) {
-			// Debounce threshold
-			lastTapTimeRef.current = now
-			const touches = e.touches.length
-			setPendingTouches(prev => prev + touches)
-		}
-	}, [])
-
-	useEffect(() => {
-		if (pendingTouches > 0) {
-			debouncedUpdate(pendingTouches)
-			setPendingTouches(0) // Reset pending touches
-		}
-	}, [pendingTouches, debouncedUpdate])
+	const handleTouchStart = useCallback(
+		e => {
+			const now = Date.now()
+			if (now - lastTapTimeRef.current > 100) {
+				// 100ms debounce threshold
+				lastTapTimeRef.current = now
+				const touches = e.touches.length
+				debouncedUpdate(touches)
+			}
+		},
+		[debouncedUpdate]
+	)
 
 	return (
 		<div className='tap-zone' onTouchStart={handleTouchStart}>
