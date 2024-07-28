@@ -23,7 +23,6 @@ const Tasks = () => {
 			} catch (error) {
 				console.error('Error fetching tasks:', error)
 			} finally {
-				setLoading(100)
 				setLoading(false)
 			}
 		}
@@ -67,6 +66,15 @@ const Tasks = () => {
 	if (loading && loadingCount < 100) {
 		return <Loading min={loadingCount} />
 	}
+	useEffect(() => {
+		const handlePageLoad = () => {
+			setLoadingCount(100)
+		}
+
+		window.addEventListener('load', handlePageLoad)
+
+		return () => window.removeEventListener('load', handlePageLoad)
+	}, [])
 
 	if (!taskData || !taskData.incompleteTasks.length) {
 		return (

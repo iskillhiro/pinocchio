@@ -41,7 +41,6 @@ const Boosts = () => {
 			} catch (error) {
 				console.error('Failed to fetch boost data:', error)
 			} finally {
-				setLoadingCount(100)
 				setLoading(false)
 			}
 		}
@@ -78,6 +77,15 @@ const Boosts = () => {
 	if (loading && loadingCount < 100) {
 		return <Loading min={loadingCount} />
 	}
+	useEffect(() => {
+		const handlePageLoad = () => {
+			setLoadingCount(100)
+		}
+
+		window.addEventListener('load', handlePageLoad)
+
+		return () => window.removeEventListener('load', handlePageLoad)
+	}, [])
 
 	return (
 		<div className='container'>

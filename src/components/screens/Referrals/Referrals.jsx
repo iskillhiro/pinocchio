@@ -36,12 +36,20 @@ const Referrals = () => {
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			} finally {
-				setLoadingCount(100)
 				setLoading(false)
 			}
 		}
 		console.log(referralData)
 		fetchUserData()
+	}, [])
+	useEffect(() => {
+		const handlePageLoad = () => {
+			setLoadingCount(100)
+		}
+
+		window.addEventListener('load', handlePageLoad)
+
+		return () => window.removeEventListener('load', handlePageLoad)
 	}, [])
 
 	if (loading && loadingCount < 100) {

@@ -51,7 +51,6 @@ const Main = () => {
 		} catch (error) {
 			console.error('Error fetching user data:', error)
 		} finally {
-			setLoadingCount(100)
 			setLoading(false)
 		}
 	}
@@ -96,6 +95,15 @@ const Main = () => {
 	if (loading && loadingCount < 100) {
 		return <Loading min={loadingCount} />
 	}
+	useEffect(() => {
+		const handlePageLoad = () => {
+			setLoadingCount(100)
+		}
+
+		window.addEventListener('load', handlePageLoad)
+
+		return () => window.removeEventListener('load', handlePageLoad)
+	}, [])
 
 	return (
 		<div className='container main'>
