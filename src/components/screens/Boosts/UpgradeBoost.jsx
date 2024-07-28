@@ -1,4 +1,6 @@
 import axiosDB from '../../../utils/axios/axiosConfig'
+import { Loader } from '../../ui/Loader/Loader'
+const tg = window.Telegram.WebApp
 
 const UpgradeBoostPopup = ({
 	handlePopupClose,
@@ -6,7 +8,10 @@ const UpgradeBoostPopup = ({
 	userData,
 	updateBoostData,
 }) => {
+	const [process, setProcess] = useState(false)
+
 	const upgradeBoost = async () => {
+		setProcess(true)
 		try {
 			const boostElem = boost[0]
 			const response = await axiosDB.put(
@@ -18,6 +23,12 @@ const UpgradeBoostPopup = ({
 			}
 		} catch (error) {
 			console.log(error)
+		} finally {
+			setProcess(false)
+			if (tg.HapticFeedback) {
+				tg.HapticFeedback.impactOccurred('light')
+			}
+			handlePopupClose()
 		}
 	}
 	console.log(boost[0])
@@ -35,9 +46,12 @@ const UpgradeBoostPopup = ({
 			console.log(error)
 		}
 	}
+	const handlePopupClick = event => {
+		event.stopPropagation()
+	}
 	return (
 		<div className='popup-overlay' onClick={handlePopupClose}>
-			<div className='popup block'>
+			<div className='popup block' onClick={handlePopupClick}>
 				<div id='boost-info'>
 					<div className='popup-icon'>
 						<img src={boost[0].icon} alt='boost icon' />
@@ -53,12 +67,12 @@ const UpgradeBoostPopup = ({
 				</div>
 				{boost[0].currency === 'zecchino' && (
 					<button onClick={activateTreeBoost} className='gradient-btn'>
-						Activate
+						{process ? <Loader /> : 'Activate'}
 					</button>
 				)}
 				{boost[0].currency === 'soldo' && (
 					<button onClick={upgradeBoost} className='gradient-btn'>
-						Upgrade
+						{process ? <Loader /> : 'Upgrade'}
 					</button>
 				)}
 			</div>

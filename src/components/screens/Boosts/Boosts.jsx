@@ -15,6 +15,7 @@ const Boosts = () => {
 	const [boostData, setBoostData] = useState([])
 	const [userData, setUserData] = useState({})
 	const [loading, setLoading] = useState(true)
+
 	const [popupInfo, setPopupInfo] = useState({
 		title: '',
 		iconSrc: '',
