@@ -11,20 +11,16 @@ const Tasks = () => {
 	const [taskData, setTaskData] = useState(null)
 	const [selectedTask, setSelectedTask] = useState(null)
 	const [loading, setLoading] = useState(true)
-	const [loadingCount, setLoadingCount] = useState(0)
 
 	useEffect(() => {
 		const getTasks = async () => {
 			try {
 				const response = await axiosDB.get(`/tasks/${telegramId}`)
-				setLoadingCount(10)
 				console.log('Fetched task data:', response.data) // Log the fetched data
 				setTaskData(response.data)
-				setLoadingCount(50)
 			} catch (error) {
 				console.error('Error fetching tasks:', error)
 			} finally {
-				setLoadingCount(100)
 				setLoading(false)
 			}
 		}
@@ -65,12 +61,8 @@ const Tasks = () => {
 			console.error('Error completing task:', error)
 		}
 	}
-	useEffect(() => {
-		window.document.addEventListener('load', () => {
-			setLoading(false)
-		})
-	}, [])
-	if (loading && loadingCount < 100) {
+
+	if (loading) {
 		return <Loading />
 	}
 

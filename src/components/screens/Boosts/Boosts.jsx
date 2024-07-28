@@ -15,7 +15,6 @@ const Boosts = () => {
 	const [boostData, setBoostData] = useState([])
 	const [userData, setUserData] = useState({})
 	const [loading, setLoading] = useState(true)
-	const [loadingCount, setLoadingCount] = useState(0)
 	const [popupInfo, setPopupInfo] = useState({
 		title: '',
 		iconSrc: '',
@@ -27,7 +26,6 @@ const Boosts = () => {
 		const fetchUserData = async () => {
 			try {
 				const { data } = await axiosDB.get(`/boost/${telegramId}`)
-				setLoadingCount(10)
 				if (data) {
 					const userData = data.userData[0]
 					setBoostData(userData.boosts)
@@ -37,21 +35,15 @@ const Boosts = () => {
 						...userData.treeCoinBoosts,
 					])
 				}
-				setLoadingCount(50)
 			} catch (error) {
 				console.error('Failed to fetch boost data:', error)
 			} finally {
-				setLoadingCount(100)
+				setLoading(false)
 			}
 		}
 		fetchUserData()
 	}, [telegramId])
-
-	useEffect(() => {
-		window.document.addEventListener('load', () => {
-			setLoading(false)
-		})
-	}, [])
+	console.log(upgradeBoosts)
 
 	const updateBoostData = async () => {
 		try {
@@ -79,9 +71,10 @@ const Boosts = () => {
 			: boost => boost.currency === 'zecchino'
 	)
 
-	if (loading && loadingCount < 100) {
+	if (loading) {
 		return <Loading />
 	}
+
 	return (
 		<div className='container'>
 			{popupInfo.title && (

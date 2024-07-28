@@ -15,32 +15,24 @@ import './Wallet.css'
 const Wallet = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
-	const [loadingCount, setLoadingCount] = useState(0)
 	const [userData, setUserData] = useState({})
 
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
 				const response = await axiosDB.get(`/user/${telegramId}`)
-				setLoadingCount(10)
 				const user = response.data
 				setUserData(user)
-				setLoadingCount(50)
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			} finally {
-				setLoadingCount(100)
+				setLoading(false)
 			}
 		}
 
 		fetchUserData()
 	}, [telegramId])
-	useEffect(() => {
-		window.document.addEventListener('load', () => {
-			setLoading(false)
-		})
-	}, [])
-	if (loading && loadingCount < 100) {
+	if (loading) {
 		return <Loading />
 	}
 	return (

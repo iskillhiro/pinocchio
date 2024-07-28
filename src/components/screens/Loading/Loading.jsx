@@ -6,7 +6,7 @@ import '../../../assets/style/global.css'
 import './Loading.css'
 import ProgressBar from './ProgressBar'
 
-const Loading = ({ min }) => {
+const Loading = ({ min = 0 }) => {
 	return (
 		<div className='container loading'>
 			<h1 className='title first gradient up-case no-wrap fade-in'>

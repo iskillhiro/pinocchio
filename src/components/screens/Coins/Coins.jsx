@@ -15,7 +15,6 @@ const tg = window.Telegram.WebApp
 
 const Coins = () => {
 	const [loading, setLoading] = useState(true)
-	const [loadingCount, setLoadingCount] = useState(0)
 	const [process, setProcess] = useState(false)
 	const [displayedBalance, setDisplayedBalance] = useState(0)
 	const telegramId = getId()
@@ -24,13 +23,11 @@ const Coins = () => {
 	const fetchUserData = async () => {
 		try {
 			const response = await axiosDB.get(`/user/${telegramId}`)
-			setLoadingCount(10)
 			setUser(response.data)
-			setLoadingCount(50)
 		} catch (error) {
 			console.error('Error fetching user data:', error)
 		} finally {
-			setLoadingCount(100)
+			setLoading(false)
 		}
 	}
 
@@ -64,12 +61,8 @@ const Coins = () => {
 			incrementBalance()
 		}
 	}, [user.tree])
-	useEffect(() => {
-		window.document.addEventListener('load', () => {
-			setLoading(false)
-		})
-	}, [])
-	if (loading && loadingCount < 100) {
+
+	if (loading) {
 		return <Loading />
 	}
 

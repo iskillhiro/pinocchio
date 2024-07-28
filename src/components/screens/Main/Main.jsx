@@ -20,7 +20,6 @@ const Main = () => {
 	const [boostData, setBoostData] = useState({})
 	const [coins, setCoins] = useState(0)
 	const [loading, setLoading] = useState(true)
-	const [loadingCount, setLoadingCount] = useState(0)
 	const [energyRegeneRate, setEnergyRegeneRate] = useState(1) // Скорость восстановления энергии
 	const [taps, setTaps] = useState(1)
 
@@ -74,13 +73,9 @@ const Main = () => {
 
 		return () => clearInterval(intervalId)
 	}, [currentMaxEnergy])
-	useEffect(() => {
-		window.document.addEventListener('load', () => {
-			setLoading(false)
-		})
-	}, [])
-	if (loading && loadingCount < 100) {
-		return <Loading min={loadingCount} />
+
+	if (loading) {
+		return <Loading />
 	}
 
 	return (

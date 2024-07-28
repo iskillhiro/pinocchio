@@ -11,7 +11,6 @@ import './Referrals.css'
 const Referrals = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
-	const [loadingCount, setLoadingCount] = useState(0)
 
 	const inviteLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`
 	const copyLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}`
@@ -33,18 +32,14 @@ const Referrals = () => {
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			} finally {
-				setLoadingCount(100)
+				setLoading(false)
 			}
 		}
 		console.log(referralData)
 		fetchUserData()
 	}, [])
-	useEffect(() => {
-		window.document.addEventListener('load', () => {
-			setLoading(false)
-		})
-	}, [])
-	if (loading && loadingCount < 100) {
+
+	if (loading) {
 		return <Loading />
 	}
 	return (
