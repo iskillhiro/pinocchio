@@ -44,7 +44,7 @@ const Main = () => {
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			} finally {
-				setLoading(true)
+				setLoading(false)
 			}
 		}
 
