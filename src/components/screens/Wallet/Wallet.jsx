@@ -29,25 +29,20 @@ const Wallet = () => {
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			} finally {
-				setLoading(false)
+				setLoadingCount(100)
 			}
 		}
 
 		fetchUserData()
 	}, [telegramId])
-	if (loading && loadingCount < 100) {
-		return <Loading min={loadingCount} />
-	}
 	useEffect(() => {
-		const handlePageLoad = () => {
-			setLoadingCount(100)
-		}
-
-		window.addEventListener('load', handlePageLoad)
-
-		return () => window.removeEventListener('load', handlePageLoad)
+		window.document.addEventListener('load', () => {
+			setLoading(false)
+		})
 	}, [])
-
+	if (loading && loadingCount < 100) {
+		return <Loading />
+	}
 	return (
 		<div className='container wallet'>
 			<Link to='/stats' className='stats wallet'>

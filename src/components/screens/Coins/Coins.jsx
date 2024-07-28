@@ -30,18 +30,9 @@ const Coins = () => {
 		} catch (error) {
 			console.error('Error fetching user data:', error)
 		} finally {
-			setLoading(false)
-		}
-	}
-	useEffect(() => {
-		const handlePageLoad = () => {
 			setLoadingCount(100)
 		}
-
-		window.addEventListener('load', handlePageLoad)
-
-		return () => window.removeEventListener('load', handlePageLoad)
-	}, [])
+	}
 
 	const incrementBalance = () => {
 		let start = displayedBalance
@@ -73,9 +64,13 @@ const Coins = () => {
 			incrementBalance()
 		}
 	}, [user.tree])
-
+	useEffect(() => {
+		window.document.addEventListener('load', () => {
+			setLoading(false)
+		})
+	}, [])
 	if (loading && loadingCount < 100) {
-		return <Loading min={loadingCount} />
+		return <Loading />
 	}
 
 	const getActiveBoostsCount = () => {

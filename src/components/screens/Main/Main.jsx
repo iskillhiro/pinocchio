@@ -11,129 +11,100 @@ import EnergyBar from './Energy/EnergyBar'
 import EnergyCount from './Energy/EnergyCount'
 import './Main.css'
 import TapZone from './TapZone'
-
 const Main = () => {
 	const telegramId = getId()
-	const [userData, setUserData] = useState({
-		currentEnergy: 0,
-		currentMaxEnergy: 100,
-		stage: 1,
-		coinStage: 0,
-		boostData: {},
-		coins: 0,
-		energyRegeneRate: 1,
-		taps: 1,
-	})
+	const [currentEnergy, setCurrentEnergy] = useState(0)
+	const [currentMaxEnergy, setCurrentMaxEnergy] = useState(100)
+	const [stage, setStage] = useState(1)
+	const [coinStage, setCoinStage] = useState(0)
+	const [boostData, setBoostData] = useState({})
+	const [coins, setCoins] = useState(0)
 	const [loading, setLoading] = useState(true)
 	const [loadingCount, setLoadingCount] = useState(0)
+	const [energyRegeneRate, setEnergyRegeneRate] = useState(1) // Скорость восстановления энергии
+	const [taps, setTaps] = useState(1)
 
-	const fetchUserData = async () => {
-		try {
-			const response = await axiosDB.get(`/user/${telegramId}`)
-			setLoadingCount(10)
-
-			const user = response.data
-			setUserData({
-				currentEnergy: user.energy,
-				currentMaxEnergy: user.maxEnergy,
-				stage: user.stage,
-				coinStage: user.coinStage,
-				boostData: {
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const response = await axiosDB.get(`/user/${telegramId}`)
+				const user = response.data
+				setCurrentEnergy(user.energy)
+				setCurrentMaxEnergy(user.maxEnergy)
+				setEnergyRegeneRate(user.upgradeBoosts[2].level)
+				setStage(user.stage)
+				setBoostData({
 					upgradeBoosts: user.upgradeBoosts,
 					dailyBoosts: user.boosts,
-				},
-				coins: user.stage === 1 ? user.soldoTaps : user.zecchinoTaps,
-				energyRegeneRate: user.upgradeBoosts[2].level,
-				taps: user.upgradeBoosts[0].level,
-			})
+				})
+				setCoinStage(user.coinStage)
+				setTaps(user.upgradeBoosts[2].level)
+				user.stage === 1
+					? setCoins(user.soldoTaps)
+					: setCoins(user.zecchinoTaps)
+			} catch (error) {
+				console.error('Error fetching user data:', error)
+			} finally {
+				setLoading(true)
+			}
+		}
 
-			setLoadingCount(50)
+		fetchUserData()
+	}, [telegramId])
+	const updateUserData = async () => {
+		try {
+			const response = await axiosDB.get(`/user/${telegramId}`)
+			const user = response.data
+			setStage(user.stage)
+			setTaps(user.upgradeBoosts[0].level)
+			setCoinStage(user.coinStage)
+			user.stage === 1 ? setCoins(user.soldoTaps) : setCoins(user.zecchinoTaps)
 		} catch (error) {
 			console.error('Error fetching user data:', error)
 		} finally {
 			setLoading(false)
 		}
 	}
-
-	const updateUserData = async () => {
-		try {
-			const response = await axiosDB.get(`/user/${telegramId}`)
-			const user = response.data
-
-			setUserData(prevData => ({
-				...prevData,
-				stage: user.stage,
-				taps: user.upgradeBoosts[0].level,
-				coinStage: user.coinStage,
-				coins: user.stage === 1 ? user.soldoTaps : user.zecchinoTaps,
-			}))
-		} catch (error) {
-			console.error('Error updating user data:', error)
-		} finally {
-			setLoading(false)
-		}
-	}
-
-	useEffect(() => {
-		fetchUserData()
-	}, [telegramId])
-
 	useEffect(() => {
 		const intervalId = setInterval(() => {
-			setUserData(prevData => ({
-				...prevData,
-				currentEnergy: Math.min(
-					prevData.currentEnergy + prevData.energyRegeneRate,
-					prevData.currentMaxEnergy
-				),
-			}))
+			setCurrentEnergy(prevEnergy =>
+				Math.min(prevEnergy + energyRegeneRate, currentMaxEnergy)
+			)
 		}, 1000)
 
 		return () => clearInterval(intervalId)
-	}, [userData.currentMaxEnergy, userData.energyRegeneRate])
-
+	}, [currentMaxEnergy])
+	useEffect(() => {
+		window.document.addEventListener('load', () => {
+			setLoading(false)
+		})
+	}, [])
 	if (loading && loadingCount < 100) {
 		return <Loading min={loadingCount} />
 	}
-	useEffect(() => {
-		const handlePageLoad = () => {
-			setLoadingCount(100)
-		}
-
-		window.addEventListener('load', handlePageLoad)
-
-		return () => window.removeEventListener('load', handlePageLoad)
-	}, [])
 
 	return (
 		<div className='container main'>
-			<MainBalance stage={userData.stage} coins={userData.coins} />
-			<MainCoins coinStage={userData.coinStage} stage={userData.stage} />
+			<MainBalance stage={stage} coins={coins} />
+			<MainCoins coinStage={coinStage} stage={stage} />
 			<TapZone
 				telegramId={telegramId}
-				currentEnergy={userData.currentEnergy}
-				setCurrentEnergy={energy =>
-					setUserData(prevData => ({ ...prevData, currentEnergy: energy }))
-				}
-				energyReduction={userData.taps}
-				stage={userData.stage}
-				boostData={userData.boostData}
-				currentCoins={userData.coins}
-				setCurrentCoins={coins =>
-					setUserData(prevData => ({ ...prevData, coins }))
-				}
+				currentEnergy={currentEnergy}
+				setCurrentEnergy={setCurrentEnergy}
+				energyReduction={taps}
+				stage={stage}
+				boostData={boostData}
+				currentCoins={coins}
+				setCurrentCoins={setCoins}
 				updateUserData={updateUserData}
 			/>
 			<div className='group main'>
-				<EnergyCount currentEnergy={userData.currentEnergy} />
+				<EnergyCount currentEnergy={currentEnergy} />
 				<Link to='/wallet' className='block'>
 					<img className='icon' src={wallet} alt='wallet' />
 				</Link>
 			</div>
-			<EnergyBar
-				currentEnergy={userData.currentEnergy}
-				maxEnergy={userData.currentMaxEnergy}
-			/>
+			<EnergyBar currentEnergy={currentEnergy} maxEnergy={currentMaxEnergy} />
 			<Navigation />
 		</div>
 	)

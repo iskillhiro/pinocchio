@@ -8,7 +8,6 @@ import { getId } from '../../../utils/config.js'
 import Navigation from '../../ui/Navigation/Navigation.jsx'
 import Loading from '../Loading/Loading.jsx'
 import './Referrals.css'
-
 const Referrals = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
@@ -28,32 +27,25 @@ const Referrals = () => {
 		const fetchUserData = async () => {
 			try {
 				const response = await axiosDB.get(`/user/${telegramId}`)
-				setLoadingCount(10)
 				const user = response.data
 				console.log(user)
 				setReferralData(user.referrals)
-				setLoadingCount(50)
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			} finally {
-				setLoading(false)
+				setLoadingCount(100)
 			}
 		}
 		console.log(referralData)
 		fetchUserData()
 	}, [])
 	useEffect(() => {
-		const handlePageLoad = () => {
-			setLoadingCount(100)
-		}
-
-		window.addEventListener('load', handlePageLoad)
-
-		return () => window.removeEventListener('load', handlePageLoad)
+		window.document.addEventListener('load', () => {
+			setLoading(false)
+		})
 	}, [])
-
 	if (loading && loadingCount < 100) {
-		return <Loading min={loadingCount} />
+		return <Loading />
 	}
 	return (
 		<div className='container'>

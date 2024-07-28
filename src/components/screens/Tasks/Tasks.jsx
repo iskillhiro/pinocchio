@@ -12,6 +12,7 @@ const Tasks = () => {
 	const [selectedTask, setSelectedTask] = useState(null)
 	const [loading, setLoading] = useState(true)
 	const [loadingCount, setLoadingCount] = useState(0)
+
 	useEffect(() => {
 		const getTasks = async () => {
 			try {
@@ -19,10 +20,11 @@ const Tasks = () => {
 				setLoadingCount(10)
 				console.log('Fetched task data:', response.data) // Log the fetched data
 				setTaskData(response.data)
-				setLoading(50)
+				setLoadingCount(50)
 			} catch (error) {
 				console.error('Error fetching tasks:', error)
 			} finally {
+				setLoadingCount(100)
 				setLoading(false)
 			}
 		}
@@ -63,18 +65,14 @@ const Tasks = () => {
 			console.error('Error completing task:', error)
 		}
 	}
-	if (loading && loadingCount < 100) {
-		return <Loading min={loadingCount} />
-	}
 	useEffect(() => {
-		const handlePageLoad = () => {
-			setLoadingCount(100)
-		}
-
-		window.addEventListener('load', handlePageLoad)
-
-		return () => window.removeEventListener('load', handlePageLoad)
+		window.document.addEventListener('load', () => {
+			setLoading(false)
+		})
 	}, [])
+	if (loading && loadingCount < 100) {
+		return <Loading />
+	}
 
 	if (!taskData || !taskData.incompleteTasks.length) {
 		return (

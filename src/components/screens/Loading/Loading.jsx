@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import loadingCoin from '../../../assets/pictures/coins/bronze/coin_front.svg'
 import tonIcon from '../../../assets/pictures/ton.svg'
 import '../../../assets/style/animations.css'
@@ -7,11 +7,6 @@ import './Loading.css'
 import ProgressBar from './ProgressBar'
 
 const Loading = ({ min }) => {
-	const [minCount, setMinCount] = useState(min)
-
-	useEffect(() => {
-		setMinCount(min)
-	}, [min])
 	return (
 		<div className='container loading'>
 			<h1 className='title first gradient up-case no-wrap fade-in'>
@@ -26,7 +21,7 @@ const Loading = ({ min }) => {
 			<h4 className='gradient no-wrap up-case fade-in'>krex</h4>
 			<h4 className='gradient no-wrap up-case fade-in'>fex</h4>
 			<h4 className='gradient no-wrap up-case fade-in'>pex</h4>
-			<ProgressBar min={minCount} max={100} />
+			<ProgressBar min={min} max={100} />
 			<h1 className='title second gradient up-case no-wrap fade-in'>
 				pinocchio labs
 				<img className='ton fade-in' src={tonIcon} alt='ton' />
