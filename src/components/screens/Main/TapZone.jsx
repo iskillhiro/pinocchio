@@ -39,7 +39,6 @@ const TapZone = ({
 				setCurrentCoins(updatedCoins) // Оптимистическое обновление на клиенте
 				try {
 					const response = await axiosDB.put('/user/update', {
-						// TODO: ИСПРАВИТЬ
 						telegramId,
 						...{ touches },
 					})
