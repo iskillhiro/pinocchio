@@ -24,6 +24,9 @@ const TapZone = ({
 	const handleTouchStart = useCallback(
 		async e => {
 			const touches = e.touches.length
+			if (tg.HapticFeedback) {
+				tg.HapticFeedback.impactOccurred('light')
+			}
 			if (currentEnergy >= energyReduction) {
 				const energySpent =
 					new Date(boostData.dailyBoosts[1].endTime) > Date.now()
@@ -37,6 +40,7 @@ const TapZone = ({
 
 				const updatedCoins = currentCoins + energySpent
 				setCurrentCoins(updatedCoins) // Оптимистическое обновление на клиенте
+
 				try {
 					const response = await axiosDB.put('/user/update', {
 						telegramId,
@@ -45,10 +49,6 @@ const TapZone = ({
 				} catch (error) {
 					console.error('Error updating user:', error)
 					// В случае ошибки можно добавить логику для отката изменений на клиенте
-				}
-
-				if (tg.HapticFeedback) {
-					tg.HapticFeedback.impactOccurred('light')
 				}
 			}
 		},
