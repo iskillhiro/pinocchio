@@ -12,6 +12,7 @@ import './Referrals.css'
 const Referrals = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
+	const [loadingCount, setLoadingCount] = useState(0)
 
 	const inviteLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`
 	const copyLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}`
@@ -27,12 +28,15 @@ const Referrals = () => {
 		const fetchUserData = async () => {
 			try {
 				const response = await axiosDB.get(`/user/${telegramId}`)
+				setLoadingCount(10)
 				const user = response.data
 				console.log(user)
 				setReferralData(user.referrals)
+				setLoadingCount(50)
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			} finally {
+				setLoadingCount(100)
 				setLoading(false)
 			}
 		}
@@ -40,8 +44,8 @@ const Referrals = () => {
 		fetchUserData()
 	}, [])
 
-	if (loading) {
-		return <Loading />
+	if (loading && loadingCount < 100) {
+		return <Loading min={loadingCount} />
 	}
 	return (
 		<div className='container'>

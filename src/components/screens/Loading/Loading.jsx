@@ -4,8 +4,9 @@ import tonIcon from '../../../assets/pictures/ton.svg'
 import '../../../assets/style/animations.css'
 import '../../../assets/style/global.css'
 import './Loading.css'
+import ProgressBar from './ProgressBar'
 
-const Loading = () => {
+const Loading = ({ min }) => {
 	return (
 		<div className='container loading'>
 			<h1 className='title first gradient up-case no-wrap fade-in'>
@@ -20,6 +21,7 @@ const Loading = () => {
 			<h4 className='gradient no-wrap up-case fade-in'>krex</h4>
 			<h4 className='gradient no-wrap up-case fade-in'>fex</h4>
 			<h4 className='gradient no-wrap up-case fade-in'>pex</h4>
+			<ProgressBar min={min} max={100} />
 			<h1 className='title second gradient up-case no-wrap fade-in'>
 				pinocchio labs
 				<img className='ton fade-in' src={tonIcon} alt='ton' />

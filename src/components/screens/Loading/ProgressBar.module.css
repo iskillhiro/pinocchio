@@ -1,0 +1,14 @@
+.progress_bar_container {
+	width: 100%;
+	background-color: #e0e0e0;
+	overflow: hidden;
+	position: absolute;
+	bottom: 0;
+}
+
+.progress_bar {
+	height: 20px;
+	background-color: yellow;
+	width: 0;
+	transition: width 0.3s ease;
+}

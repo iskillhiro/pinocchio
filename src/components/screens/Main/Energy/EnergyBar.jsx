@@ -1,14 +1,18 @@
-import { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 const EnergyBar = ({ currentEnergy, maxEnergy }) => {
+	const progressBarRef = useRef(null)
+
 	useEffect(() => {
-		const progressPercent = (currentEnergy / maxEnergy) * 100
-		document.querySelector('.progress-bar').style.width = `${progressPercent}%`
+		if (progressBarRef.current) {
+			const progressPercent = (currentEnergy / maxEnergy) * 100
+			progressBarRef.current.style.width = `${progressPercent}%`
+		}
 	}, [currentEnergy, maxEnergy])
 
 	return (
 		<div className='progress-bar-container'>
-			<div className='progress-bar'></div>
+			<div ref={progressBarRef} className='progress-bar'></div>
 		</div>
 	)
 }

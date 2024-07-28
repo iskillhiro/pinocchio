@@ -9,87 +9,113 @@ import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Coins.css'
+import ProgressBar from './ProgressBar'
 
 const tg = window.Telegram.WebApp
 
 const Coins = () => {
 	const [loading, setLoading] = useState(true)
-	const [process, setProcess] = useState(false) // состояние для отслеживания процесса claim
+	const [loadingCount, setLoadingCount] = useState(0)
+	const [process, setProcess] = useState(false)
+	const [displayedBalance, setDisplayedBalance] = useState(0)
 	const telegramId = getId()
 	const [user, setUser] = useState({})
 
-	useEffect(() => {
-		const fetchUserData = async () => {
-			try {
-				const response = await axiosDB.get(`/user/${telegramId}`)
-				const user = response.data
-				setUser(user)
-				console.log(user)
-			} catch (error) {
-				console.error('Error fetching user data:', error)
-			} finally {
-				setLoading(false)
-			}
+	const fetchUserData = async () => {
+		try {
+			const response = await axiosDB.get(`/user/${telegramId}`)
+			setLoadingCount(10)
+			setUser(response.data)
+			setLoadingCount(50)
+		} catch (error) {
+			console.error('Error fetching user data:', error)
+		} finally {
+			setLoadingCount(100)
+			setLoading(false)
 		}
+	}
 
+	const incrementBalance = () => {
+		let start = displayedBalance
+		let end = user.tree.lootBalance
+		let increment = (end - start) / 30
+		let interval = 10
+
+		const intervalId = setInterval(() => {
+			start += increment
+			if (start >= end) {
+				start = end
+				clearInterval(intervalId)
+			}
+			setDisplayedBalance(Math.floor(start))
+		}, interval)
+
+		return () => clearInterval(intervalId)
+	}
+
+	useEffect(() => {
 		fetchUserData()
+		const intervalId = setInterval(fetchUserData, 10000)
+
+		return () => clearInterval(intervalId)
 	}, [telegramId])
 
-	if (loading) {
-		return <Loading />
+	useEffect(() => {
+		if (user.tree) {
+			incrementBalance()
+		}
+	}, [user.tree])
+
+	if (loading && loadingCount < 100) {
+		return <Loading min={loadingCount} />
 	}
 
-	const getActiveBoosts = () => {
-		let activeBoostsCount = 0
-		user.treeCoinBoosts.map(boost => {
-			if (boost.status) {
-				activeBoostsCount += 1
-			}
-		})
-		return activeBoostsCount
+	const getActiveBoostsCount = () => {
+		return user.treeCoinBoosts.reduce(
+			(count, boost) => count + (boost.status ? 1 : 0),
+			0
+		)
 	}
 
-	const getButtonStatus = () => {
+	const renderButton = () => {
 		if (user.tree.isActive) {
 			if (
-				user.tree.landingEndDate != null &&
+				user.tree.landingEndDate &&
 				new Date(user.tree.landingEndDate) > Date.now()
 			) {
 				return (
-					<button className='gradient-btn' disabled={true}>
+					<button className='gradient-btn' disabled>
 						Claim
 					</button>
 				)
 			} else {
 				return (
 					<button onClick={claim} className='gradient-btn'>
-						{process ? <Loader /> : 'Claim'}{' '}
+						{process ? <Loader /> : 'Claim'}
 					</button>
 				)
 			}
 		} else if (user.tree.coinPlanted > 0) {
 			return (
 				<button onClick={startLanding} className='gradient-btn'>
-					{process ? <Loader /> : 'Plant'}{' '}
+					{process ? <Loader /> : 'Plant'}
 				</button>
 			)
 		} else {
 			return (
-				<button className='gradient-btn' disabled={true}>
+				<button className='gradient-btn' disabled>
 					Plant
 				</button>
 			)
 		}
 	}
 
-	const getUserData = async () => {
+	const updateUserData = async () => {
 		try {
 			const response = await axiosDB.get(`/user/${telegramId}`)
-			const user = response.data
-			setUser(user)
-			console.log(user)
+			setUser(response.data)
 		} catch (error) {
-			console.error('Error fetching user data:', error)
+			console.error('Error updating user data:', error)
 		}
 	}
 
@@ -101,10 +127,10 @@ const Coins = () => {
 				})
 				tg.HapticFeedback.impactOccurred('light')
 				if (response.status === 200) {
-					getUserData()
+					updateUserData()
 				}
 			} catch (error) {
-				console.log(error)
+				console.error('Error planting coin:', error)
 			}
 		}
 	}
@@ -117,10 +143,10 @@ const Coins = () => {
 			})
 			tg.HapticFeedback.impactOccurred('light')
 			if (response.status === 200) {
-				getUserData()
+				updateUserData()
 			}
 		} catch (error) {
-			console.log(error)
+			console.error('Error starting landing:', error)
 		} finally {
 			setProcess(false)
 		}
@@ -132,7 +158,7 @@ const Coins = () => {
 			const response = await axiosDB.get(`/tree/claim/${user.telegramId}`)
 			tg.HapticFeedback.impactOccurred('light')
 			if (response.status === 200) {
-				getUserData()
+				updateUserData()
 			}
 		} catch (error) {
 			console.error('Error claiming coins:', error)
@@ -144,10 +170,10 @@ const Coins = () => {
 	return (
 		<div className='container coins'>
 			<h1 className='title coins gradient up-case no-wrap fade-in'>
-				pinocchio coin
+				Pinocchio Coin
 			</h1>
 			<h1 id='balance'>
-				{user.tree.lootBalance}{' '}
+				{displayedBalance}
 				<div className='icon'>
 					<img src={bronzeCoin} alt='bronze coin' />
 				</div>
@@ -166,9 +192,15 @@ const Coins = () => {
 					</div>
 				</div>
 				<div id='percent-count'>
-					+<p id='count'>{getActiveBoosts() * 50}</p>%
+					+<p id='count'>{getActiveBoostsCount() * 50}</p>%
 				</div>
 			</div>
+			{user.tree.isActive && (
+				<ProgressBar
+					min={new Date(user.tree.landingStartDate)}
+					max={new Date(user.tree.landingEndDate)}
+				/>
+			)}
 			<div className='tools'>
 				{user.treeCoinBoosts.map((boost, index) => {
 					const iconPath = require(`/src/assets/pictures/${boost.icon}`)
@@ -185,7 +217,7 @@ const Coins = () => {
 				})}
 			</div>
 			<div className='group coins'>
-				{getButtonStatus()}
+				{renderButton()}
 				<a href='/wallet' className='block'>
 					<img className='icon' src={walletIcon} alt='wallet' />
 				</a>

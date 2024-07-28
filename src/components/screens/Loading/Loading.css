@@ -50,10 +50,6 @@ h4:nth-child(5) {
 	bottom: 25%;
 }
 
-/* Бесконечные анимационные классы */
-.infinite-rotate {
-	animation: infinite-rotate 3s linear infinite;
-}
 /* Вращение */
 @keyframes rotate {
 	0% {
