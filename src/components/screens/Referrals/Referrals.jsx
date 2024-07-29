@@ -12,8 +12,8 @@ const Referrals = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
 
-	const inviteLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`
-	const copyLink = `https://t.me/share/url?url=https://t.me/isKillhiroBot?start=${telegramId}`
+	const inviteLink = `https://t.me/share/url?url=https://t.me/pinocchiolabs_bot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`
+	const copyLink = `https://t.me/share/url?url=https://t.me/pinocchiolabs_bot?start=${telegramId}`
 
 	const onSendRef = () => {
 		window.location.href = inviteLink
