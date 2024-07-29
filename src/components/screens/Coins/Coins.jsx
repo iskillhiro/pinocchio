@@ -5,8 +5,6 @@ import treeIcon from '../../../assets/pictures/tree.svg'
 import walletIcon from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
-
-import ErrorMessage from '../../ui/ErrorMessageBlock/ErrorMessageBlock'
 import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
@@ -19,7 +17,6 @@ const Coins = () => {
 	const [loading, setLoading] = useState(true)
 	const [process, setProcess] = useState(false)
 	const [displayedBalance, setDisplayedBalance] = useState(0)
-	const [error, setError] = useState(null) // Добавьте состояние для ошибок
 	const telegramId = getId()
 	const [user, setUser] = useState({})
 
@@ -29,7 +26,6 @@ const Coins = () => {
 			setUser(response.data)
 		} catch (error) {
 			console.error('Error fetching user data:', error)
-			setError('Failed to fetch user data. Please try again later.') // Установите текст ошибки
 		} finally {
 			setLoading(false)
 		}
@@ -116,7 +112,6 @@ const Coins = () => {
 			setUser(response.data)
 		} catch (error) {
 			console.error('Error updating user data:', error)
-			setError('Failed to update user data. Please try again later.') // Установите текст ошибки
 		}
 	}
 
@@ -132,7 +127,6 @@ const Coins = () => {
 				}
 			} catch (error) {
 				console.error('Error planting coin:', error)
-				setError('Failed to plant coin. Please try again later.') // Установите текст ошибки
 			}
 		}
 	}
@@ -149,7 +143,6 @@ const Coins = () => {
 			}
 		} catch (error) {
 			console.error('Error starting landing:', error)
-			setError('Failed to start landing. Please try again later.') // Установите текст ошибки
 		} finally {
 			setProcess(false)
 		}
@@ -165,7 +158,6 @@ const Coins = () => {
 			}
 		} catch (error) {
 			console.error('Error claiming coins:', error)
-			setError('Failed to claim coins. Please try again later.') // Установите текст ошибки
 		} finally {
 			setProcess(false)
 		}
@@ -173,8 +165,6 @@ const Coins = () => {
 
 	return (
 		<div className='container coins'>
-			<ErrorMessage message={error} visible={!!error} />{' '}
-			{/* Используйте компонент ErrorMessage */}
 			<h1 className='title coins gradient up-case no-wrap fade-in'>
 				Pinocchio Coin
 			</h1>

@@ -9,27 +9,25 @@ import personIcon from '../../../assets/pictures/person.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
 import formatDate from '../../../utils/formatDate/formatDate'
-
-import ErrorMessage from '../../ui/ErrorMessageBlock/ErrorMessageBlock'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Wallet.css'
-
 const Wallet = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
 	const [userData, setUserData] = useState({})
 	const [statistic, setStatistic] = useState({})
-	const [error, setError] = useState(null) // Добавьте состояние для ошибок
 
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
 				const response = await axiosDB.get(`/user/${telegramId}`)
-				setUserData(response.data)
+				const user = response.data
+				setUserData(user)
 			} catch (error) {
 				console.error('Error fetching user data:', error)
-				setError('Failed to fetch user data. Please try again later.') // Установите текст ошибки
+			} finally {
+				setLoading(false)
 			}
 		}
 		const getStatistic = async () => {
@@ -38,22 +36,20 @@ const Wallet = () => {
 				setStatistic(response.data)
 			} catch (error) {
 				console.log(error)
-				setError('Failed to fetch statistics. Please try again later.') // Установите текст ошибки
+			} finally {
+				setLoading(false)
 			}
 		}
+		getStatistic()
 
-		// Ensure that fetchUserData is called after getStatistic
-		getStatistic().finally(() => fetchUserData())
+		fetchUserData()
 	}, [telegramId])
 
 	if (loading) {
 		return <Loading />
 	}
-
 	return (
 		<div className='container wallet'>
-			<ErrorMessage message={error} visible={!!error} />{' '}
-			{/* Используйте компонент ErrorMessage */}
 			<Link to='/stats' className='stats wallet'>
 				<div id='coins'>
 					<div className='icon'>
@@ -95,6 +91,7 @@ const Wallet = () => {
 				<h3 id='username'>@{userData.username}</h3>
 				<p id='started-date'>{formatDate(userData.createdAt)}</p>
 			</div>
+
 			<div className='block user-balance'>
 				<div className='balance-item'>
 					<div className='icon'>
