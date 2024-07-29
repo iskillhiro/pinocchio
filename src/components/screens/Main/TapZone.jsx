@@ -23,10 +23,11 @@ const TapZone = ({
 	const handleTouchStart = useCallback(
 		async e => {
 			const touches = e.touches.length
-			if (tg.HapticFeedback) {
-				tg.HapticFeedback.impactOccurred('light')
-			}
+
 			if (currentEnergy >= energyReduction) {
+				if (tg.HapticFeedback) {
+					tg.HapticFeedback.impactOccurred('light')
+				}
 				const energySpent =
 					new Date(boostData.dailyBoosts[1].endTime) > Date.now()
 						? energyReduction * touches * 10
