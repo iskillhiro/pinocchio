@@ -11,13 +11,13 @@
 }
 
 .error-message.error {
-	background-color: #f44336; /* Красный */
+	background-color: #f44336;
 }
 
 .error-message.warning {
-	background-color: #ff9800; /* Оранжевый */
+	background-color: #ff9800;
 }
 
 .error-message.info {
-	background-color: #2196f3; /* Синий */
+	background-color: #2196f3;
 }
