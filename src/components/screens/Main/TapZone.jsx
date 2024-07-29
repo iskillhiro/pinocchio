@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import goldenCoin from '../../../assets/pictures/coins/golden/coin.svg'
 import silverCoin from '../../../assets/pictures/coins/silver/coin.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
@@ -20,40 +20,49 @@ const TapZone = ({
 	const tapTimeout = useRef(null)
 	const latestCoins = useRef(currentCoins)
 
+	// State for storing all taps
+	const [totalTaps, setTotalTaps] = useState(0)
+	const pendingTaps = useRef(0)
+
 	// Update the ref whenever currentCoins changes
 	latestCoins.current = currentCoins
 
 	// Debounced function for updating user data
-	const debouncedUpdateUserData = useCallback(
-		touches => {
-			console.log('Debounced update triggered with touches:', touches)
+	const debouncedUpdateUserData = useCallback(() => {
+		console.log(
+			'Debounced update triggered with pending taps:',
+			pendingTaps.current
+		)
 
-			if (tapTimeout.current) {
-				console.log('Clearing previous timeout')
-				clearTimeout(tapTimeout.current)
+		if (tapTimeout.current) {
+			console.log('Clearing previous timeout')
+			clearTimeout(tapTimeout.current)
+		}
+
+		// Set a timeout to delay the API call
+		tapTimeout.current = setTimeout(async () => {
+			console.log('Performing update request to server...')
+			if (latestCoins.current >= 1000000) {
+				console.log('User has 1,000,000 or more coins. Updating user data...')
+				updateUserData()
 			}
 
-			// Set a timeout to delay the API call
-			tapTimeout.current = setTimeout(async () => {
-				console.log('Performing update request to server...')
-				if (latestCoins.current >= 1000000) {
-					console.log('User has 1,000,000 or more coins. Updating user data...')
-					updateUserData()
-				}
+			try {
+				const touchesToSend = pendingTaps.current
+				const response = await axiosDB.put('/user/update', {
+					telegramId,
+					touches: touchesToSend,
+				})
+				console.log('Server response:', response.data)
 
-				try {
-					const response = await axiosDB.put('/user/update', {
-						telegramId,
-						touches: touches || 0,
-					})
-					console.log('Server response:', response.data)
-				} catch (error) {
-					console.error('Error updating user:', error)
-				}
-			}, 300) // 300 ms debounce delay
-		},
-		[telegramId, updateUserData]
-	)
+				// Reset taps after successful send
+				pendingTaps.current = 0
+				setTotalTaps(0)
+			} catch (error) {
+				console.error('Error updating user:', error)
+			}
+		}, 300) // 300 ms debounce delay
+	}, [telegramId, updateUserData])
 
 	const handleTouchStart = useCallback(
 		e => {
@@ -92,8 +101,12 @@ const TapZone = ({
 
 				setCurrentCoins(updatedCoins)
 
+				// Accumulate the taps
+				pendingTaps.current += touches
+				setTotalTaps(prev => prev + touches)
+
 				// Call the debounced function
-				debouncedUpdateUserData(touches)
+				debouncedUpdateUserData()
 			} else {
 				console.log(
 					`Not enough energy (${currentEnergy}) for reduction (${energyReduction}).`
