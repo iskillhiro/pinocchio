@@ -16,34 +16,21 @@ const TapZone = ({
 	setCurrentCoins,
 	updateUserData,
 }) => {
-	// Use useRef to keep track of the timeout and prevent unnecessary re-renders
 	const tapTimeout = useRef(null)
 	const latestCoins = useRef(currentCoins)
 
-	// State for storing all taps
 	const [totalTaps, setTotalTaps] = useState(0)
 	const pendingTaps = useRef(0)
 
-	// Update the ref whenever currentCoins changes
 	latestCoins.current = currentCoins
 
-	// Debounced function for updating user data
 	const debouncedUpdateUserData = useCallback(() => {
-		console.log(
-			'Debounced update triggered with pending taps:',
-			pendingTaps.current
-		)
-
 		if (tapTimeout.current) {
-			console.log('Clearing previous timeout')
 			clearTimeout(tapTimeout.current)
 		}
 
-		// Set a timeout to delay the API call
 		tapTimeout.current = setTimeout(async () => {
-			console.log('Performing update request to server...')
 			if (latestCoins.current >= 1000000) {
-				console.log('User has 1,000,000 or more coins. Updating user data...')
 				updateUserData()
 			}
 
@@ -55,61 +42,51 @@ const TapZone = ({
 				})
 				console.log('Server response:', response.data)
 
-				// Reset taps after successful send
 				pendingTaps.current = 0
 				setTotalTaps(0)
 			} catch (error) {
 				console.error('Error updating user:', error)
 			}
-		}, 300) // 300 ms debounce delay
+		}, 300)
 	}, [telegramId, updateUserData])
 
 	const handleTouchStart = useCallback(
 		e => {
 			const touches = e.touches ? e.touches.length : 0
-			console.log('handleTouchStart triggered with touches:', touches)
 
 			if (currentEnergy >= energyReduction) {
-				console.log(
-					`Current energy (${currentEnergy}) is sufficient for reduction (${energyReduction}).`
-				)
-
 				if (tg.HapticFeedback) {
 					tg.HapticFeedback.impactOccurred('light')
-					console.log('Haptic feedback triggered')
 				}
 
-				// Handle boost data safely with nullish coalescing
 				const boostEndTime = new Date(boostData?.dailyBoosts?.[1]?.endTime || 0)
 				const isBoostActive = boostEndTime > Date.now()
-				console.log('Boost status:', isBoostActive)
 
 				const energySpent = isBoostActive
 					? energyReduction * touches * 10
 					: energyReduction * touches
-				const newEnergy = isBoostActive
-					? Math.max(0, currentEnergy - energySpent / 10)
-					: Math.max(0, currentEnergy - energySpent)
+				const newEnergy = Math.max(0, currentEnergy - energySpent)
 
-				console.log('Energy spent:', energySpent)
-				console.log('New energy level:', newEnergy)
+				// Avoid exceeding the energy balance
+				if (newEnergy < 0) {
+					console.log(
+						`Not enough energy. Current energy: ${currentEnergy}, energy spent: ${energySpent}`
+					)
+					return
+				}
 
 				setCurrentEnergy(newEnergy)
 
 				const updatedCoins = latestCoins.current + energySpent
-				console.log('Updated coins:', updatedCoins)
-
 				setCurrentCoins(updatedCoins)
 
-				// Accumulate the taps
 				pendingTaps.current += touches
 				setTotalTaps(prev => prev + touches)
 
-				// Call the debounced function
 				debouncedUpdateUserData()
 			} else {
 				console.log(
-					`Not enough energy (${currentEnergy}) for reduction (${energyReduction}).`
+					`Not enough energy for reduction. Current energy: ${currentEnergy}`
 				)
 			}
 		},
