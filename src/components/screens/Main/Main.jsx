@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import wallet from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
@@ -11,6 +11,7 @@ import EnergyBar from './Energy/EnergyBar'
 import EnergyCount from './Energy/EnergyCount'
 import './Main.css'
 import TapZone from './TapZone'
+
 const Main = () => {
 	const telegramId = getId()
 	const [currentEnergy, setCurrentEnergy] = useState(0)
@@ -20,50 +21,35 @@ const Main = () => {
 	const [boostData, setBoostData] = useState({})
 	const [coins, setCoins] = useState(0)
 	const [loading, setLoading] = useState(true)
-	const [energyRegeneRate, setEnergyRegeneRate] = useState(1) // Скорость восстановления энергии
+	const [energyRegeneRate, setEnergyRegeneRate] = useState(1)
 	const [taps, setTaps] = useState(1)
 
-	useEffect(() => {
-		const fetchUserData = async () => {
-			try {
-				const response = await axiosDB.get(`/user/${telegramId}`)
-				const user = response.data
-				setCurrentEnergy(user.energy)
-				setCurrentMaxEnergy(user.maxEnergy)
-				setEnergyRegeneRate(user.upgradeBoosts[2].level)
-				setStage(user.stage)
-				setBoostData({
-					upgradeBoosts: user.upgradeBoosts,
-					dailyBoosts: user.boosts,
-				})
-				setCoinStage(user.coinStage)
-				setTaps(user.upgradeBoosts[2].level)
-				user.stage === 1
-					? setCoins(user.soldoTaps)
-					: setCoins(user.zecchinoTaps)
-			} catch (error) {
-				console.error('Error fetching user data:', error)
-			} finally {
-				setLoading(false)
-			}
-		}
-
-		fetchUserData()
-	}, [telegramId])
-	const updateUserData = async () => {
+	const fetchUserData = useCallback(async () => {
 		try {
 			const response = await axiosDB.get(`/user/${telegramId}`)
 			const user = response.data
+			setCurrentEnergy(user.energy)
+			setCurrentMaxEnergy(user.maxEnergy)
+			setEnergyRegeneRate(user.upgradeBoosts[2].level)
 			setStage(user.stage)
-			setTaps(user.upgradeBoosts[0].level)
+			setBoostData({
+				upgradeBoosts: user.upgradeBoosts,
+				dailyBoosts: user.boosts,
+			})
 			setCoinStage(user.coinStage)
-			user.stage === 1 ? setCoins(user.soldoTaps) : setCoins(user.zecchinoTaps)
+			setTaps(user.upgradeBoosts[2].level)
+			setCoins(user.stage === 1 ? user.soldoTaps : user.zecchinoTaps)
 		} catch (error) {
 			console.error('Error fetching user data:', error)
 		} finally {
 			setLoading(false)
 		}
-	}
+	}, [telegramId])
+
+	useEffect(() => {
+		fetchUserData()
+	}, [fetchUserData])
+
 	useEffect(() => {
 		const intervalId = setInterval(() => {
 			setCurrentEnergy(prevEnergy =>
@@ -72,9 +58,13 @@ const Main = () => {
 		}, 1000)
 
 		return () => clearInterval(intervalId)
-	}, [currentMaxEnergy])
+	}, [energyRegeneRate, currentMaxEnergy])
 
-	if (loading) {
+	const handleLoading = useMemo(() => {
+		return loading
+	}, [loading])
+
+	if (handleLoading) {
 		return <Loading />
 	}
 
@@ -91,7 +81,7 @@ const Main = () => {
 				boostData={boostData}
 				currentCoins={coins}
 				setCurrentCoins={setCoins}
-				updateUserData={updateUserData}
+				updateUserData={fetchUserData}
 			/>
 			<div className='group main'>
 				<EnergyCount currentEnergy={currentEnergy} />
