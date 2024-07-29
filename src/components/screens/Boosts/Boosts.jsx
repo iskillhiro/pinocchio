@@ -180,7 +180,15 @@ const Boosts = () => {
 					{filteredBoosts.map(boost => (
 						<div key={boost.name} className='boost'>
 							<button
-								disabled={boost.status === true ? true : false}
+								disabled={
+									boost.currency === 'zecchino'
+										? boost.status === true
+											? true
+											: false
+										: boost.level === boost.maxLevel
+										? true
+										: false
+								}
 								className='block'
 								onClick={() => setUpgradePopupInfo([boost])}
 							>
@@ -191,14 +199,19 @@ const Boosts = () => {
 							</button>
 							<p className='up-case' id='price'>
 								{boost.currency === 'soldo'
-									? boost.level * 10000 + ' soldo'
-									: 1 + ' zechhino'}
+									? boost.level === boost.maxLevel
+										? ' '
+										: `${boost.level * 10000} soldo`
+									: '1 zechhino'}
 							</p>
+
 							<div id='level'>
 								{boost.currency === 'soldo' &&
 									boost.boostType !== 'one-time' && (
 										<>
-											<p id='level-count'>{boost.level}</p>
+											<p id='level-count'>
+												{boost.level === boost.maxLevel ? 'MAX' : boost.level}
+											</p>
 											<p className='up-case'>level</p>
 										</>
 									)}
