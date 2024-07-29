@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import wallet from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
+import ErrorMessage from '../../ui/errorMessage/ErrorMessage'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import MainBalance from './Balance/Balance'
@@ -28,6 +29,8 @@ const Main = () => {
 	const [showRobotPopup, setShowRobotPopup] = useState(false)
 	const [robotMessage, setRobotMessage] = useState('')
 	const [process, setProcess] = useState(false)
+	const [error, setError] = useState(null) // Добавьте состояние для ошибок
+
 	const fetchUserData = useCallback(async () => {
 		try {
 			const response = await axiosDB.get(`/user/${telegramId}`)
@@ -53,6 +56,7 @@ const Main = () => {
 			}
 		} catch (error) {
 			console.error('Error fetching user data:', error)
+			setError('Failed to fetch user data. Please try again later.') // Установите текст ошибки
 		} finally {
 			setLoading(false)
 		}
@@ -72,9 +76,7 @@ const Main = () => {
 		return () => clearInterval(intervalId)
 	}, [energyRegeneRate, currentMaxEnergy])
 
-	const handleLoading = useMemo(() => {
-		return loading
-	}, [loading])
+	const handleLoading = useMemo(() => loading, [loading])
 
 	const handleRobotPopupClose = () => setShowRobotPopup(false)
 
@@ -87,6 +89,7 @@ const Main = () => {
 			fetchUserData()
 		} catch (error) {
 			console.error('Error sending request:', error)
+			setError('Failed to send request. Please try again later.') // Установите текст ошибки
 		} finally {
 			if (tg.HapticFeedback) {
 				tg.HapticFeedback.impactOccurred('light')
@@ -101,6 +104,8 @@ const Main = () => {
 
 	return (
 		<div className='container main'>
+			<ErrorMessage message={error} visible={!!error} />{' '}
+			{/* Используйте компонент ErrorMessage */}
 			<MainBalance stage={stage} coins={coins} />
 			<MainCoins coinStage={coinStage} stage={stage} />
 			<TapZone

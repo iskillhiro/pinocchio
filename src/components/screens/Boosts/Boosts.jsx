@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import starIcon from '../../../assets/pictures/star.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config.js'
+import ErrorMessage from '../../ui/errorMessage/ErrorMessage.jsx'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Boosts.css'
@@ -15,6 +16,7 @@ const Boosts = () => {
 	const [boostData, setBoostData] = useState([])
 	const [userData, setUserData] = useState({})
 	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState(null)
 
 	const [popupInfo, setPopupInfo] = useState({
 		title: '',
@@ -23,6 +25,7 @@ const Boosts = () => {
 		name: '',
 	})
 	const [upgradePopupInfo, setUpgradePopupInfo] = useState([])
+
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
@@ -38,6 +41,7 @@ const Boosts = () => {
 				}
 			} catch (error) {
 				console.error('Failed to fetch boost data:', error)
+				setError('Failed to load boost data. Please try again later.')
 			} finally {
 				setLoading(false)
 			}
@@ -54,6 +58,7 @@ const Boosts = () => {
 			setUpgradeBoosts([...userData.upgradeBoosts, ...userData.treeCoinBoosts])
 		} catch (error) {
 			console.error('Failed to fetch updated boost data:', error)
+			setError('Failed to update boost data. Please try again later.') // Установите текст ошибки
 		}
 	}
 
@@ -65,6 +70,7 @@ const Boosts = () => {
 	) => {
 		setPopupInfo({ title, iconSrc, boostType, name })
 	}
+
 	const filteredBoosts = upgradeBoosts.filter(
 		activeMenuItem === 'SoldoZecchino'
 			? boost => boost.currency === 'soldo'
@@ -77,6 +83,7 @@ const Boosts = () => {
 
 	return (
 		<div className='container'>
+			<ErrorMessage message={error} visible={!!error} />{' '}
 			{popupInfo.title && (
 				<Popup
 					handlePopupClose={() =>
@@ -98,10 +105,8 @@ const Boosts = () => {
 					userData={userData}
 				/>
 			)}
-
 			<h1 className='main-title'>Boosts</h1>
 			<h3 className='post-title'>Free Day Boosts</h3>
-
 			<div className='day-boosts'>
 				{boostData.map(boost => (
 					<button
@@ -155,7 +160,6 @@ const Boosts = () => {
 					</button>
 				))}
 			</div>
-
 			<h3 className='up-case text-center post-title'>Boosts</h3>
 			<div className='boost-menu'>
 				<div className='menu'>
@@ -238,7 +242,6 @@ const Boosts = () => {
 					</h3>
 				</div>
 			</div>
-
 			<Navigation />
 		</div>
 	)
