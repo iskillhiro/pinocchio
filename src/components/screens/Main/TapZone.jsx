@@ -18,7 +18,6 @@ const TapZone = ({
 }) => {
 	const tapTimeout = useRef(null)
 	const latestCoins = useRef(currentCoins)
-
 	const [totalTaps, setTotalTaps] = useState(0)
 	const pendingTaps = useRef(0)
 
@@ -54,41 +53,40 @@ const TapZone = ({
 		e => {
 			const touches = e.touches ? e.touches.length : 0
 
-			if (currentEnergy >= energyReduction) {
-				if (tg.HapticFeedback) {
-					tg.HapticFeedback.impactOccurred('light')
-				}
-
-				const boostEndTime = new Date(boostData?.dailyBoosts?.[1]?.endTime || 0)
-				const isBoostActive = boostEndTime > Date.now()
-
-				const energySpent = isBoostActive
-					? energyReduction * touches * 10
-					: energyReduction * touches
-				const newEnergy = Math.max(0, currentEnergy - energySpent)
-
-				// Avoid exceeding the energy balance
-				if (newEnergy < 0) {
-					console.log(
-						`Not enough energy. Current energy: ${currentEnergy}, energy spent: ${energySpent}`
-					)
-					return
-				}
-
-				setCurrentEnergy(newEnergy)
-
-				const updatedCoins = latestCoins.current + energySpent
-				setCurrentCoins(updatedCoins)
-
-				pendingTaps.current += touches
-				setTotalTaps(prev => prev + touches)
-
-				debouncedUpdateUserData()
-			} else {
+			if (currentEnergy < energyReduction) {
 				console.log(
 					`Not enough energy for reduction. Current energy: ${currentEnergy}`
 				)
+				return
 			}
+
+			if (tg.HapticFeedback) {
+				tg.HapticFeedback.impactOccurred('light')
+			}
+
+			const boostEndTime = new Date(boostData?.dailyBoosts?.[1]?.endTime || 0)
+			const isBoostActive = boostEndTime > Date.now()
+			const energySpent = isBoostActive
+				? energyReduction * touches * 10
+				: energyReduction * touches
+
+			const newEnergy = Math.max(0, currentEnergy - energyReduction)
+			const coinsToAdd = Math.max(0, energySpent)
+
+			if (newEnergy === currentEnergy) {
+				console.log(
+					`Energy was not updated. Current energy: ${currentEnergy}, energy spent: ${energySpent}`
+				)
+				return
+			}
+
+			setCurrentEnergy(newEnergy)
+			setCurrentCoins(latestCoins.current + coinsToAdd)
+
+			pendingTaps.current += touches
+			setTotalTaps(prev => prev + touches)
+
+			debouncedUpdateUserData()
 		},
 		[
 			currentEnergy,
