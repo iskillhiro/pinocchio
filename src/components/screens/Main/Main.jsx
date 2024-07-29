@@ -10,7 +10,9 @@ import MainCoins from './Balance/MainCoins'
 import EnergyBar from './Energy/EnergyBar'
 import EnergyCount from './Energy/EnergyCount'
 import './Main.css'
+import RobotPopup from './Robot/RobotPopup'
 import TapZone from './TapZone'
+const tg = window.Telegram.WebApp
 
 const Main = () => {
 	const telegramId = getId()
@@ -23,7 +25,9 @@ const Main = () => {
 	const [loading, setLoading] = useState(true)
 	const [energyRegeneRate, setEnergyRegeneRate] = useState(1)
 	const [taps, setTaps] = useState(1)
-
+	const [showRobotPopup, setShowRobotPopup] = useState(false)
+	const [robotMessage, setRobotMessage] = useState('')
+	const [process, setProcess] = useState(false)
 	const fetchUserData = useCallback(async () => {
 		try {
 			const response = await axiosDB.get(`/user/${telegramId}`)
@@ -39,6 +43,14 @@ const Main = () => {
 			setCoinStage(user.coinStage)
 			setTaps(user.upgradeBoosts[2].level)
 			setCoins(user.stage === 1 ? user.soldoTaps : user.zecchinoTaps)
+
+			if (user.robot.isActive && user.robot.miningBalance > 200) {
+				const currency = user.stage === 1 ? 'soldo' : 'zecchino'
+				setRobotMessage(
+					`Your robot has earned ${user.robot.miningBalance} ${currency}!`
+				)
+				setShowRobotPopup(true)
+			}
 		} catch (error) {
 			console.error('Error fetching user data:', error)
 		} finally {
@@ -63,6 +75,25 @@ const Main = () => {
 	const handleLoading = useMemo(() => {
 		return loading
 	}, [loading])
+
+	const handleRobotPopupClose = () => setShowRobotPopup(false)
+
+	const handleSendRequest = async () => {
+		setProcess(true)
+		try {
+			const response = await axiosDB.get(`/robot/claim/${telegramId}`)
+			console.log(response)
+			handleRobotPopupClose()
+			fetchUserData()
+		} catch (error) {
+			console.error('Error sending request:', error)
+		} finally {
+			if (tg.HapticFeedback) {
+				tg.HapticFeedback.impactOccurred('light')
+			}
+			setProcess(false)
+		}
+	}
 
 	if (handleLoading) {
 		return <Loading />
@@ -91,6 +122,14 @@ const Main = () => {
 			</div>
 			<EnergyBar currentEnergy={currentEnergy} maxEnergy={currentMaxEnergy} />
 			<Navigation />
+			{showRobotPopup && (
+				<RobotPopup
+					message={robotMessage}
+					onClose={handleRobotPopupClose}
+					onSendRequest={handleSendRequest}
+					process={process}
+				/>
+			)}
 		</div>
 	)
 }

@@ -47,6 +47,13 @@
 	align-items: center;
 	justify-content: space-between;
 }
+.boost-list .boost #price,
+.boost-list .boost #level {
+	width: 33.33%;
+	display: flex;
+	justify-content: center;
+}
+
 .boost-list .boost button:disabled {
 	opacity: 0.5;
 }

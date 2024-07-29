@@ -16,6 +16,7 @@ const Wallet = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
 	const [userData, setUserData] = useState({})
+	const [statistic, setStatistic] = useState({})
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -29,9 +30,21 @@ const Wallet = () => {
 				setLoading(false)
 			}
 		}
+		const getStatistic = async () => {
+			try {
+				const response = await axiosDB.get('/statistic')
+				setStatistic(response.data)
+			} catch (error) {
+				console.log(error)
+			} finally {
+				setLoading(false)
+			}
+		}
+		getStatistic()
 
 		fetchUserData()
 	}, [telegramId])
+
 	if (loading) {
 		return <Loading />
 	}
@@ -49,7 +62,7 @@ const Wallet = () => {
 						<img src={goldenCoinIcon} alt='' />
 					</div>
 				</div>
-				<p id='users-count'>1,501,194</p>
+				<p id='users-count'>{statistic.totalUsers}</p>
 				<p>Pinocchio coin miners</p>
 				<span>
 					Stats

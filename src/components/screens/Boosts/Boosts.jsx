@@ -198,11 +198,13 @@ const Boosts = () => {
 								</div>
 							</button>
 							<p className='up-case' id='price'>
-								{boost.currency === 'soldo'
-									? boost.level === boost.maxLevel
-										? ' '
-										: `${boost.level * 10000} soldo`
-									: '1 zechhino'}
+								{boost.level !== 0
+									? boost.currency === 'soldo'
+										? boost.level === boost.maxLevel
+											? ' '
+											: `${boost.level * 10000} soldo`
+										: '1 zechhino'
+									: '50000 soldo'}
 							</p>
 
 							<div id='level'>
@@ -210,9 +212,13 @@ const Boosts = () => {
 									boost.boostType !== 'one-time' && (
 										<>
 											<p id='level-count'>
-												{boost.level === boost.maxLevel ? 'MAX' : boost.level}
+												{boost.level === 0
+													? 'BUY'
+													: boost.level === boost.maxLevel
+													? 'MAX'
+													: boost.level}
 											</p>
-											<p className='up-case'>level</p>
+											<p className='up-case'>{boost.level !== 0 && 'level'}</p>
 										</>
 									)}
 								{boost.currency === 'zecchino' && (
