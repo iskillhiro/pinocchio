@@ -4,7 +4,7 @@ import axiosDB from '../../../utils/axios/axiosConfig.js'
 import Navigation from '../../ui/Navigation/Navigation.jsx'
 import Loading from '../Loading/Loading.jsx'
 
-import ErrorMessage from '../../ui/errorMessage/ErrorMessage.jsx'
+import ErrorMessage from '../../ui/ErrorMessageBlock/ErrorMessageBlock.jsx'
 import './Stats.css'
 
 const Stats = () => {

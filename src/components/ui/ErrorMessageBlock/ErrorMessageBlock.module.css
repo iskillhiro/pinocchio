@@ -1,0 +1,23 @@
+/* src/components/ErrorMessage/ErrorMessage.css */
+.error-message {
+	padding: 16px;
+	border-radius: 4px;
+	margin-bottom: 16px;
+	font-size: 16px;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.error-message.error {
+	background-color: #f44336;
+}
+
+.error-message.warning {
+	background-color: #ff9800;
+}
+
+.error-message.info {
+	background-color: #2196f3;
+}

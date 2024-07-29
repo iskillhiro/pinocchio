@@ -4,7 +4,7 @@ import { getId } from '../../../utils/config'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 
-import ErrorMessage from '../../ui/errorMessage/ErrorMessage'
+import ErrorMessage from '../../ui/ErrorMessageBlock/ErrorMessageBlock'
 import TaskWindow from './TaskWindow'
 import './Tasks.css'
 

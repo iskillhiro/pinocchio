@@ -10,7 +10,7 @@ import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
 import formatDate from '../../../utils/formatDate/formatDate'
 
-import ErrorMessage from '../../ui/errorMessage/ErrorMessage'
+import ErrorMessage from '../../ui/ErrorMessageBlock/ErrorMessageBlock'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Wallet.css'

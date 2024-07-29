@@ -5,7 +5,7 @@ import treeIcon from '../../../assets/pictures/tree.svg'
 import walletIcon from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
-import ErrorMessage from '../../ui/errorMessage/ErrorMessage'
+
 import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
