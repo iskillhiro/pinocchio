@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useRef } from 'react'
 import goldenCoin from '../../../assets/pictures/coins/golden/coin.svg'
 import silverCoin from '../../../assets/pictures/coins/silver/coin.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
@@ -16,18 +16,44 @@ const TapZone = ({
 	setCurrentCoins,
 	updateUserData,
 }) => {
-	if (currentCoins === 1000000 || currentCoins > 1000000) {
-		updateUserData()
-	}
-	console.log(boostData)
+	// Use useRef to keep track of the timeout and prevent unnecessary re-renders
+	const tapTimeout = useRef(null)
+	const latestCoins = useRef(currentCoins)
+
+	// Update the ref whenever currentCoins changes
+	latestCoins.current = currentCoins
+
+	// Debounced function for updating user data
+	const debouncedUpdateUserData = useCallback(() => {
+		if (tapTimeout.current) {
+			clearTimeout(tapTimeout.current)
+		}
+
+		// Set a timeout to delay the API call
+		tapTimeout.current = setTimeout(async () => {
+			if (latestCoins.current >= 1000000) {
+				updateUserData()
+			}
+
+			try {
+				await axiosDB.put('/user/update', {
+					telegramId,
+				})
+			} catch (error) {
+				console.error('Error updating user:', error)
+			}
+		}, 300) // 300 ms debounce delay
+	}, [telegramId, updateUserData])
+
 	const handleTouchStart = useCallback(
-		async e => {
+		e => {
 			const touches = e.touches.length
 
 			if (currentEnergy >= energyReduction) {
 				if (tg.HapticFeedback) {
 					tg.HapticFeedback.impactOccurred('light')
 				}
+
 				const energySpent =
 					new Date(boostData.dailyBoosts[1].endTime) > Date.now()
 						? energyReduction * touches * 10
@@ -36,30 +62,23 @@ const TapZone = ({
 					new Date(boostData.dailyBoosts[1].endTime) > Date.now()
 						? Math.max(0, currentEnergy - energySpent / 10)
 						: Math.max(0, currentEnergy - energySpent)
+
 				setCurrentEnergy(newEnergy)
 
-				const updatedCoins = currentCoins + energySpent
+				const updatedCoins = latestCoins.current + energySpent
 				setCurrentCoins(updatedCoins)
 
-				try {
-					const response = await axiosDB.put('/user/update', {
-						telegramId,
-						...{ touches },
-					})
-				} catch (error) {
-					console.error('Error updating user:', error)
-					// В случае ошибки можно добавить логику для отката изменений на клиенте
-				}
+				// Call the debounced function
+				debouncedUpdateUserData()
 			}
 		},
 		[
-			telegramId,
 			currentEnergy,
-			setCurrentEnergy,
 			energyReduction,
-			stage,
-			currentCoins,
+			boostData,
+			setCurrentEnergy,
 			setCurrentCoins,
+			debouncedUpdateUserData,
 		]
 	)
 
