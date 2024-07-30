@@ -178,7 +178,7 @@ const Coins = () => {
 				{Array.from(
 					{ length: user.tree.coinPlanted },
 					(_, index) =>
-						length < 8 && (
+						length < 7 && (
 							<div key={index} className={`${style.coin} active fade-in`}>
 								<img src='./zecchino.svg' alt='coin'></img>
 							</div>
