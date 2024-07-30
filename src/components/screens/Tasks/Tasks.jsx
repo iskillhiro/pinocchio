@@ -103,7 +103,7 @@ const Tasks = () => {
 										<img src={`/${task.iconSrc}`} alt='task' />
 									</div>
 									<div id='task-info'>
-										<p id='name'>{task.taskType}</p>
+										<p id='name'>{task.title}</p>
 										<p id='reward'>{task.reward}</p>
 									</div>
 								</div>
