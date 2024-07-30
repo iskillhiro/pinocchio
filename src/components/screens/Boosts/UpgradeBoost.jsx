@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { Loader } from '../../ui/Loader/Loader'
+import style from './UpgradeBoost.module.css'
 const tg = window.Telegram.WebApp
-
 const UpgradeBoostPopup = ({
 	handlePopupClose,
 	boost,
@@ -10,13 +10,14 @@ const UpgradeBoostPopup = ({
 	updateBoostData,
 }) => {
 	const [process, setProcess] = useState(false)
+	const [currency, setCurrency] = useState('soldoTaps')
 
 	const upgradeBoost = async () => {
 		setProcess(true)
 		try {
 			const boostElem = boost[0]
 			const response = await axiosDB.put(
-				`/upgradeBoost/${userData.telegramId}/${boostElem.name}`
+				`/upgradeBoost/${userData.telegramId}/${boostElem.name}/${currency}`
 			)
 			console.log(response)
 			if (response.status === 200) {
@@ -32,7 +33,6 @@ const UpgradeBoostPopup = ({
 			handlePopupClose()
 		}
 	}
-	console.log(boost[0])
 	const activateTreeBoost = async () => {
 		setProcess(true)
 		try {
@@ -72,6 +72,25 @@ const UpgradeBoostPopup = ({
 								'→ Activate'}
 						</h3>
 					)}
+				</div>
+				<div className={style.set_currency}>
+					<input id='soldo_currency' type='radio' name='set_currency' />
+					<label
+						onClick={setCurrency('soldoTaps')}
+						autoFocus={true}
+						htmlFor='soldo_currency'
+						className={style.soldo_currency}
+					>
+						<img src={'/soldo.svg'} alt='Soldo Coin' />
+					</label>
+					<input id='zecchino_currency' type='radio' name='set_currency' />
+					<label
+						onClick={setCurrency('zecchinoTaps')}
+						htmlFor='zecchino_currency'
+						className={style.zecchino_currency}
+					>
+						<img src={'/zecchino.svg'} alt='Zecchino Coin' />
+					</label>
 				</div>
 				{boost[0].currency === 'zecchino' && (
 					<button onClick={activateTreeBoost} className='gradient-btn'>

@@ -202,7 +202,7 @@ const Boosts = () => {
 									? boost.currency === 'soldo'
 										? boost.level === boost.maxLevel
 											? ' '
-											: `${boost.level * 10000} soldo`
+											: `${boost.level * 10000}`
 										: '1 zechhino'
 									: '50000'}
 							</p>
