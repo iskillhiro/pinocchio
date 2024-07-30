@@ -61,3 +61,27 @@
 	border-radius: var(--radius);
 	transition: width 0.3s ease;
 }
+.tap_number {
+	position: absolute;
+	transform: translate(-50%, -50%);
+	color: white;
+	font-size: 10vw;
+	font-weight: 700;
+	pointer-events: none;
+	animation: flyUp 1s ease-out forwards;
+	opacity: 1;
+	background-color: transparent;
+	z-index: 999;
+	overflow: hidden;
+}
+
+@keyframes flyUp {
+	0% {
+		transform: translate(-50%, -50%) translateY(0);
+		opacity: 1;
+	}
+	100% {
+		transform: translate(-50%, -50%) translateY(-100px);
+		opacity: 0;
+	}
+}

@@ -19,6 +19,7 @@ const TapZone = ({
 	const tapTimeout = useRef(null)
 	const latestCoins = useRef(currentCoins)
 	const [totalTaps, setTotalTaps] = useState(0)
+	const [taps, setTaps] = useState([]) // Initialize taps state
 	const pendingTaps = useRef(0)
 
 	latestCoins.current = currentCoins
@@ -79,7 +80,33 @@ const TapZone = ({
 				)
 				return
 			}
+			const newTaps = []
 
+			// Loop through all touches (fingers) on the screen
+			for (let i = 0; i < e.touches.length; i++) {
+				const { clientX, clientY } = e.touches[i]
+				const rect = e.target.getBoundingClientRect()
+
+				if (!rect) {
+					console.error('Unable to get bounding rect')
+					continue
+				}
+
+				const newTap = {
+					id: Date.now() + i, // Unique ID
+					x: clientX - rect.left,
+					y: clientY - rect.top,
+				}
+
+				newTaps.push(newTap)
+			}
+			setTaps(prevTaps => [...prevTaps, ...newTaps])
+
+			setTimeout(() => {
+				setTaps(prevTaps =>
+					prevTaps.filter(tap => !newTaps.some(newTap => newTap.id === tap.id))
+				)
+			}, 1000)
 			setCurrentEnergy(newEnergy)
 			setCurrentCoins(latestCoins.current + coinsToAdd)
 
@@ -101,6 +128,15 @@ const TapZone = ({
 	return (
 		<div className='tap-zone' onTouchStart={handleTouchStart}>
 			<img src={stage === 1 ? silverCoin : goldenCoin} alt='coin' />
+			{taps.map(tap => (
+				<span
+					key={tap.id}
+					className='tap_number' // Change this to the actual class name you're using
+					style={{ top: `${tap.y + 70}px`, left: `${tap.x}px` }}
+				>
+					+1
+				</span>
+			))}
 		</div>
 	)
 }

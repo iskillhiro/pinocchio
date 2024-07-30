@@ -1,0 +1,35 @@
+.tree_zone {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+}
+.coin {
+	position: absolute;
+	width: 30px;
+	z-index: 1;
+	height: 30px;
+}
+.coin img {
+	width: 100%;
+}
+.coin:nth-child(1) {
+	transform: translate(-240%, 320%);
+}
+.coin:nth-child(2) {
+	transform: translate(-220%, 180%);
+}
+.coin:nth-child(3) {
+	transform: translate(-120%, 80%);
+}
+.coin:nth-child(4) {
+	transform: translate(0%, 20%);
+}
+.coin:nth-child(5) {
+	transform: translate(120%, 80%);
+}
+.coin:nth-child(6) {
+	transform: translate(220%, 180%);
+}
+.coin:nth-child(7) {
+	transform: translate(240%, 320%);
+}

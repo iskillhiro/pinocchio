@@ -1,13 +1,27 @@
 .progress_bar_container {
+	position: relative;
 	width: 100%;
 	background-color: #e0e0e0;
 	border-radius: var(--radius);
 	overflow: hidden;
-	margin-top: 10px;
+	display: flex;
+	margin-top: 70%;
 }
-
+.progress_bar_container p {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	font-weight: bold;
+	color: var(--windowColor);
+}
+.progress_bar_container p:nth-child(1) {
+	left: 10px;
+}
+.progress_bar_container p:nth-child(3) {
+	right: 10px;
+}
 .progress_bar {
-	height: 20px;
+	height: 25px;
 	background-color: yellow;
 	width: 0;
 	border-radius: var(--radius);

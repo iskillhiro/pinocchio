@@ -19,7 +19,9 @@ const ProgressBar = ({ min, max }) => {
 
 	return (
 		<div className={style.progress_bar_container}>
+			<p>0ч</p>
 			<div ref={progressBarRef} className={style.progress_bar}></div>
+			<p>24ч</p>
 		</div>
 	)
 }

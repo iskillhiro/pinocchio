@@ -8,9 +8,10 @@ import { getId } from '../../../utils/config'
 import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
+import './Coins'
 import './Coins.css'
 import ProgressBar from './ProgressBar'
-
+import style from './interface.module.css'
 const tg = window.Telegram.WebApp
 
 const Coins = () => {
@@ -162,7 +163,6 @@ const Coins = () => {
 			setProcess(false)
 		}
 	}
-
 	return (
 		<div className='container coins'>
 			<h1 className='title coins gradient up-case no-wrap fade-in'>
@@ -174,12 +174,24 @@ const Coins = () => {
 					<img src={bronzeCoin} alt='bronze coin' />
 				</div>
 			</h1>
-			<img
-				onClick={plantCoin}
-				className='fade-in main-tree pointer'
-				src={treeIcon}
-				alt='tree'
-			/>
+			<div className={style.tree_zone}>
+				{Array.from(
+					{ length: user.tree.coinPlanted },
+					(_, index) =>
+						length < 8 && (
+							<div key={index} className={`${style.coin} active fade-in`}>
+								<img src='./zecchino.svg' alt='coin'></img>
+							</div>
+						)
+				)}
+				<img
+					onClick={plantCoin}
+					className='fade-in main-tree pointer'
+					src={treeIcon}
+					alt='tree'
+				/>
+			</div>
+
 			<div id='planted-coins'>
 				<div id='coin-count'>
 					<p id='count'>{user.tree.coinPlanted}</p>

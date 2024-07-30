@@ -230,12 +230,16 @@ const Boosts = () => {
 							</div>
 						</div>
 					))}
-					<h3 className='post-title life-boosts'>
-						<div className='icon star'>
-							<img src={starIcon} alt='' />
-						</div>
-						Life Boosts are 10 days
-					</h3>
+					{activeMenuItem === 'PinocchioCoin' ? (
+						<h3 className='post-title life-boosts'>
+							<div className='icon star'>
+								<img src={starIcon} alt='' />
+							</div>
+							Life Boosts are 10 days
+						</h3>
+					) : (
+						''
+					)}
 				</div>
 			</div>
 
