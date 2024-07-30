@@ -141,9 +141,9 @@ const Boosts = () => {
 									{new Date(boost.endTime) > Date.now() && (
 										<span>
 											{Math.floor(
-												(new Date(boost.endTime) - Date.now()) / 1000 / 60
+												(new Date(boost.endTime) - Date.now()) / 1000
 											)}{' '}
-											minutes
+											seconds
 										</span>
 									)}
 								</span>

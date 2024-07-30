@@ -2,7 +2,9 @@ import { useState } from 'react'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { Loader } from '../../ui/Loader/Loader'
 import style from './UpgradeBoost.module.css'
+
 const tg = window.Telegram.WebApp
+
 const UpgradeBoostPopup = ({
 	handlePopupClose,
 	boost,
@@ -33,6 +35,7 @@ const UpgradeBoostPopup = ({
 			handlePopupClose()
 		}
 	}
+
 	const activateTreeBoost = async () => {
 		setProcess(true)
 		try {
@@ -54,9 +57,11 @@ const UpgradeBoostPopup = ({
 			handlePopupClose()
 		}
 	}
+
 	const handlePopupClick = event => {
 		event.stopPropagation()
 	}
+
 	return (
 		<div className='popup-overlay' onClick={handlePopupClose}>
 			<div className='popup block' onClick={handlePopupClick}>
@@ -68,7 +73,7 @@ const UpgradeBoostPopup = ({
 					{boost[0].boostType !== 'one-time' && (
 						<h3 className='boost-level-info'>
 							{(boost[0].currency === 'soldo' &&
-								boost[0].level + '→ ' + boost[0].level + 1) ||
+								`${boost[0].level}→ ${boost[0].level + 1}`) ||
 								'→ Activate'}
 						</h3>
 					)}
@@ -76,7 +81,7 @@ const UpgradeBoostPopup = ({
 				<div className={style.set_currency}>
 					<input id='soldo_currency' type='radio' name='set_currency' />
 					<label
-						onClick={setCurrency('soldoTaps')}
+						onClick={() => setCurrency('soldoTaps')}
 						autoFocus={true}
 						htmlFor='soldo_currency'
 						className={style.soldo_currency}
@@ -85,7 +90,7 @@ const UpgradeBoostPopup = ({
 					</label>
 					<input id='zecchino_currency' type='radio' name='set_currency' />
 					<label
-						onClick={setCurrency('zecchinoTaps')}
+						onClick={() => setCurrency('zecchinoTaps')}
 						htmlFor='zecchino_currency'
 						className={style.zecchino_currency}
 					>

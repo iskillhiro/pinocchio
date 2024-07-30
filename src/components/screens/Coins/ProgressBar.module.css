@@ -22,7 +22,7 @@
 }
 .progress_bar {
 	height: 25px;
-	background-color: yellow;
+	background-color: #ff9900;
 	width: 0;
 	border-radius: var(--radius);
 	transition: width 0.3s ease;

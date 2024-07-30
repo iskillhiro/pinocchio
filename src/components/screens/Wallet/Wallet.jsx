@@ -9,6 +9,7 @@ import personIcon from '../../../assets/pictures/person.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
 import formatDate from '../../../utils/formatDate/formatDate'
+import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Wallet.css'
@@ -44,7 +45,7 @@ const Wallet = () => {
 
 		fetchUserData()
 	}, [telegramId])
-
+	console.log(userData)
 	if (loading) {
 		return <Loading />
 	}
@@ -84,13 +85,21 @@ const Wallet = () => {
 					</svg>
 				</span>
 			</Link>
-			<div className='user-block'>
-				<div className='icon'>
-					<img src={bronzeCoinIcon} alt='' />
+			{userData.upgradeBoosts ? (
+				<div className='user-block'>
+					<div className='icon'>
+						{userData && userData.upgradeBoosts[1].level === 2 ? (
+							<img src='/boosts/skin.svg' alt='' />
+						) : (
+							<img src={bronzeCoinIcon} alt='' />
+						)}
+					</div>
+					<h3 id='username'>@{userData.username}</h3>
+					<p id='started-date'>{formatDate(userData.createdAt)}</p>
 				</div>
-				<h3 id='username'>@{userData.username}</h3>
-				<p id='started-date'>{formatDate(userData.createdAt)}</p>
-			</div>
+			) : (
+				<Loader />
+			)}
 
 			<div className='block user-balance'>
 				<div className='balance-item'>

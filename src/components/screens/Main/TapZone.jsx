@@ -21,7 +21,7 @@ const TapZone = ({
 	const [totalTaps, setTotalTaps] = useState(0)
 	const [taps, setTaps] = useState([]) // Initialize taps state
 	const pendingTaps = useRef(0)
-
+	const [boostActive, setBoostActive] = useState(false)
 	latestCoins.current = currentCoins
 
 	const debouncedUpdateUserData = useCallback(() => {
@@ -67,6 +67,7 @@ const TapZone = ({
 
 			const boostEndTime = new Date(boostData?.dailyBoosts?.[1]?.endTime || 0)
 			const isBoostActive = boostEndTime > Date.now()
+			isBoostActive ? setBoostActive(true) : setBoostActive(false)
 			const energySpent = isBoostActive
 				? energyReduction * touches * 10
 				: energyReduction * touches
@@ -134,7 +135,7 @@ const TapZone = ({
 					className='tap_number' // Change this to the actual class name you're using
 					style={{ top: `${tap.y + 70}px`, left: `${tap.x}px` }}
 				>
-					+1
+					+{boostActive ? energyReduction * 10 : energyReduction}
 				</span>
 			))}
 		</div>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { Loader } from '../../ui/Loader/Loader'
 const tg = window.Telegram.WebApp
@@ -11,6 +12,7 @@ const Popup = ({
 	updateBoostData,
 }) => {
 	const [process, setProcess] = useState(false)
+	const navigate = useNavigate()
 	const activateBoost = async () => {
 		setProcess(true)
 		try {
@@ -27,6 +29,7 @@ const Popup = ({
 				tg.HapticFeedback.impactOccurred('light')
 			}
 			handlePopupClose()
+			navigate('/')
 		}
 	}
 

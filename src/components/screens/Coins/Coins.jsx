@@ -176,13 +176,12 @@ const Coins = () => {
 			</h1>
 			<div className={style.tree_zone}>
 				{Array.from(
-					{ length: user.tree.coinPlanted },
-					(_, index) =>
-						length < 7 && (
-							<div key={index} className={`${style.coin} active fade-in`}>
-								<img src='./zecchino.svg' alt='coin'></img>
-							</div>
-						)
+					{ length: Math.min(user.tree.coinPlanted, 7) },
+					(_, index) => (
+						<div key={index} className={`${style.coin} active fade-in`}>
+							<img src='./zecchino.svg' alt='coin' />
+						</div>
+					)
 				)}
 				<img
 					onClick={plantCoin}
