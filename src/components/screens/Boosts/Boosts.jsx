@@ -196,7 +196,9 @@ const Boosts = () => {
 								<div className='icon'>
 									<img src={'/boosts/' + boost.icon} alt={boost.name} />
 								</div>
-								{boost.currency === 'zecchino' && <img src='/star.svg' />}
+								{boost.currency === 'zecchino' && (
+									<img className='star-boost' src={starIcon} />
+								)}
 							</button>
 							<p className='up-case' id='price'>
 								{boost.level !== 0

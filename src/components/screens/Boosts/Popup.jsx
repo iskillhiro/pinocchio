@@ -51,7 +51,7 @@ const Popup = ({
 			<div className='popup block' onClick={handlePopupClick}>
 				<div id='boost-info'>
 					<div className='popup-icon'>
-						<img src={'boosts/' + popupInfo.iconSrc} alt='boost icon' />
+						<img src={'/boosts/' + popupInfo.iconSrc} alt='boost icon' />
 					</div>
 					<h3 className='popup-title'>{popupInfo.title}</h3>
 				</div>

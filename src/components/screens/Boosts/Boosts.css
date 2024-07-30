@@ -38,6 +38,7 @@
 	gap: var(--gap);
 	z-index: 1;
 }
+
 .boost-list::-webkit-scrollbar {
 	display: none;
 }
@@ -62,7 +63,13 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	position: relative;
 	width: 35%;
+}
+.star-boost {
+	position: absolute;
+	right: -20px;
+	top: 0;
 }
 .boost-list .boost #level {
 	display: flex;
@@ -87,6 +94,7 @@
 .coin-boost .block {
 	position: relative;
 }
+
 .coin-boost .block .icon.star {
 	position: absolute;
 	width: 20px;

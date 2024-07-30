@@ -67,7 +67,7 @@ const UpgradeBoostPopup = ({
 			<div className='popup block' onClick={handlePopupClick}>
 				<div id='boost-info'>
 					<div className='popup-icon'>
-						<img src={'boosts/' + boost[0].icon} alt='boost icon' />
+						<img src={'/boosts/' + boost[0].icon} alt='boost icon' />
 					</div>
 					<h3 className='popup-title'>{boost[0].name}</h3>
 					{boost[0].boostType !== 'one-time' && (
@@ -78,25 +78,27 @@ const UpgradeBoostPopup = ({
 						</h3>
 					)}
 				</div>
-				<div className={style.set_currency}>
-					<input id='soldo_currency' type='radio' name='set_currency' />
-					<label
-						onClick={() => setCurrency('soldoTaps')}
-						autoFocus={true}
-						htmlFor='soldo_currency'
-						className={style.soldo_currency}
-					>
-						<img src={'/soldo.svg'} alt='Soldo Coin' />
-					</label>
-					<input id='zecchino_currency' type='radio' name='set_currency' />
-					<label
-						onClick={() => setCurrency('zecchinoTaps')}
-						htmlFor='zecchino_currency'
-						className={style.zecchino_currency}
-					>
-						<img src={'/zecchino.svg'} alt='Zecchino Coin' />
-					</label>
-				</div>
+				{boost[0].currency !== 'zecchino' && (
+					<div className={style.set_currency}>
+						<input id='soldo_currency' type='radio' name='set_currency' />
+						<label
+							onClick={() => setCurrency('soldoTaps')}
+							autoFocus={true}
+							htmlFor='soldo_currency'
+							className={style.soldo_currency}
+						>
+							<img src={'/soldo.svg'} alt='Soldo Coin' />
+						</label>
+						<input id='zecchino_currency' type='radio' name='set_currency' />
+						<label
+							onClick={() => setCurrency('zecchinoTaps')}
+							htmlFor='zecchino_currency'
+							className={style.zecchino_currency}
+						>
+							<img src={'/zecchino.svg'} alt='Zecchino Coin' />
+						</label>
+					</div>
+				)}
 				{boost[0].currency === 'zecchino' && (
 					<button onClick={activateTreeBoost} className='gradient-btn'>
 						{process ? <Loader /> : 'Activate'}
