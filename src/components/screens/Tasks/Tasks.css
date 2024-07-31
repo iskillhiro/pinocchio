@@ -50,7 +50,7 @@
 	height: 50px;
 	min-height: 50px;
 	min-width: 50px;
-	border-radius: var(--radius);
+	border-radius: 50%;
 	overflow: hidden;
 	background-color: blue;
 }

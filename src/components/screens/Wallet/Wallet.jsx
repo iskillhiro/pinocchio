@@ -8,11 +8,13 @@ import silverKeyIcon from '../../../assets/pictures/keys/silver.svg'
 import personIcon from '../../../assets/pictures/person.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
+import { numberWithSpaces } from '../../../utils/filterNumbers'
 import formatDate from '../../../utils/formatDate/formatDate'
 import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Wallet.css'
+
 const Wallet = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
@@ -63,7 +65,7 @@ const Wallet = () => {
 						<img src={goldenCoinIcon} alt='' />
 					</div>
 				</div>
-				<p id='users-count'>{statistic.totalUsers}</p>
+				<p id='users-count'>{numberWithSpaces(statistic.totalUsers)}</p>
 				<p>Pinocchio coin miners</p>
 				<span>
 					Stats
@@ -106,31 +108,31 @@ const Wallet = () => {
 					<div className='icon'>
 						<img src={silverKeyIcon} alt='' />
 					</div>
-					<p className='count'>{userData.soldoTaps}</p>
+					<p className='count'>{numberWithSpaces(userData.soldoTaps)}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={goldenKeyIcon} alt='' />
 					</div>
-					<p className='count'>{userData.zecchinoTaps}</p>
+					<p className='count'>{numberWithSpaces(userData.zecchinoTaps)}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={silverCoinIcon} alt='' />
 					</div>
-					<p className='count'>{userData.soldo}</p>
+					<p className='count'>{numberWithSpaces(userData.soldo)}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={goldenCoinIcon} alt='' />
 					</div>
-					<p className='count'>{userData.zecchino}</p>
+					<p className='count'>{numberWithSpaces(userData.zecchino)}</p>
 				</div>
 				<div className='balance-item'>
 					<div className='icon'>
 						<img src={bronzeCoinIcon} alt='' />
 					</div>
-					<p className='count'>{userData.coins}</p>
+					<p className='count'>{numberWithSpaces(userData.coins)}</p>
 				</div>
 			</div>
 			<Navigation />

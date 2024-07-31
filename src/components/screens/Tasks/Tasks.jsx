@@ -122,7 +122,7 @@ const Tasks = () => {
 				<TaskWindow
 					showTaskWindow={closeTaskWindow}
 					taskData={selectedTask}
-					buttonText={'Перейти'}
+					buttonText={'Join'}
 					completeTask={completeTask}
 				/>
 			)}
