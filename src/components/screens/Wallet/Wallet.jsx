@@ -90,11 +90,10 @@ const Wallet = () => {
 			{userData.telegramId ? (
 				<div className='user-block'>
 					<div className='icon'>
-						{userData && userData.upgradeBoosts[1].level === 2 ? (
-							<img src='/boosts/skin.svg' alt='Boost Skin' />
-						) : (
-							<img src={bronzeCoinIcon} alt='Bronze Coin' />
-						)}
+						<img
+							src={window.Telegram.WebApp.initData.user.photo_url}
+							alt='user avatar'
+						/>
 					</div>
 					<h3 id='username'>@{userData.username}</h3>
 					<p id='started-date'>{formatDate(userData.createdAt)}</p>

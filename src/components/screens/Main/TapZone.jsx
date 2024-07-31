@@ -128,7 +128,12 @@ const TapZone = ({
 
 	return (
 		<div className='tap-zone' onTouchStart={handleTouchStart}>
-			<img src={stage === 1 ? silverCoin : goldenCoin} alt='coin' />
+			{boostData.upgradeBoosts[4].level === 2 ? (
+				<img src='/boosts/skin.svg' alt='skin' />
+			) : (
+				<img src={stage === 1 ? silverCoin : goldenCoin} alt='coin' />
+			)}
+
 			{taps.map(tap => (
 				<span
 					key={tap.id}
