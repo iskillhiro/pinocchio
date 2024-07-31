@@ -87,13 +87,13 @@ const Wallet = () => {
 					</svg>
 				</span>
 			</Link>
-			{userData.upgradeBoosts ? (
+			{userData.telegramId ? (
 				<div className='user-block'>
 					<div className='icon'>
 						{userData && userData.upgradeBoosts[1].level === 2 ? (
-							<img src='/boosts/skin.svg' alt='' />
+							<img src='/boosts/skin.svg' alt='Boost Skin' />
 						) : (
-							<img src={bronzeCoinIcon} alt='' />
+							<img src={bronzeCoinIcon} alt='Bronze Coin' />
 						)}
 					</div>
 					<h3 id='username'>@{userData.username}</h3>
@@ -103,38 +103,25 @@ const Wallet = () => {
 				<Loader />
 			)}
 
-			<div className='block user-balance'>
-				<div className='balance-item'>
-					<div className='icon'>
-						<img src={silverKeyIcon} alt='' />
-					</div>
-					<p className='count'>{numberWithSpaces(userData.soldoTaps)}</p>
+			{userData.telegramId && (
+				<div className='block user-balance'>
+					{[
+						{ icon: silverKeyIcon, count: userData.soldoTaps },
+						{ icon: goldenKeyIcon, count: userData.zecchinoTaps },
+						{ icon: silverCoinIcon, count: userData.soldo },
+						{ icon: goldenCoinIcon, count: userData.zecchino },
+						{ icon: bronzeCoinIcon, count: userData.coins },
+					].map(({ icon, count }, index) => (
+						<div key={index} className='balance-item'>
+							<div className='icon'>
+								<img src={icon} alt='' />
+							</div>
+							<p className='count'>{numberWithSpaces(count)}</p>
+						</div>
+					))}
 				</div>
-				<div className='balance-item'>
-					<div className='icon'>
-						<img src={goldenKeyIcon} alt='' />
-					</div>
-					<p className='count'>{numberWithSpaces(userData.zecchinoTaps)}</p>
-				</div>
-				<div className='balance-item'>
-					<div className='icon'>
-						<img src={silverCoinIcon} alt='' />
-					</div>
-					<p className='count'>{numberWithSpaces(userData.soldo)}</p>
-				</div>
-				<div className='balance-item'>
-					<div className='icon'>
-						<img src={goldenCoinIcon} alt='' />
-					</div>
-					<p className='count'>{numberWithSpaces(userData.zecchino)}</p>
-				</div>
-				<div className='balance-item'>
-					<div className='icon'>
-						<img src={bronzeCoinIcon} alt='' />
-					</div>
-					<p className='count'>{numberWithSpaces(userData.coins)}</p>
-				</div>
-			</div>
+			)}
+
 			<Navigation />
 		</div>
 	)
