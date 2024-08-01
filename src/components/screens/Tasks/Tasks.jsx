@@ -16,7 +16,6 @@ const Tasks = () => {
 		const getTasks = async () => {
 			try {
 				const response = await axiosDB.get(`/tasks/${telegramId}`)
-				console.log('Fetched task data:', response.data) // Log the fetched data
 				setTaskData(response.data)
 			} catch (error) {
 				console.error('Error fetching tasks:', error)

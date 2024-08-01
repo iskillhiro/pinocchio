@@ -27,7 +27,6 @@ const Referrals = () => {
 			try {
 				const response = await axiosDB.get(`/user/${telegramId}`)
 				const user = response.data
-				console.log(user)
 				setReferralData(user.referrals)
 			} catch (error) {
 				console.error('Error fetching user data:', error)
@@ -35,7 +34,6 @@ const Referrals = () => {
 				setLoading(false)
 			}
 		}
-		console.log(referralData)
 		fetchUserData()
 	}, [])
 

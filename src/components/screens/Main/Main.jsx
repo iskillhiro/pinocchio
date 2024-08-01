@@ -82,7 +82,6 @@ const Main = () => {
 		setProcess(true)
 		try {
 			const response = await axiosDB.get(`/robot/claim/${telegramId}`)
-			console.log(response)
 			handleRobotPopupClose()
 			fetchUserData()
 		} catch (error) {

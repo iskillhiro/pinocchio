@@ -51,9 +51,6 @@ const Wallet = () => {
 		fetchUserData()
 	}, [telegramId])
 
-	console.log(userData)
-	console.log(tg) // Log the tg object to see its structure
-
 	if (loading) {
 		return <Loading />
 	}
