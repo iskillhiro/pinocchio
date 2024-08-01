@@ -19,7 +19,6 @@ const Popup = ({
 			const response = await axiosDB.get(
 				`/boost/activate/${userData.telegramId}/${popupInfo.name}`
 			)
-			console.log(response)
 			updateBoostData() // Update the boost data after successful activation
 		} catch (error) {
 			console.log(error)

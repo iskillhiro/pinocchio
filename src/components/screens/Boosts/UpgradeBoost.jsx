@@ -21,7 +21,6 @@ const UpgradeBoostPopup = ({
 			const response = await axiosDB.put(
 				`/upgradeBoost/${userData.telegramId}/${boostElem.name}/${currency}`
 			)
-			console.log(response)
 			if (response.status === 200) {
 				updateBoostData()
 			}
@@ -43,7 +42,6 @@ const UpgradeBoostPopup = ({
 			const response = await axiosDB.put(
 				`/treeBoost/${userData.telegramId}/${boostElem.name}`
 			)
-			console.log(response)
 			if (response.status === 200) {
 				updateBoostData()
 			}

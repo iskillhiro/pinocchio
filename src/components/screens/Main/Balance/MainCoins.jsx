@@ -14,10 +14,7 @@ const MainCoins = ({ coinStage, stage }) => (
 		))}
 		{Array.from(
 			{
-				length:
-					(stage === 1 && coinStage < 4) || (stage === 2 && coinStage < 5)
-						? 1
-						: 0,
+				length: stage === 1 ? 4 : 5,
 			},
 			(_, index) => (
 				<div key={index} className={`${style.coin}`}>
