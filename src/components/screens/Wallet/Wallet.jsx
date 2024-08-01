@@ -14,7 +14,9 @@ import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Wallet.css'
+
 const tg = window.Telegram.WebApp
+
 const Wallet = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
@@ -33,6 +35,7 @@ const Wallet = () => {
 				setLoading(false)
 			}
 		}
+
 		const getStatistic = async () => {
 			try {
 				const response = await axiosDB.get('/statistic')
@@ -43,14 +46,18 @@ const Wallet = () => {
 				setLoading(false)
 			}
 		}
-		getStatistic()
 
+		getStatistic()
 		fetchUserData()
 	}, [telegramId])
+
 	console.log(userData)
+	console.log(tg) // Log the tg object to see its structure
+
 	if (loading) {
 		return <Loading />
 	}
+
 	return (
 		<div className='container wallet'>
 			<Link to='/stats' className='stats wallet'>
@@ -87,10 +94,14 @@ const Wallet = () => {
 					</svg>
 				</span>
 			</Link>
+
 			{userData.telegramId ? (
 				<div className='user-block'>
 					<div className='icon'>
-						<img src={tg.initDataUnsafe.user.photo_url} alt='user avatar' />
+						<img
+							src={tg.initDataUnsafe?.user?.photo_url || personIcon}
+							alt='user avatar'
+						/>
 					</div>
 					<h3 id='username'>@{userData.username}</h3>
 					<p id='started-date'>{formatDate(userData.createdAt)}</p>
