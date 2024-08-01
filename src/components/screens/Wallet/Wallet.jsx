@@ -14,7 +14,7 @@ import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
 import Loading from '../Loading/Loading'
 import './Wallet.css'
-
+const tg = window.Telegram.WebApp
 const Wallet = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
@@ -90,10 +90,7 @@ const Wallet = () => {
 			{userData.telegramId ? (
 				<div className='user-block'>
 					<div className='icon'>
-						<img
-							src={window.Telegram.WebApp.initDataUnsafe.user.photo_url}
-							alt='user avatar'
-						/>
+						<img src={tg.initData.user.photo_url} alt='user avatar' />
 					</div>
 					<h3 id='username'>@{userData.username}</h3>
 					<p id='started-date'>{formatDate(userData.createdAt)}</p>
