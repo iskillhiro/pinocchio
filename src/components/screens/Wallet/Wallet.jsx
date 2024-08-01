@@ -90,7 +90,7 @@ const Wallet = () => {
 			{userData.telegramId ? (
 				<div className='user-block'>
 					<div className='icon'>
-						<img src={tg.initData.user.photo_url} alt='user avatar' />
+						<img src={tg.initDataUnsafe.user.photo_url} alt='user avatar' />
 					</div>
 					<h3 id='username'>@{userData.username}</h3>
 					<p id='started-date'>{formatDate(userData.createdAt)}</p>
