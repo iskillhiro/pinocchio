@@ -58,6 +58,8 @@ const Wallet = () => {
 		return <Loading />
 	}
 
+	const userAvatar = tg.initDataUnsafe.user.photo_url || personIcon
+
 	return (
 		<div className='container wallet'>
 			<Link to='/stats' className='stats wallet'>
@@ -98,10 +100,7 @@ const Wallet = () => {
 			{userData.telegramId ? (
 				<div className='user-block'>
 					<div className='icon'>
-						<img
-							src={tg.initDataUnsafe?.user?.photo_url || personIcon}
-							alt='user avatar'
-						/>
+						<img src={userAvatar} alt='user avatar' />
 					</div>
 					<h3 id='username'>@{userData.username}</h3>
 					<p id='started-date'>{formatDate(userData.createdAt)}</p>
