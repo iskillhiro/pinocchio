@@ -91,7 +91,7 @@ const Wallet = () => {
 				<div className='user-block'>
 					<div className='icon'>
 						<img
-							src={window.Telegram.WebApp.initData.user.photo_url}
+							src={window.Telegram.WebApp.initDataUnsafe.user.photo_url}
 							alt='user avatar'
 						/>
 					</div>

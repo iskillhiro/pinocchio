@@ -137,7 +137,7 @@ const TapZone = ({
 			{taps.map(tap => (
 				<span
 					key={tap.id}
-					className='tap_number' // Change this to the actual class name you're using
+					className='tap_number'
 					style={{ top: `${tap.y + 70}px`, left: `${tap.x}px` }}
 				>
 					+{boostActive ? energyReduction * 10 : energyReduction}
