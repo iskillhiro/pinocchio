@@ -1,6 +1,6 @@
 export const getId = () => {
 	let tg = window.Telegram.WebApp
-	if (tg) {
+	if (tg.ready()) {
 		const TELEGRAM_ID = tg.initData.user.id
 		return TELEGRAM_ID
 	}
