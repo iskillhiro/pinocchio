@@ -55,7 +55,7 @@ const Wallet = () => {
 		return <Loading />
 	}
 
-	const userAvatar = tg.initDataUnsafe.user.photo_url || personIcon
+	const userAvatar = tg.initDataUnsafe.user.photo_url || bronzeCoinIcon
 
 	return (
 		<div className='container wallet'>
