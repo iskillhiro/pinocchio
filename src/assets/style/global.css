@@ -186,8 +186,11 @@ a {
 	cursor: pointer;
 }
 .loader-container {
-	height: 100%;
-	width: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100vw;
+	width: 100vw;
 	display: flex;
 	justify-content: center;
 	align-items: center;
