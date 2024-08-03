@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
+import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
-import Loading from '../Loading/Loading'
 import TaskWindow from './TaskWindow'
 import './Tasks.css'
 
@@ -62,7 +62,11 @@ const Tasks = () => {
 	}
 
 	if (loading) {
-		return <Loading />
+		return (
+			<div className='container'>
+				<Loader />
+			</div>
+		)
 	}
 
 	if (!taskData || !taskData.incompleteTasks.length) {

@@ -5,8 +5,8 @@ import personIcon from '../../../assets/pictures/person.svg'
 import '../../../assets/style/global.css'
 import axiosDB from '../../../utils/axios/axiosConfig.js'
 import { getId } from '../../../utils/config.js'
+import { Loader } from '../../ui/Loader/Loader.jsx'
 import Navigation from '../../ui/Navigation/Navigation.jsx'
-import Loading from '../Loading/Loading.jsx'
 import './Referrals.css'
 const Referrals = () => {
 	const telegramId = getId()
@@ -38,7 +38,11 @@ const Referrals = () => {
 	}, [])
 
 	if (loading) {
-		return <Loading />
+		return (
+			<div className='container'>
+				<Loader />
+			</div>
+		)
 	}
 	return (
 		<div className='container'>

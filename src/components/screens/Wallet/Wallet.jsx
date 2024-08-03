@@ -12,7 +12,6 @@ import { numberWithSpaces } from '../../../utils/filterNumbers'
 import formatDate from '../../../utils/formatDate/formatDate'
 import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
-import Loading from '../Loading/Loading'
 import './Wallet.css'
 
 const tg = window.Telegram.WebApp
@@ -52,7 +51,11 @@ const Wallet = () => {
 	}, [telegramId])
 
 	if (loading) {
-		return <Loading />
+		return (
+			<div className='container'>
+				<Loader />
+			</div>
+		)
 	}
 
 	const userAvatar = tg.initDataUnsafe.user.photo_url || bronzeCoinIcon

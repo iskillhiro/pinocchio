@@ -7,7 +7,6 @@ import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
 import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
-import Loading from '../Loading/Loading'
 import './Coins'
 import './Coins.css'
 import ProgressBar from './ProgressBar'
@@ -64,7 +63,11 @@ const Coins = () => {
 	}, [user.tree])
 
 	if (loading) {
-		return <Loading />
+		return (
+			<div className='container'>
+				<Loader />
+			</div>
+		)
 	}
 
 	const getActiveBoostsCount = () => {

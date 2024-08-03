@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axiosDB from '../../../utils/axios/axiosConfig.js'
 import { numberWithSpaces } from '../../../utils/filterNumbers.js'
+import { Loader } from '../../ui/Loader/Loader.jsx'
 import Navigation from '../../ui/Navigation/Navigation.jsx'
-import Loading from '../Loading/Loading.jsx'
 import './Stats.css'
 
 const Stats = () => {
@@ -23,7 +23,11 @@ const Stats = () => {
 		getStatistic()
 	}, [])
 	if (loading) {
-		return <Loading />
+		return (
+			<div className='container'>
+				<Loader />
+			</div>
+		)
 	}
 	return (
 		<div className='container stats'>

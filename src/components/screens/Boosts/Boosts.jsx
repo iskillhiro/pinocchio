@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import starIcon from '../../../assets/pictures/star.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config.js'
+import { Loader } from '../../ui/Loader/Loader.jsx'
 import Navigation from '../../ui/Navigation/Navigation'
-import Loading from '../Loading/Loading'
 import './Boosts.css'
 import Popup from './Popup'
 import UpgradeBoostPopup from './UpgradeBoost.jsx'
@@ -72,7 +72,11 @@ const Boosts = () => {
 	)
 
 	if (loading) {
-		return <Loading />
+		return (
+			<div className='container'>
+				<Loader />
+			</div>
+		)
 	}
 
 	return (
