@@ -73,7 +73,7 @@ const Boosts = () => {
 
 	if (loading) {
 		return (
-			<div className='container'>
+			<div className='loader-container'>
 				<Loader />
 			</div>
 		)

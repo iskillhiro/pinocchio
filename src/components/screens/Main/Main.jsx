@@ -94,8 +94,12 @@ const Main = () => {
 		}
 	}
 
-	if (handleLoading) {
-		return <Loader />
+	if (loading) {
+		return (
+			<div className='loader-container'>
+				<Loader />
+			</div>
+		)
 	}
 
 	return (

@@ -185,6 +185,14 @@ a {
 .pointer {
 	cursor: pointer;
 }
+.loader-container {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--windowColor);
+}
 .loader {
 	width: 15%;
 	height: auto;
