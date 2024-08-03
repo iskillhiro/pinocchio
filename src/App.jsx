@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Boosts from './components/screens/Boosts/Boosts'
 import Coins from './components/screens/Coins/Coins'
+import Loading from './components/screens/Loading/Loading'
 import Main from './components/screens/Main/Main'
 import Referrals from './components/screens/Referrals/Referrals'
 import Stats from './components/screens/Stats/Stats'
@@ -17,7 +18,8 @@ const App = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path='/' element={<Main />} />
+				<Route path='/' element={<Loading />} />
+				<Route path='/main' element={<Main />} />
 				<Route path='/coins' element={<Coins />} />
 				<Route path='/referrals' element={<Referrals />} />
 				<Route path='/stats' element={<Stats />} />

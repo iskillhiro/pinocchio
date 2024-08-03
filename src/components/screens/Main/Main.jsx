@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import wallet from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
+import { Loader } from '../../ui/Loader/Loader'
 import Navigation from '../../ui/Navigation/Navigation'
-import Loading from '../Loading/Loading'
 import MainBalance from './Balance/Balance'
 import MainCoins from './Balance/MainCoins'
 import EnergyBar from './Energy/EnergyBar'
@@ -95,7 +95,7 @@ const Main = () => {
 	}
 
 	if (handleLoading) {
-		return <Loading />
+		return <Loader />
 	}
 
 	return (

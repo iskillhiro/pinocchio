@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import style from './ProgressBar.module.css'
 
 const ProgressBar = ({ min = 0, max = 100 }) => {
 	const progressBarRef = useRef(null)
 	const [progress, setProgress] = useState(min)
-
+	const navigate = useNavigate()
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setProgress(prevProgress => {
@@ -16,6 +17,7 @@ const ProgressBar = ({ min = 0, max = 100 }) => {
 		// Останавливаем интервал, когда прогресс достигает максимума
 		if (progress >= max) {
 			clearInterval(interval)
+			navigate('/main')
 		}
 
 		return () => clearInterval(interval)

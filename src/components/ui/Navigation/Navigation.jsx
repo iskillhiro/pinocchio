@@ -30,7 +30,7 @@ const Navigation = () => {
 				</div>
 				<h3>tasks</h3>
 			</Link>
-			<Link onClick={feedBack} to='/' className='nav-elem'>
+			<Link onClick={feedBack} to='/main' className='nav-elem'>
 				<div className='nav-icon'>
 					<img className='icon' src={tapIcon} alt='tap' />
 				</div>

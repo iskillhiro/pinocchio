@@ -187,6 +187,7 @@ a {
 }
 .loader {
 	width: 15%;
+	height: auto;
 	padding: 8px;
 	aspect-ratio: 1;
 	border-radius: 50%;
