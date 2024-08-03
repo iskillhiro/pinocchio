@@ -23,7 +23,11 @@ const Stats = () => {
 		getStatistic()
 	}, [])
 	if (loading) {
-		return <Loader />
+		return (
+			<div className='container'>
+				<Loader />
+			</div>
+		)
 	}
 	return (
 		<div className='container stats'>

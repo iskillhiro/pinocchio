@@ -38,7 +38,11 @@ const Referrals = () => {
 	}, [])
 
 	if (loading) {
-		return <Loader />
+		return (
+			<div className='container'>
+				<Loader />
+			</div>
+		)
 	}
 	return (
 		<div className='container'>

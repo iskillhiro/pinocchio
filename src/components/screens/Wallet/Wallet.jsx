@@ -51,7 +51,11 @@ const Wallet = () => {
 	}, [telegramId])
 
 	if (loading) {
-		return <Loader />
+		return (
+			<div className='container'>
+				<Loader />
+			</div>
+		)
 	}
 
 	const userAvatar = tg.initDataUnsafe.user.photo_url || bronzeCoinIcon

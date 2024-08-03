@@ -23,7 +23,6 @@ const TapZone = ({
 	const pendingTaps = useRef(0)
 	const [boostActive, setBoostActive] = useState(false)
 	latestCoins.current = currentCoins
-	// TODO: Добавить обработку события, когда буст закончился, например добавить кастомную переменную, isBoostActive и сравнивавать её с boostData, если они не равны - делать запрос с обновлением
 
 	const debouncedUpdateUserData = useCallback(() => {
 		if (tapTimeout.current) {
