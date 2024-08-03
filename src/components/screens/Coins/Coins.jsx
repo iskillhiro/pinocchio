@@ -63,11 +63,7 @@ const Coins = () => {
 	}, [user.tree])
 
 	if (loading) {
-		return (
-			<div className='container'>
-				<Loader />
-			</div>
-		)
+		return <Loader />
 	}
 
 	const getActiveBoostsCount = () => {

@@ -62,11 +62,7 @@ const Tasks = () => {
 	}
 
 	if (loading) {
-		return (
-			<div className='container'>
-				<Loader />
-			</div>
-		)
+		return <Loader />
 	}
 
 	if (!taskData || !taskData.incompleteTasks.length) {
