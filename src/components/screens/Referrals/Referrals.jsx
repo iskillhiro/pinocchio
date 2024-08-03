@@ -43,7 +43,7 @@ const Referrals = () => {
 	return (
 		<div className='container'>
 			<h1 className='main-title'>referrals</h1>
-			<h3 className='post-title'>REFERRALS GREY COUNT</h3>
+			<h3 className='post-title'>TOTAL REFERRALS: {referralData.length}</h3>
 			<div className='block referrals'>
 				{referralData.map((referral, index) => (
 					<div key={index} id='referral'>
