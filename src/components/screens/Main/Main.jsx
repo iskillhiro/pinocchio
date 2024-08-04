@@ -12,6 +12,7 @@ import EnergyCount from './Energy/EnergyCount'
 import './Main.css'
 import RobotPopup from './Robot/RobotPopup'
 import TapZone from './TapZone'
+import YearRewardComponent from './YearReward/YearReward'
 const tg = window.Telegram.WebApp
 
 const Main = () => {
@@ -28,6 +29,8 @@ const Main = () => {
 	const [showRobotPopup, setShowRobotPopup] = useState(false)
 	const [robotMessage, setRobotMessage] = useState('')
 	const [process, setProcess] = useState(false)
+	const [userData, setUserData] = useState({})
+	const [yearReward, setYearReward] = useState(false)
 	const fetchUserData = useCallback(async () => {
 		try {
 			const response = await axiosDB.get(`/user/${telegramId}`)
@@ -36,10 +39,14 @@ const Main = () => {
 			setCurrentMaxEnergy(user.maxEnergy)
 			setEnergyRegeneRate(user.upgradeBoosts[2].level)
 			setStage(user.stage)
+			setUserData(user.data)
 			setBoostData({
 				upgradeBoosts: user.upgradeBoosts,
 				dailyBoosts: user.boosts,
 			})
+			if (!user.yearBonusClaimed) {
+				setYearReward(true)
+			}
 			setCoinStage(user.coinStage)
 			setTaps(user.upgradeBoosts[2].level)
 			setCoins(user.stage === 1 ? user.soldoTaps : user.zecchinoTaps)
@@ -93,7 +100,9 @@ const Main = () => {
 			setProcess(false)
 		}
 	}
-
+	if (yearReward) {
+		return <YearRewardComponent userData={userData} />
+	}
 	if (loading) {
 		return (
 			<div className='loader-container'>
