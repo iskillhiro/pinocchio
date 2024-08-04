@@ -1,4 +1,3 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import wallet from '../../../assets/pictures/wallet.svg'
@@ -28,46 +27,54 @@ const claimRobot = async telegramId => {
 
 const Main = () => {
 	const telegramId = getId()
+	const [user, setUser] = useState(null)
+	const [isLoading, setIsLoading] = useState(true)
 	const [showRobotPopup, setShowRobotPopup] = useState(false)
 	const [robotMessage, setRobotMessage] = useState('')
 	const [process, setProcess] = useState(false)
 	const [currentEnergy, setCurrentEnergy] = useState(0)
 	const [coins, setCoins] = useState(0)
 
-	const {
-		data: user,
-		isLoading,
-		refetch,
-	} = useQuery(['userData', telegramId], () => fetchUserData(telegramId), {
-		onSuccess: user => {
-			if (user.robot.isActive && user.robot.miningBalance > 200) {
-				const currency = user.stage === 1 ? 'soldo' : 'zecchino'
+	const getUserData = async () => {
+		try {
+			setIsLoading(true)
+			const userData = await fetchUserData(telegramId)
+			setUser(userData)
+			setCurrentEnergy(userData.currentEnergy)
+			setCoins(userData.coins)
+			if (userData.robot.isActive && userData.robot.miningBalance > 200) {
+				const currency = userData.stage === 1 ? 'soldo' : 'zecchino'
 				setRobotMessage(
-					`Your robot has earned ${user.robot.miningBalance} ${currency}!`
+					`Your robot has earned ${userData.robot.miningBalance} ${currency}!`
 				)
 				setShowRobotPopup(true)
 			}
-		},
-	})
-
-	const { mutate: handleSendRequest } = useMutation(
-		() => claimRobot(telegramId),
-		{
-			onSuccess: () => {
-				setShowRobotPopup(false)
-				refetch()
-			},
-			onError: error => {
-				console.error('Error sending request:', error)
-			},
-			onSettled: () => {
-				if (tg.HapticFeedback) {
-					tg.HapticFeedback.impactOccurred('light')
-				}
-				setProcess(false)
-			},
+		} catch (error) {
+			console.error('Error fetching user data:', error)
+		} finally {
+			setIsLoading(false)
 		}
-	)
+	}
+
+	const handleSendRequest = async () => {
+		try {
+			setProcess(true)
+			await claimRobot(telegramId)
+			setShowRobotPopup(false)
+			getUserData()
+		} catch (error) {
+			console.error('Error sending request:', error)
+		} finally {
+			if (tg.HapticFeedback) {
+				tg.HapticFeedback.impactOccurred('light')
+			}
+			setProcess(false)
+		}
+	}
+
+	useEffect(() => {
+		getUserData()
+	}, [])
 
 	useEffect(() => {
 		const intervalId = setInterval(() => {
@@ -90,7 +97,7 @@ const Main = () => {
 	}
 
 	if (!user) {
-		return <div>Error loading data</div>
+		return <div>Error loading data</div}
 	}
 
 	return (
@@ -106,7 +113,7 @@ const Main = () => {
 				boostData={user.boostData}
 				currentCoins={coins}
 				setCurrentCoins={setCoins}
-				updateUserData={refetch}
+				updateUserData={getUserData}
 			/>
 			<div className='group main'>
 				<EnergyCount currentEnergy={currentEnergy} />
@@ -123,10 +130,7 @@ const Main = () => {
 				<RobotPopup
 					message={robotMessage}
 					onClose={() => setShowRobotPopup(false)}
-					onSendRequest={() => {
-						setProcess(true)
-						handleSendRequest()
-					}}
+					onSendRequest={handleSendRequest}
 					process={process}
 				/>
 			)}
