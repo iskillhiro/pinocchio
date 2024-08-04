@@ -97,7 +97,7 @@ const Main = () => {
 	}
 
 	if (!user) {
-		return <div>Error loading data</div}
+		return <div>Error loading data</div>
 	}
 
 	return (
