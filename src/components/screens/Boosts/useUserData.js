@@ -1,7 +1,6 @@
 import { useQuery } from 'react-query'
+import { getId } from '../../../utils/config'
 import axiosDB from '../utils/axios/axiosConfig'
-import { getId } from '../utils/config'
-
 const fetchUserData = async telegramId => {
 	const { data } = await axiosDB.get(`/boost/${telegramId}`)
 	return data.userData[0]
