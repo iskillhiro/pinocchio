@@ -31,8 +31,6 @@ const Main = () => {
 	const [showRobotPopup, setShowRobotPopup] = useState(false)
 	const [robotMessage, setRobotMessage] = useState('')
 	const [process, setProcess] = useState(false)
-	const [currentEnergy, setCurrentEnergy] = useState(0)
-	const [coins, setCoins] = useState(0)
 
 	const {
 		data: user,
@@ -99,23 +97,23 @@ const Main = () => {
 			<MainCoins coinStage={user.coinStage} stage={user.stage} />
 			<TapZone
 				telegramId={telegramId}
-				currentEnergy={currentEnergy}
+				currentEnergy={user.currentEnergy}
 				setCurrentEnergy={setCurrentEnergy}
 				energyReduction={user.taps}
 				stage={user.stage}
 				boostData={user.boostData}
-				currentCoins={coins}
+				currentCoins={user.coins}
 				setCurrentCoins={setCoins}
 				updateUserData={refetch}
 			/>
 			<div className='group main'>
-				<EnergyCount currentEnergy={currentEnergy} />
+				<EnergyCount currentEnergy={user.currentEnergy} />
 				<Link to='/wallet' className='block'>
 					<img className='icon' src={wallet} alt='wallet' />
 				</Link>
 			</div>
 			<EnergyBar
-				currentEnergy={currentEnergy}
+				currentEnergy={user.currentEnergy}
 				maxEnergy={user.currentMaxEnergy}
 			/>
 			<Navigation />
