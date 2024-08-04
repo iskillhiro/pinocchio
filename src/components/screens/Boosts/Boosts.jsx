@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import starIcon from '../../../assets/pictures/star.svg'
-import { useUserData } from '../../../hooks/useUserData'
 import { Loader } from '../../ui/Loader/Loader.jsx'
 import Navigation from '../../ui/Navigation/Navigation'
 import './Boosts.css'
 import Popup from './Popup'
 import UpgradeBoostPopup from './UpgradeBoost.jsx'
+import { useUserData } from './useUserData.js'
 
 const Boosts = () => {
 	const { data: userData, isLoading, refetch } = useUserData()

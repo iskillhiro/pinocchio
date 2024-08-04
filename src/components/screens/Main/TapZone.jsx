@@ -1,4 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import goldenCoin from '../../../assets/pictures/coins/golden/coin.svg'
 import silverCoin from '../../../assets/pictures/coins/silver/coin.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
@@ -19,9 +20,10 @@ const TapZone = ({
 	const tapTimeout = useRef(null)
 	const latestCoins = useRef(currentCoins)
 	const [totalTaps, setTotalTaps] = useState(0)
-	const [taps, setTaps] = useState([]) // Initialize taps state
+	const [taps, setTaps] = useState([])
 	const pendingTaps = useRef(0)
 	const [boostActive, setBoostActive] = useState(false)
+
 	latestCoins.current = currentCoins
 
 	const debouncedUpdateUserData = useCallback(() => {
@@ -36,7 +38,7 @@ const TapZone = ({
 
 			try {
 				const touchesToSend = pendingTaps.current
-				const response = await axiosDB.put('/user/update', {
+				await axiosDB.put('/user/update', {
 					telegramId,
 					touches: touchesToSend,
 				})
@@ -47,7 +49,7 @@ const TapZone = ({
 				console.error('Error updating user:', error)
 			}
 		}, 150)
-	}, [telegramId, updateUserData, boostActive])
+	}, [telegramId, updateUserData])
 
 	const handleTouchStart = useCallback(
 		e => {
@@ -66,12 +68,13 @@ const TapZone = ({
 
 			const boostEndTime = new Date(boostData?.dailyBoosts?.[1]?.endTime || 0)
 			const isBoostActive = boostEndTime > Date.now()
-			isBoostActive ? setBoostActive(true) : setBoostActive(false)
+			setBoostActive(isBoostActive)
+
 			const energySpent = isBoostActive
 				? energyReduction * touches * 10
 				: energyReduction * touches
 
-			const newEnergy = Math.max(0, currentEnergy - energyReduction)
+			const newEnergy = Math.max(0, currentEnergy - energyReduction * touches)
 			const coinsToAdd = Math.max(0, energySpent)
 
 			if (newEnergy === currentEnergy) {
@@ -80,26 +83,25 @@ const TapZone = ({
 				)
 				return
 			}
-			const newTaps = []
 
-			// Loop through all touches (fingers) on the screen
-			for (let i = 0; i < e.touches.length; i++) {
-				const { clientX, clientY } = e.touches[i]
-				const rect = e.target.getBoundingClientRect()
+			const newTaps = Array.from(e.touches)
+				.map((touch, i) => {
+					const { clientX, clientY } = touch
+					const rect = e.target.getBoundingClientRect()
 
-				if (!rect) {
-					console.error('Unable to get bounding rect')
-					continue
-				}
+					if (!rect) {
+						console.error('Unable to get bounding rect')
+						return null
+					}
 
-				const newTap = {
-					id: Date.now() + i, // Unique ID
-					x: clientX - rect.left,
-					y: clientY - rect.top,
-				}
+					return {
+						id: Date.now() + i,
+						x: clientX - rect.left,
+						y: clientY - rect.top,
+					}
+				})
+				.filter(tap => tap !== null)
 
-				newTaps.push(newTap)
-			}
 			setTaps(prevTaps => [...prevTaps, ...newTaps])
 
 			setTimeout(() => {
@@ -107,6 +109,7 @@ const TapZone = ({
 					prevTaps.filter(tap => !newTaps.some(newTap => newTap.id === tap.id))
 				)
 			}, 1000)
+
 			setCurrentEnergy(newEnergy)
 			setCurrentCoins(latestCoins.current + coinsToAdd)
 
@@ -124,6 +127,14 @@ const TapZone = ({
 			debouncedUpdateUserData,
 		]
 	)
+
+	useEffect(() => {
+		return () => {
+			if (tapTimeout.current) {
+				clearTimeout(tapTimeout.current)
+			}
+		}
+	}, [])
 
 	return (
 		<div className='tap-zone' onTouchStart={handleTouchStart}>
@@ -144,6 +155,18 @@ const TapZone = ({
 			))}
 		</div>
 	)
+}
+
+TapZone.propTypes = {
+	telegramId: PropTypes.string.isRequired,
+	currentEnergy: PropTypes.number.isRequired,
+	setCurrentEnergy: PropTypes.func.isRequired,
+	energyReduction: PropTypes.number.isRequired,
+	stage: PropTypes.number.isRequired,
+	boostData: PropTypes.object.isRequired,
+	currentCoins: PropTypes.number.isRequired,
+	setCurrentCoins: PropTypes.func.isRequired,
+	updateUserData: PropTypes.func.isRequired,
 }
 
 export default TapZone
