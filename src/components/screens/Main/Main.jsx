@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import wallet from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
@@ -12,38 +13,31 @@ import EnergyCount from './Energy/EnergyCount'
 import './Main.css'
 import RobotPopup from './Robot/RobotPopup'
 import TapZone from './TapZone'
+
 const tg = window.Telegram.WebApp
+
+const fetchUserData = async telegramId => {
+	const response = await axiosDB.get(`/user/${telegramId}`)
+	return response.data
+}
+
+const claimRobot = async telegramId => {
+	const response = await axiosDB.get(`/robot/claim/${telegramId}`)
+	return response.data
+}
 
 const Main = () => {
 	const telegramId = getId()
-	const [currentEnergy, setCurrentEnergy] = useState(0)
-	const [currentMaxEnergy, setCurrentMaxEnergy] = useState(100)
-	const [stage, setStage] = useState(1)
-	const [coinStage, setCoinStage] = useState(0)
-	const [boostData, setBoostData] = useState({})
-	const [coins, setCoins] = useState(0)
-	const [loading, setLoading] = useState(true)
-	const [energyRegeneRate, setEnergyRegeneRate] = useState(1)
-	const [taps, setTaps] = useState(1)
 	const [showRobotPopup, setShowRobotPopup] = useState(false)
 	const [robotMessage, setRobotMessage] = useState('')
 	const [process, setProcess] = useState(false)
-	const fetchUserData = useCallback(async () => {
-		try {
-			const response = await axiosDB.get(`/user/${telegramId}`)
-			const user = response.data
-			setCurrentEnergy(user.energy)
-			setCurrentMaxEnergy(user.maxEnergy)
-			setEnergyRegeneRate(user.upgradeBoosts[2].level)
-			setStage(user.stage)
-			setBoostData({
-				upgradeBoosts: user.upgradeBoosts,
-				dailyBoosts: user.boosts,
-			})
-			setCoinStage(user.coinStage)
-			setTaps(user.upgradeBoosts[2].level)
-			setCoins(user.stage === 1 ? user.soldoTaps : user.zecchinoTaps)
 
+	const {
+		data: user,
+		isLoading,
+		refetch,
+	} = useQuery(['userData', telegramId], () => fetchUserData(telegramId), {
+		onSuccess: user => {
 			if (user.robot.isActive && user.robot.miningBalance > 200) {
 				const currency = user.stage === 1 ? 'soldo' : 'zecchino'
 				setRobotMessage(
@@ -51,50 +45,41 @@ const Main = () => {
 				)
 				setShowRobotPopup(true)
 			}
-		} catch (error) {
-			console.error('Error fetching user data:', error)
-		} finally {
-			setLoading(false)
-		}
-	}, [telegramId])
+		},
+	})
 
-	useEffect(() => {
-		fetchUserData()
-	}, [fetchUserData])
+	const { mutate: handleSendRequest } = useMutation(
+		() => claimRobot(telegramId),
+		{
+			onSuccess: () => {
+				setShowRobotPopup(false)
+				refetch()
+			},
+			onError: error => {
+				console.error('Error sending request:', error)
+			},
+			onSettled: () => {
+				if (tg.HapticFeedback) {
+					tg.HapticFeedback.impactOccurred('light')
+				}
+				setProcess(false)
+			},
+		}
+	)
 
 	useEffect(() => {
 		const intervalId = setInterval(() => {
-			setCurrentEnergy(prevEnergy =>
-				Math.min(prevEnergy + energyRegeneRate, currentMaxEnergy)
-			)
+			if (user) {
+				setCurrentEnergy(prevEnergy =>
+					Math.min(prevEnergy + user.energyRegeneRate, user.currentMaxEnergy)
+				)
+			}
 		}, 1000)
 
 		return () => clearInterval(intervalId)
-	}, [energyRegeneRate, currentMaxEnergy])
+	}, [user])
 
-	const handleLoading = useMemo(() => {
-		return loading
-	}, [loading])
-
-	const handleRobotPopupClose = () => setShowRobotPopup(false)
-
-	const handleSendRequest = async () => {
-		setProcess(true)
-		try {
-			const response = await axiosDB.get(`/robot/claim/${telegramId}`)
-			handleRobotPopupClose()
-			fetchUserData()
-		} catch (error) {
-			console.error('Error sending request:', error)
-		} finally {
-			if (tg.HapticFeedback) {
-				tg.HapticFeedback.impactOccurred('light')
-			}
-			setProcess(false)
-		}
-	}
-
-	if (loading) {
+	if (isLoading) {
 		return (
 			<div className='loader-container'>
 				<Loader />
@@ -102,33 +87,40 @@ const Main = () => {
 		)
 	}
 
+	if (!user) {
+		return <div>Error loading data</div>
+	}
+
 	return (
 		<div className='container main'>
-			<MainBalance stage={stage} coins={coins} />
-			<MainCoins coinStage={coinStage} stage={stage} />
+			<MainBalance stage={user.stage} coins={user.coins} />
+			<MainCoins coinStage={user.coinStage} stage={user.stage} />
 			<TapZone
 				telegramId={telegramId}
-				currentEnergy={currentEnergy}
+				currentEnergy={user.currentEnergy}
 				setCurrentEnergy={setCurrentEnergy}
-				energyReduction={taps}
-				stage={stage}
-				boostData={boostData}
-				currentCoins={coins}
+				energyReduction={user.taps}
+				stage={user.stage}
+				boostData={user.boostData}
+				currentCoins={user.coins}
 				setCurrentCoins={setCoins}
-				updateUserData={fetchUserData}
+				updateUserData={refetch}
 			/>
 			<div className='group main'>
-				<EnergyCount currentEnergy={currentEnergy} />
+				<EnergyCount currentEnergy={user.currentEnergy} />
 				<Link to='/wallet' className='block'>
 					<img className='icon' src={wallet} alt='wallet' />
 				</Link>
 			</div>
-			<EnergyBar currentEnergy={currentEnergy} maxEnergy={currentMaxEnergy} />
+			<EnergyBar
+				currentEnergy={user.currentEnergy}
+				maxEnergy={user.currentMaxEnergy}
+			/>
 			<Navigation />
 			{showRobotPopup && (
 				<RobotPopup
 					message={robotMessage}
-					onClose={handleRobotPopupClose}
+					onClose={() => setShowRobotPopup(false)}
 					onSendRequest={handleSendRequest}
 					process={process}
 				/>
