@@ -17,6 +17,7 @@ const TaskWindow = ({ showTaskWindow, taskData, buttonText, completeTask }) => {
 						<div className='task-window-icon'>
 							<img src={taskData.iconSrc} alt='boost icon' />
 						</div>
+
 						<div className='task-window-data'>
 							<h3>{taskData.title}</h3>
 							<p>{taskData.reward}</p>

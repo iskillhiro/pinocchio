@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { Loader } from '../../ui/Loader/Loader'
-
 const tg = window.Telegram.WebApp
 
 const Popup = ({
@@ -14,11 +13,10 @@ const Popup = ({
 }) => {
 	const [process, setProcess] = useState(false)
 	const navigate = useNavigate()
-
 	const activateBoost = async () => {
 		setProcess(true)
 		try {
-			await axiosDB.get(
+			const response = await axiosDB.get(
 				`/boost/activate/${userData.telegramId}/${popupInfo.name}`
 			)
 			updateBoostData() // Update the boost data after successful activation

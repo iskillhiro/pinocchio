@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import starIcon from '../../../assets/pictures/star.svg'
+import axiosDB from '../../../utils/axios/axiosConfig'
+import { getId } from '../../../utils/config.js'
 import { Loader } from '../../ui/Loader/Loader.jsx'
 import Navigation from '../../ui/Navigation/Navigation'
 import './Boosts.css'
 import Popup from './Popup'
 import UpgradeBoostPopup from './UpgradeBoost.jsx'
-import { useUserData } from './useUserData.js'
 
 const Boosts = () => {
-	const { data: userData, isLoading, refetch } = useUserData()
+	const telegramId = getId()
 	const [activeMenuItem, setActiveMenuItem] = useState('SoldoZecchino')
+	const [upgradeBoosts, setUpgradeBoosts] = useState([])
+	const [boostData, setBoostData] = useState([])
+	const [userData, setUserData] = useState({})
+	const [loading, setLoading] = useState(true)
+
 	const [popupInfo, setPopupInfo] = useState({
 		title: '',
 		iconSrc: '',
@@ -17,6 +23,39 @@ const Boosts = () => {
 		name: '',
 	})
 	const [upgradePopupInfo, setUpgradePopupInfo] = useState([])
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const { data } = await axiosDB.get(`/boost/${telegramId}`)
+				if (data) {
+					const userData = data.userData[0]
+					setBoostData(userData.boosts)
+					setUserData(userData)
+					setUpgradeBoosts([
+						...userData.upgradeBoosts,
+						...userData.treeCoinBoosts,
+					])
+				}
+			} catch (error) {
+				console.error('Failed to fetch boost data:', error)
+			} finally {
+				setLoading(false)
+			}
+		}
+		fetchUserData()
+	}, [telegramId])
+
+	const updateBoostData = async () => {
+		try {
+			const { data } = await axiosDB.get(`/boost/${telegramId}`)
+			const userData = data.userData[0]
+			setBoostData(userData.boosts)
+			setUserData(userData)
+			setUpgradeBoosts([...userData.upgradeBoosts, ...userData.treeCoinBoosts])
+		} catch (error) {
+			console.error('Failed to fetch updated boost data:', error)
+		}
+	}
 
 	const handleBoostClick = (
 		title,
@@ -26,18 +65,13 @@ const Boosts = () => {
 	) => {
 		setPopupInfo({ title, iconSrc, boostType, name })
 	}
+	const filteredBoosts = upgradeBoosts.filter(
+		activeMenuItem === 'SoldoZecchino'
+			? boost => boost.currency === 'soldo'
+			: boost => boost.currency === 'zecchino'
+	)
 
-	const filteredBoosts = userData
-		? userData.upgradeBoosts
-				.concat(userData.treeCoinBoosts)
-				.filter(
-					activeMenuItem === 'SoldoZecchino'
-						? boost => boost.currency === 'soldo'
-						: boost => boost.currency === 'zecchino'
-				)
-		: []
-
-	if (isLoading) {
+	if (loading) {
 		return (
 			<div className='loader-container'>
 				<Loader />
@@ -57,13 +91,13 @@ const Boosts = () => {
 						popupInfo.boostType !== 'SoldoZecchino' ? 'Get' : 'Upgrade'
 					}
 					userData={userData}
-					updateBoostData={refetch}
+					updateBoostData={updateBoostData}
 				/>
 			)}
 			{upgradePopupInfo.length > 0 && (
 				<UpgradeBoostPopup
 					handlePopupClose={() => setUpgradePopupInfo([])}
-					updateBoostData={refetch}
+					updateBoostData={updateBoostData}
 					boost={upgradePopupInfo}
 					userData={userData}
 				/>
@@ -73,7 +107,7 @@ const Boosts = () => {
 			<h3 className='post-title'>Free Day Boosts</h3>
 
 			<div className='day-boosts'>
-				{userData.boosts.map(boost => (
+				{boostData.map(boost => (
 					<button
 						key={boost.name}
 						className='block day-boost'
@@ -176,7 +210,7 @@ const Boosts = () => {
 										? boost.level === boost.maxLevel
 											? ' '
 											: `${boost.level * 10000}`
-										: '1 zecchino'
+										: '1 zechhino'
 									: '50000'}
 							</p>
 
@@ -203,13 +237,15 @@ const Boosts = () => {
 							</div>
 						</div>
 					))}
-					{activeMenuItem === 'PinocchioCoin' && (
+					{activeMenuItem === 'PinocchioCoin' ? (
 						<h3 className='post-title life-boosts'>
 							<div className='icon star'>
 								<img src={starIcon} alt='' />
 							</div>
 							Life Boosts are 10 days
 						</h3>
+					) : (
+						''
 					)}
 				</div>
 			</div>

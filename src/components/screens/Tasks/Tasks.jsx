@@ -1,5 +1,4 @@
-import React from 'react'
-import { useQuery } from 'react-query'
+import React, { useEffect, useState } from 'react'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
 import { Loader } from '../../ui/Loader/Loader'
@@ -9,16 +8,24 @@ import './Tasks.css'
 
 const Tasks = () => {
 	const telegramId = getId()
+	const [taskData, setTaskData] = useState(null)
+	const [selectedTask, setSelectedTask] = useState(null)
+	const [loading, setLoading] = useState(true)
 
-	const {
-		data: taskData,
-		isLoading,
-		isError,
-		refetch,
-	} = useQuery(['tasks', telegramId], async () => {
-		const response = await axiosDB.get(`/tasks/${telegramId}`)
-		return response.data
-	})
+	useEffect(() => {
+		const getTasks = async () => {
+			try {
+				const response = await axiosDB.get(`/tasks/${telegramId}`)
+				setTaskData(response.data)
+			} catch (error) {
+				console.error('Error fetching tasks:', error)
+			} finally {
+				setLoading(false)
+			}
+		}
+
+		getTasks()
+	}, [telegramId])
 
 	const completeTask = async taskId => {
 		try {
@@ -26,22 +33,35 @@ const Tasks = () => {
 				id: taskId,
 				telegramId: telegramId,
 			})
-			// Optionally, refetch tasks after completion
-			refetch()
+
+			// Update task state after a successful request
+			setTaskData(prevData => {
+				const updatedIncompleteTasks = prevData.incompleteTasks.map(
+					taskBlock => {
+						const updatedTasks = taskBlock.tasksBlock.map(task => {
+							if (task._id === taskId) {
+								return { ...task, isComplete: true }
+							}
+							return task
+						})
+
+						return { ...taskBlock, tasksBlock: updatedTasks } // !
+					}
+				)
+
+				return {
+					...prevData,
+					incompleteTasks: updatedIncompleteTasks.filter(taskBlock =>
+						taskBlock.tasksBlock.some(task => !task.isComplete)
+					),
+				}
+			})
 		} catch (error) {
 			console.error('Error completing task:', error)
 		}
 	}
 
-	const showTaskWindow = task => {
-		setSelectedTask(task)
-	}
-
-	const closeTaskWindow = () => {
-		setSelectedTask(null)
-	}
-
-	if (isLoading) {
+	if (loading) {
 		return (
 			<div className='loader-container'>
 				<Loader />
@@ -49,7 +69,7 @@ const Tasks = () => {
 		)
 	}
 
-	if (isError || !taskData || !taskData.incompleteTasks.length) {
+	if (!taskData || !taskData.incompleteTasks.length) {
 		return (
 			<div className='container'>
 				<h1 className='main-title'>Tasks</h1>
@@ -59,6 +79,14 @@ const Tasks = () => {
 				<Navigation />
 			</div>
 		)
+	}
+
+	const showTaskWindow = task => {
+		setSelectedTask(task)
+	}
+
+	const closeTaskWindow = () => {
+		setSelectedTask(null)
 	}
 
 	return (

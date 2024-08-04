@@ -61,7 +61,6 @@
 	border-radius: var(--radius);
 	transition: width 0.3s ease;
 }
-
 .tap_number {
 	position: absolute;
 	transform: translate(-50%, -50%);

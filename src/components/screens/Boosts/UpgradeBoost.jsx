@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { Loader } from '../../ui/Loader/Loader'
 import style from './UpgradeBoost.module.css'

@@ -1,5 +1,4 @@
-import React from 'react'
-import { useQuery } from 'react-query'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import bronzeCoinIcon from '../../../assets/pictures/coins/bronze/coin_front.svg'
 import goldenCoinIcon from '../../../assets/pictures/coins/golden/coin_front.svg'
@@ -19,38 +18,44 @@ const tg = window.Telegram.WebApp
 
 const Wallet = () => {
 	const telegramId = getId()
+	const [loading, setLoading] = useState(true)
+	const [userData, setUserData] = useState({})
+	const [statistic, setStatistic] = useState({})
 
-	// Fetch user data
-	const {
-		data: userData,
-		isLoading: userLoading,
-		isError: userError,
-	} = useQuery(['userData', telegramId], async () => {
-		const response = await axiosDB.get(`/user/${telegramId}`)
-		return response.data
-	})
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const response = await axiosDB.get(`/user/${telegramId}`)
+				const user = response.data
+				setUserData(user)
+			} catch (error) {
+				console.error('Error fetching user data:', error)
+			} finally {
+				setLoading(false)
+			}
+		}
 
-	// Fetch statistics
-	const {
-		data: statistic,
-		isLoading: statLoading,
-		isError: statError,
-	} = useQuery('statistic', async () => {
-		const response = await axiosDB.get('/statistic')
-		return response.data
-	})
+		const getStatistic = async () => {
+			try {
+				const response = await axiosDB.get('/statistic')
+				setStatistic(response.data)
+			} catch (error) {
+				console.log(error)
+			} finally {
+				setLoading(false)
+			}
+		}
 
-	if (userLoading || statLoading) {
+		getStatistic()
+		fetchUserData()
+	}, [telegramId])
+
+	if (loading) {
 		return (
 			<div className='loader-container'>
 				<Loader />
 			</div>
 		)
-	}
-
-	if (userError || statError) {
-		console.error('Error fetching data:', userError || statError)
-		return <div>Error fetching data</div>
 	}
 
 	const userAvatar = tg.initDataUnsafe.user.photo_url || bronzeCoinIcon
@@ -60,13 +65,13 @@ const Wallet = () => {
 			<Link to='/stats' className='stats wallet'>
 				<div id='coins'>
 					<div className='icon'>
-						<img src={personIcon} alt='Person icon' />
+						<img src={personIcon} alt='' />
 					</div>
 					<div className='icon'>
-						<img src={personIcon} alt='Person icon' />
+						<img src={personIcon} alt='' />
 					</div>
 					<div className='icon'>
-						<img src={goldenCoinIcon} alt='Golden coin icon' />
+						<img src={goldenCoinIcon} alt='' />
 					</div>
 				</div>
 				<p id='users-count'>{numberWithSpaces(statistic.totalUsers)}</p>
@@ -115,7 +120,7 @@ const Wallet = () => {
 					].map(({ icon, count }, index) => (
 						<div key={index} className='balance-item'>
 							<div className='icon'>
-								<img src={icon} alt='Balance icon' />
+								<img src={icon} alt='' />
 							</div>
 							<p className='count'>{numberWithSpaces(count)}</p>
 						</div>
