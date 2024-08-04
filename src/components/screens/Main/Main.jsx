@@ -100,7 +100,7 @@ const Main = () => {
 			setProcess(false)
 		}
 	}
-	if (yearReward) {
+	if (yearReward && userData) {
 		return <YearRewardComponent userData={userData} />
 	}
 	if (loading) {
