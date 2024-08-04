@@ -100,9 +100,7 @@ const Main = () => {
 			setProcess(false)
 		}
 	}
-	if (yearReward && userData) {
-		return <YearRewardComponent userData={userData} />
-	}
+
 	if (loading) {
 		return (
 			<div className='loader-container'>
@@ -110,7 +108,9 @@ const Main = () => {
 			</div>
 		)
 	}
-
+	if (yearReward && userData) {
+		return <YearRewardComponent userData={userData} />
+	}
 	return (
 		<div className='container main'>
 			<MainBalance stage={stage} coins={coins} />

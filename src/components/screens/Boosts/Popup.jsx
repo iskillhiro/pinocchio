@@ -28,7 +28,7 @@ const Popup = ({
 				tg.HapticFeedback.impactOccurred('light')
 			}
 			handlePopupClose()
-			navigate('/')
+			navigate('/main')
 		}
 	}
 
