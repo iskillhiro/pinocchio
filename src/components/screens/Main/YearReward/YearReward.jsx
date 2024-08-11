@@ -45,9 +45,9 @@ const YearReward = ({ telegramId }) => {
 				<p className={styles.heading}>
 					Let's check how old you are on Telegram
 				</p>
-				<div className={styles.progress - container}>
+				<div className={styles.progress - styles.container}>
 					<div
-						className={styles.progress - bar}
+						className={styles.progress - styles.bar}
 						style={{ width: isYearChecked ? '100%' : '0%' }}
 						onAnimationEnd={handleYearCheck}
 					/>
@@ -55,8 +55,11 @@ const YearReward = ({ telegramId }) => {
 			</div>
 			{isYearChecked && (
 				<div>
-					<p className={styles.reward - text}>{rewardAdded}</p>
-					<button className={styles.gradient - btn} onClick={handleGetReward}>
+					<p className={styles.reward - styles.text}>{rewardAdded}</p>
+					<button
+						className={styles.gradient - styles.btn}
+						onClick={handleGetReward}
+					>
 						Thank you
 					</button>
 				</div>
