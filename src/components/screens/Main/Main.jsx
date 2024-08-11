@@ -41,7 +41,6 @@ const Main = () => {
 			setCurrentMaxEnergy(user.maxEnergy)
 			setEnergyRegeneRate(user.upgradeBoosts[2].level)
 			setStage(user.stage)
-			setUserData(user.data)
 			setBoostData({
 				upgradeBoosts: user.upgradeBoosts,
 				dailyBoosts: user.boosts,
