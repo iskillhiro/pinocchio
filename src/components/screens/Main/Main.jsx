@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import wallet from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
@@ -12,7 +12,7 @@ import EnergyCount from './Energy/EnergyCount'
 import './Main.css'
 import RobotPopup from './Robot/RobotPopup'
 import TapZone from './TapZone'
-import YearReward from './YearReward/YearReward'
+
 const tg = window.Telegram.WebApp
 
 const Main = () => {
@@ -31,10 +31,12 @@ const Main = () => {
 	const [process, setProcess] = useState(false)
 	const [userData, setUserData] = useState({})
 	const [yearReward, setYearReward] = useState(false)
+
 	const fetchUserData = useCallback(async () => {
 		try {
 			const response = await axiosDB.get(`/user/${telegramId}`)
 			const user = response.data
+
 			setCurrentEnergy(user.energy)
 			setCurrentMaxEnergy(user.maxEnergy)
 			setEnergyRegeneRate(user.upgradeBoosts[2].level)
@@ -44,12 +46,11 @@ const Main = () => {
 				upgradeBoosts: user.upgradeBoosts,
 				dailyBoosts: user.boosts,
 			})
-			if (!user.yearBonusClaimed) {
-				setYearReward(true)
-			}
 			setCoinStage(user.coinStage)
 			setTaps(user.upgradeBoosts[2].level)
 			setCoins(user.stage === 1 ? user.soldoTaps : user.zecchinoTaps)
+
+			if (!user.yearBonusClaimed) setYearReward(true)
 
 			if (user.robot.isActive && user.robot.miningBalance > 200) {
 				const currency = user.stage === 1 ? 'soldo' : 'zecchino'
@@ -79,16 +80,12 @@ const Main = () => {
 		return () => clearInterval(intervalId)
 	}, [energyRegeneRate, currentMaxEnergy])
 
-	const handleLoading = useMemo(() => {
-		return loading
-	}, [loading])
-
 	const handleRobotPopupClose = () => setShowRobotPopup(false)
 
 	const handleSendRequest = async () => {
 		setProcess(true)
 		try {
-			const response = await axiosDB.get(`/robot/claim/${telegramId}`)
+			await axiosDB.get(`/robot/claim/${telegramId}`)
 			handleRobotPopupClose()
 			fetchUserData()
 		} catch (error) {
@@ -108,9 +105,7 @@ const Main = () => {
 			</div>
 		)
 	}
-	if (yearReward && userData.telegramId) {
-		return <YearReward userData={userData} />
-	}
+
 	return (
 		<div className='container main'>
 			<MainBalance stage={stage} coins={coins} />
