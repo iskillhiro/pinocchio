@@ -80,7 +80,7 @@ const YearReward = ({ telegramId }) => {
 				<div>
 					<p className={styles.rewardText}>{rewardAdded}</p>
 					<button
-						className={styles.gradientBtn}
+						className={styles.gradient_btn}
 						onClick={() => handleGetReward()}
 					>
 						Thank you
