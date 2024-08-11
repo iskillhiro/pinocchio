@@ -15,7 +15,8 @@ import TapZone from './TapZone'
 import YearReward from './YearReward/YearReward'
 
 const tg = window.Telegram.WebApp
-
+console.log('unsafeData:', tg.initDataUnsafe)
+console.log('initData:', tg.initData)
 const Main = () => {
 	const telegramId = getId()
 	const [currentEnergy, setCurrentEnergy] = useState(0)

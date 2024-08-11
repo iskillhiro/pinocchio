@@ -15,8 +15,6 @@ const YearReward = ({ telegramId }) => {
 			tg.initDataUnsafe.user &&
 			typeof tg.initDataUnsafe.user.isPremium !== 'undefined'
 		) {
-			console.log('unsafeData:', tg.initDataUnsafe)
-			console.log('initData:', tg.initData)
 			axiosDB
 				.post(`/bonus/${telegramId}/${tg.initDataUnsafe.user.isPremium}`)
 				.then(result => {
