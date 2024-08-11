@@ -108,11 +108,9 @@ const Main = () => {
 			</div>
 		)
 	}
-	useEffect(() => {
-		if (yearReward && userData) {
-			return <YearReward userData={userData} />
-		}
-	}, [yearReward])
+	if (yearReward && userData.telegramId) {
+		return <YearReward userData={userData} />
+	}
 	return (
 		<div className='container main'>
 			<MainBalance stage={stage} coins={coins} />
