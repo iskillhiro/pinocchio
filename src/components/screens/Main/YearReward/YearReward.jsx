@@ -10,16 +10,24 @@ const YearReward = ({ telegramId }) => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		axiosDB
-			.post(`/bonus/${telegramId}/${tg.initDataUnsafe.user.isPremium}`)
-			.then(result => {
-				if (result.status === 200) {
-					setRewardAdded(result.data.reward)
-				}
-			})
-			.catch(error => {
-				console.error('Error fetching reward:', error)
-			})
+		if (
+			tg.initDataUnsafe &&
+			tg.initDataUnsafe.user &&
+			typeof tg.initDataUnsafe.user.isPremium !== 'undefined'
+		) {
+			axiosDB
+				.post(`/bonus/${telegramId}/${tg.initDataUnsafe.user.isPremium}`)
+				.then(result => {
+					if (result.status === 200) {
+						setRewardAdded(result.data.reward)
+					}
+				})
+				.catch(error => {
+					console.error('Error fetching reward:', error)
+				})
+		} else {
+			console.error('Unable to determine if user is premium')
+		}
 	}, [telegramId])
 
 	useEffect(() => {
