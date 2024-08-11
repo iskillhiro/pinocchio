@@ -79,7 +79,10 @@ const YearReward = ({ telegramId }) => {
 			{!loading && isYearChecked && (
 				<div>
 					<p className={styles.rewardText}>{rewardAdded}</p>
-					<button className={styles.gradientBtn} onClick={handleGetReward}>
+					<button
+						className={styles.gradientBtn}
+						onClick={() => handleGetReward()}
+					>
 						Thank you
 					</button>
 				</div>
