@@ -65,6 +65,7 @@ const Main = () => {
 		}
 	}, [telegramId])
 
+	console.log(yearReward)
 	useEffect(() => {
 		fetchUserData()
 	}, [fetchUserData])
@@ -109,6 +110,8 @@ const Main = () => {
 		)
 	}
 	if (yearReward && userData) {
+		console.log('condition', yearReward)
+
 		return <YearReward userData={userData} />
 	} else {
 		return (
