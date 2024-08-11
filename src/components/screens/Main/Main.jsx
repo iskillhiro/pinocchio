@@ -109,7 +109,7 @@ const Main = () => {
 			</div>
 		)
 	}
-	if (yearReward && userData) {
+	if (yearReward) {
 		console.log('condition', yearReward)
 
 		return <YearReward userData={userData} />
