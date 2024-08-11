@@ -127,7 +127,7 @@ const TapZone = ({
 
 	return (
 		<div className='tap-zone' onTouchStart={handleTouchStart}>
-			{boostData.upgradeBoosts[4].level === 2 ? (
+			{boostData?.upgradeBoosts[4].level === 2 ? (
 				<img src='/boosts/skin.svg' alt='skin' />
 			) : (
 				<img src={stage === 1 ? silverCoin : goldenCoin} alt='coin' />
