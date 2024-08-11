@@ -125,25 +125,27 @@ const TapZone = ({
 		]
 	)
 
-	return (
-		<div className='tap-zone' onTouchStart={handleTouchStart}>
-			{boostData?.upgradeBoosts[4].level === 2 ? (
-				<img src='/boosts/skin.svg' alt='skin' />
-			) : (
-				<img src={stage === 1 ? silverCoin : goldenCoin} alt='coin' />
-			)}
+	if (boostData) {
+		return (
+			<div className='tap-zone' onTouchStart={handleTouchStart}>
+				{boostData.upgradeBoosts[4].level === 2 ? (
+					<img src='/boosts/skin.svg' alt='skin' />
+				) : (
+					<img src={stage === 1 ? silverCoin : goldenCoin} alt='coin' />
+				)}
 
-			{taps.map(tap => (
-				<span
-					key={tap.id}
-					className='tap_number'
-					style={{ top: `${tap.y + 70}px`, left: `${tap.x}px` }}
-				>
-					+{boostActive ? energyReduction * 10 : energyReduction}
-				</span>
-			))}
-		</div>
-	)
+				{taps.map(tap => (
+					<span
+						key={tap.id}
+						className='tap_number'
+						style={{ top: `${tap.y + 70}px`, left: `${tap.x}px` }}
+					>
+						+{boostActive ? energyReduction * 10 : energyReduction}
+					</span>
+				))}
+			</div>
+		)
+	}
 }
 
 export default TapZone
