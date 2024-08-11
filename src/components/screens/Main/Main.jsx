@@ -65,7 +65,6 @@ const Main = () => {
 		}
 	}, [telegramId])
 
-	console.log(yearReward)
 	useEffect(() => {
 		fetchUserData()
 	}, [fetchUserData])
@@ -109,45 +108,44 @@ const Main = () => {
 			</div>
 		)
 	}
-	if (yearReward) {
-		console.log('condition', yearReward)
-
-		return <YearReward userData={userData} />
-	} else {
-		return (
-			<div className='container main'>
-				<MainBalance stage={stage} coins={coins} />
-				<MainCoins coinStage={coinStage} stage={stage} />
-				<TapZone
-					telegramId={telegramId}
-					currentEnergy={currentEnergy}
-					setCurrentEnergy={setCurrentEnergy}
-					energyReduction={taps}
-					stage={stage}
-					boostData={boostData}
-					currentCoins={coins}
-					setCurrentCoins={setCoins}
-					updateUserData={fetchUserData}
-				/>
-				<div className='group main'>
-					<EnergyCount currentEnergy={currentEnergy} />
-					<Link to='/wallet' className='block'>
-						<img className='icon' src={wallet} alt='wallet' />
-					</Link>
-				</div>
-				<EnergyBar currentEnergy={currentEnergy} maxEnergy={currentMaxEnergy} />
-				<Navigation />
-				{showRobotPopup && (
-					<RobotPopup
-						message={robotMessage}
-						onClose={handleRobotPopupClose}
-						onSendRequest={handleSendRequest}
-						process={process}
-					/>
-				)}
+	useEffect(() => {
+		if (yearReward && userData) {
+			return <YearReward userData={userData} />
+		}
+	}, [yearReward])
+	return (
+		<div className='container main'>
+			<MainBalance stage={stage} coins={coins} />
+			<MainCoins coinStage={coinStage} stage={stage} />
+			<TapZone
+				telegramId={telegramId}
+				currentEnergy={currentEnergy}
+				setCurrentEnergy={setCurrentEnergy}
+				energyReduction={taps}
+				stage={stage}
+				boostData={boostData}
+				currentCoins={coins}
+				setCurrentCoins={setCoins}
+				updateUserData={fetchUserData}
+			/>
+			<div className='group main'>
+				<EnergyCount currentEnergy={currentEnergy} />
+				<Link to='/wallet' className='block'>
+					<img className='icon' src={wallet} alt='wallet' />
+				</Link>
 			</div>
-		)
-	}
+			<EnergyBar currentEnergy={currentEnergy} maxEnergy={currentMaxEnergy} />
+			<Navigation />
+			{showRobotPopup && (
+				<RobotPopup
+					message={robotMessage}
+					onClose={handleRobotPopupClose}
+					onSendRequest={handleSendRequest}
+					process={process}
+				/>
+			)}
+		</div>
+	)
 }
 
 export default Main
