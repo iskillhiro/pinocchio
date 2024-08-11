@@ -102,7 +102,14 @@ const Main = () => {
 			</div>
 		)
 	} else if (yearReward && telegramId) {
-		return <YearReward telegramId={telegramId} setYearReward={setYearReward} />
+		return (
+			<YearReward
+				telegramId={telegramId}
+				setYearReward={setYearReward}
+				coins={coins}
+				setCoins={setCoins}
+			/>
+		)
 	}
 
 	return (

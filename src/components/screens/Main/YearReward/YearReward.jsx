@@ -4,7 +4,7 @@ import styles from './YearReward.module.css'
 
 const tg = window.Telegram.WebApp
 
-const YearReward = ({ telegramId, setYearReward }) => {
+const YearReward = ({ telegramId, setYearReward, coins, setCoins }) => {
 	const [isYearChecked, setIsYearChecked] = useState(false)
 	const [rewardAdded, setRewardAdded] = useState(null)
 	const [years, setYears] = useState(null)
@@ -28,6 +28,7 @@ const YearReward = ({ telegramId, setYearReward }) => {
 			.then(result => {
 				if (result.status === 200) {
 					setRewardAdded(result.data.reward)
+					setCoins(coins + result.data.reward)
 					setYears(result.data.years)
 				}
 			})
