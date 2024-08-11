@@ -8,9 +8,22 @@ const tg = window.Telegram.WebApp
 const YearReward = ({ telegramId }) => {
 	const [isYearChecked, setIsYearChecked] = useState(false)
 	const [rewardAdded, setRewardAdded] = useState(null)
+	const [loading, setLoading] = useState(true)
 	const navigate = useNavigate()
 
 	useEffect(() => {
+		let fakeProgress = 0
+		const fakeProgressInterval = setInterval(() => {
+			if (fakeProgress >= 100) {
+				clearInterval(fakeProgressInterval)
+			} else {
+				fakeProgress += 5
+				document.getElementById(
+					'fake-progress'
+				).style.width = `${fakeProgress}%`
+			}
+		}, 100)
+
 		axiosDB
 			.post(`/bonus/${telegramId}`)
 			.then(result => {
@@ -20,6 +33,11 @@ const YearReward = ({ telegramId }) => {
 			})
 			.catch(error => {
 				console.error('Error fetching reward:', error)
+			})
+			.finally(() => {
+				setLoading(false)
+				setIsYearChecked(true)
+				clearInterval(fakeProgressInterval)
 			})
 	}, [telegramId])
 
@@ -45,21 +63,23 @@ const YearReward = ({ telegramId }) => {
 				<p className={styles.heading}>
 					Let's check how old you are on Telegram
 				</p>
-				<div className={styles.progress - styles.container}>
+				<div className={styles.progressContainer}>
 					<div
-						className={styles.progress - styles.bar}
+						id='fake-progress'
+						className={styles.fakeProgressBar}
+						style={{ width: '0%' }}
+					/>
+					<div
+						className={styles.progressBar}
 						style={{ width: isYearChecked ? '100%' : '0%' }}
 						onAnimationEnd={handleYearCheck}
 					/>
 				</div>
 			</div>
-			{isYearChecked && (
+			{!loading && isYearChecked && (
 				<div>
-					<p className={styles.reward - styles.text}>{rewardAdded}</p>
-					<button
-						className={styles.gradient - styles.btn}
-						onClick={handleGetReward}
-					>
+					<p className={styles.rewardText}>{rewardAdded}</p>
+					<button className={styles.gradientBtn} onClick={handleGetReward}>
 						Thank you
 					</button>
 				</div>
