@@ -10,13 +10,9 @@ const YearReward = ({ telegramId }) => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		if (
-			tg.initDataUnsafe &&
-			tg.initDataUnsafe.user &&
-			typeof tg.initDataUnsafe.user.isPremium !== 'undefined'
-		) {
+		if (tg.initDataUnsafe.user) {
 			axiosDB
-				.post(`/bonus/${telegramId}/${tg.initDataUnsafe.user.isPremium}`)
+				.post(`/bonus/${telegramId}`)
 				.then(result => {
 					if (result.status === 200) {
 						setRewardAdded(result.data.reward)
@@ -25,8 +21,6 @@ const YearReward = ({ telegramId }) => {
 				.catch(error => {
 					console.error('Error fetching reward:', error)
 				})
-		} else {
-			console.error('Unable to determine if user is premium')
 		}
 	}, [telegramId])
 
@@ -45,13 +39,13 @@ const YearReward = ({ telegramId }) => {
 	const handleYearCheck = () => {
 		setTimeout(() => {
 			setIsYearChecked(true)
-		}, 1000) // Симуляция проверки времени
+		}, 1000)
 	}
 
 	const handlePremiumCheck = () => {
 		setTimeout(() => {
 			setIsPremiumChecked(true)
-		}, 1000) // Симуляция проверки Telegram Premium
+		}, 1000)
 	}
 
 	const handleGetReward = () => {

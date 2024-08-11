@@ -15,8 +15,6 @@ import TapZone from './TapZone'
 import YearReward from './YearReward/YearReward'
 
 const tg = window.Telegram.WebApp
-console.log('unsafeData:', tg.initDataUnsafe)
-console.log('initData:', tg.initData)
 const Main = () => {
 	const telegramId = getId()
 	const [currentEnergy, setCurrentEnergy] = useState(0)
@@ -37,7 +35,6 @@ const Main = () => {
 		try {
 			const response = await axiosDB.get(`/user/${telegramId}`)
 			const user = response.data
-			console.log(user)
 			setCurrentEnergy(user.energy)
 			setCurrentMaxEnergy(user.maxEnergy)
 			setEnergyRegeneRate(user.upgradeBoosts[2].level)
