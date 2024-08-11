@@ -232,7 +232,7 @@ const Coins = () => {
 					<img className='icon' src={walletIcon} alt='wallet' />
 				</a>
 			</div>
-			<Navigation />
+			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

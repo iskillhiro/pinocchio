@@ -120,7 +120,7 @@ const Tasks = () => {
 					</div>
 				))}
 			</div>
-			<Navigation />
+			<Navigation telegramId={telegramId} />
 			{selectedTask && (
 				<TaskWindow
 					showTaskWindow={closeTaskWindow}

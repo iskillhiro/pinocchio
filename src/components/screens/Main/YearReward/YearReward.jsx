@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axiosDB from '../../../../utils/axios/axiosConfig'
 import styles from './YearReward.module.css'
 
 const tg = window.Telegram.WebApp
 
-const YearReward = ({ telegramId }) => {
+const YearReward = ({ telegramId, setYearReward }) => {
 	const [isYearChecked, setIsYearChecked] = useState(false)
 	const [rewardAdded, setRewardAdded] = useState(null)
+	const [years, setYears] = useState(null)
 	const [loading, setLoading] = useState(true)
-	const navigate = useNavigate()
 
 	useEffect(() => {
 		let fakeProgress = 0
@@ -29,6 +28,7 @@ const YearReward = ({ telegramId }) => {
 			.then(result => {
 				if (result.status === 200) {
 					setRewardAdded(result.data.reward)
+					setYears(result.data.years)
 				}
 			})
 			.catch(error => {
@@ -54,31 +54,28 @@ const YearReward = ({ telegramId }) => {
 	}
 
 	const handleGetReward = () => {
-		navigate('/main')
+		setYearReward(false)
 	}
 
 	return (
 		<div className={styles.container}>
-			<div>
-				<p className={styles.heading}>
-					Let's check how old you are on Telegram
-				</p>
-				<div className={styles.progressContainer}>
-					<div
-						id='fake-progress'
-						className={styles.fakeProgressBar}
-						style={{ width: '0%' }}
-					/>
-					<div
-						className={styles.progressBar}
-						style={{ width: isYearChecked ? '100%' : '0%' }}
-						onAnimationEnd={handleYearCheck}
-					/>
-				</div>
+			<p className={styles.heading}>Let's check how old you are on Telegram</p>
+			<div className={styles.progressContainer}>
+				<div
+					id='fake-progress'
+					className={styles.fakeProgressBar}
+					style={{ width: '0%' }}
+				/>
+				<div
+					className={styles.progressBar}
+					style={{ width: isYearChecked ? '100%' : '0%' }}
+					onAnimationEnd={handleYearCheck}
+				/>
 			</div>
 			{!loading && isYearChecked && (
 				<div>
-					<p className={styles.rewardText}>{rewardAdded}</p>
+					<h1 className={styles.years}>{years}</h1>
+					<p className={styles.rewardText}>Reward {rewardAdded} soldo!</p>
 					<button
 						className={styles.gradient_btn}
 						onClick={() => handleGetReward()}

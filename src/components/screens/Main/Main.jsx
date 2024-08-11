@@ -102,7 +102,7 @@ const Main = () => {
 			</div>
 		)
 	} else if (yearReward && telegramId) {
-		return <YearReward telegramId={telegramId} />
+		return <YearReward telegramId={telegramId} setYearReward={setYearReward} />
 	}
 
 	return (
@@ -127,7 +127,7 @@ const Main = () => {
 				</Link>
 			</div>
 			<EnergyBar currentEnergy={currentEnergy} maxEnergy={currentMaxEnergy} />
-			<Navigation />
+			<Navigation telegramId={telegramId} />
 			{showRobotPopup && (
 				<RobotPopup
 					message={robotMessage}

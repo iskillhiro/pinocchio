@@ -128,7 +128,7 @@ const Wallet = () => {
 				</div>
 			)}
 
-			<Navigation />
+			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

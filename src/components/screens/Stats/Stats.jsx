@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axiosDB from '../../../utils/axios/axiosConfig.js'
+import { getId } from '../../../utils/config.js'
 import { numberWithSpaces } from '../../../utils/filterNumbers.js'
 import { Loader } from '../../ui/Loader/Loader.jsx'
 import Navigation from '../../ui/Navigation/Navigation.jsx'
 import './Stats.css'
-
 const Stats = () => {
+	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
 	const [statistic, setStatistic] = useState({})
 	useEffect(() => {
@@ -41,7 +42,7 @@ const Stats = () => {
 				{numberWithSpaces(statistic.dailyUsers.length)}
 			</h3>
 
-			<Navigation />
+			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

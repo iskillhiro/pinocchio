@@ -1,20 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import boostsIcon from '../../../assets/pictures/navigation/boosts.svg'
 import refIcon from '../../../assets/pictures/navigation/ref.svg'
 import tapIcon from '../../../assets/pictures/navigation/tap.svg'
 import tasksIcon from '../../../assets/pictures/navigation/tasks.svg'
 import coinsIcon from '../../../assets/pictures/navigation/tree.svg'
+import taskNoViewed from '../../../assets/pictures/tasks_no_viewed.svg'
+import axiosDB from '../../../utils/axios/axiosConfig'
 import './Navigation.css'
-// TODO: Реализовать систему с красной точкой над иконкой задания, если есть новые
+
 const tg = window.Telegram.WebApp
 
-const Navigation = () => {
+const Navigation = ({ telegramId }) => {
+	const [tasksViewed, setTasksViewed] = useState(true)
+	const [tasks, setTasks] = useState([])
+
 	const feedBack = () => {
 		if (tg.HapticFeedback) {
 			tg.HapticFeedback.impactOccurred('light')
 		}
 	}
+
+	useEffect(() => {
+		const getUser = async () => {
+			const response = await axiosDB.get(`/user/${telegramId}`)
+			const user = response.data
+			setTasks(user.tasks)
+
+			// Check if any task within tasksBlock is not viewed
+			const anyTaskNotViewed = user.tasks.some(taskGroup =>
+				taskGroup.tasksBlock.some(task => !task.isViewed)
+			)
+
+			if (anyTaskNotViewed) {
+				setTasksViewed(false)
+			}
+		}
+		getUser()
+	}, [telegramId])
 
 	return (
 		<div className='block navigation'>
@@ -26,7 +49,11 @@ const Navigation = () => {
 			</Link>
 			<Link onClick={feedBack} to='/tasks' className='nav-elem'>
 				<div className='nav-icon'>
-					<img className='icon' src={tasksIcon} alt='tasks' />
+					{tasksViewed ? (
+						<img className='icon' src={tasksIcon} alt='tasks' />
+					) : (
+						<img className='icon' src={taskNoViewed} alt='tasks' />
+					)}
 				</div>
 				<h3>tasks</h3>
 			</Link>

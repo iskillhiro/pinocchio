@@ -11,7 +11,6 @@ import './Referrals.css'
 const Referrals = () => {
 	const telegramId = getId()
 	const [loading, setLoading] = useState(true)
-
 	const inviteLink = `https://t.me/share/url?url=https://t.me/pinocchiolabs_bot?start=${telegramId}&text=Join me on Pinocchio and let's earn together! Use my invite link to join the fun 🚀`
 	const copyLink = `https://t.me/share/url?url=https://t.me/pinocchiolabs_bot?start=${telegramId}`
 
@@ -74,7 +73,7 @@ const Referrals = () => {
 					Copy link
 				</button>
 			</div>
-			<Navigation />
+			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

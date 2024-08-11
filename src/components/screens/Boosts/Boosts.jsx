@@ -250,7 +250,7 @@ const Boosts = () => {
 				</div>
 			</div>
 
-			<Navigation />
+			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }
