@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosDB from '../../../../utils/axios/axiosConfig'
+import styles from './YearReward.module.css'
+
 const tg = window.Telegram.WebApp
 
 const YearReward = ({ telegramId }) => {
 	const [isYearChecked, setIsYearChecked] = useState(false)
-	const [isPremiumChecked, setIsPremiumChecked] = useState(false)
 	const [rewardAdded, setRewardAdded] = useState(null)
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		if (tg.initDataUnsafe.user) {
-			axiosDB
-				.post(`/bonus/${telegramId}`)
-				.then(result => {
-					if (result.status === 200) {
-						setRewardAdded(result.data.reward)
-					}
-				})
-				.catch(error => {
-					console.error('Error fetching reward:', error)
-				})
-		}
+		axiosDB
+			.post(`/bonus/${telegramId}`)
+			.then(result => {
+				if (result.status === 200) {
+					setRewardAdded(result.data.reward)
+				}
+			})
+			.catch(error => {
+				console.error('Error fetching reward:', error)
+			})
 	}, [telegramId])
 
 	useEffect(() => {
@@ -30,21 +29,9 @@ const YearReward = ({ telegramId }) => {
 		}
 	}, [isYearChecked])
 
-	useEffect(() => {
-		if (isPremiumChecked) {
-			tg.HapticFeedback.impactOccurred('light')
-		}
-	}, [isPremiumChecked])
-
 	const handleYearCheck = () => {
 		setTimeout(() => {
 			setIsYearChecked(true)
-		}, 1000)
-	}
-
-	const handlePremiumCheck = () => {
-		setTimeout(() => {
-			setIsPremiumChecked(true)
 		}, 1000)
 	}
 
@@ -53,41 +40,23 @@ const YearReward = ({ telegramId }) => {
 	}
 
 	return (
-		<div style={{ padding: '20px', textAlign: 'center' }}>
+		<div className={styles.container}>
 			<div>
-				<p>Let's check how old you are in Telegram</p>
-				<div style={{ width: '100%', backgroundColor: '#ccc' }}>
+				<p className={styles.heading}>
+					Let's check how old you are on Telegram
+				</p>
+				<div className={styles.progress - container}>
 					<div
-						style={{
-							width: isYearChecked ? '100%' : '0%',
-							height: '10px',
-							backgroundColor: '#4caf50',
-							transition: 'width 1s',
-						}}
+						className={styles.progress - bar}
+						style={{ width: isYearChecked ? '100%' : '0%' }}
 						onAnimationEnd={handleYearCheck}
 					/>
 				</div>
 			</div>
 			{isYearChecked && (
 				<div>
-					<p>Telegram Premium check</p>
-					<div style={{ width: '100%', backgroundColor: '#ccc' }}>
-						<div
-							style={{
-								width: isPremiumChecked ? '100%' : '0%',
-								height: '10px',
-								backgroundColor: '#2196f3',
-								transition: 'width 1s',
-							}}
-							onAnimationEnd={handlePremiumCheck}
-						/>
-					</div>
-				</div>
-			)}
-			{isPremiumChecked && (
-				<div>
-					<p>{rewardAdded}</p>
-					<button className='gradient-btn' onClick={handleGetReward}>
+					<p className={styles.reward - text}>{rewardAdded}</p>
+					<button className={styles.gradient - btn} onClick={handleGetReward}>
 						Thank you
 					</button>
 				</div>
