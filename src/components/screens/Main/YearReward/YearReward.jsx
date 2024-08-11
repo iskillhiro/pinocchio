@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axiosDB from '../../../../utils/axios/axiosConfig'
 const tg = window.Telegram.WebApp
 
-const YearRewardComponent = ({ userData }) => {
+const YearReward = ({ userData }) => {
 	const [isYearChecked, setIsYearChecked] = useState(false)
 	const [isPremiumChecked, setIsPremiumChecked] = useState(false)
 	const [rewardAdded, setRewardAdded] = useState(null)
@@ -14,7 +14,7 @@ const YearRewardComponent = ({ userData }) => {
 			.post(`/bonus/${userData.telegramId}/${tg.initDataUnsafe.user.isPremium}`)
 			.then(result => {
 				if (result.status === 200) {
-					setRewardAdded(result.data.reward) // Исправлено обращение к полю reward
+					setRewardAdded(result.data.reward)
 				}
 			})
 			.catch(error => {
@@ -94,4 +94,4 @@ const YearRewardComponent = ({ userData }) => {
 	)
 }
 
-export default YearRewardComponent
+export default YearReward

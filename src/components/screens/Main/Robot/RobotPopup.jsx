@@ -1,6 +1,6 @@
 import React from 'react'
 import { Loader } from '../../../ui/Loader/Loader'
-import style from './RobotPopup.module.css' // Добавьте стили для всплывающего окна
+import style from './RobotPopup.module.css'
 
 const RobotPopup = ({ message, onClose, onSendRequest, process }) => {
 	return (

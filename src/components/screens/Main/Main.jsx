@@ -12,7 +12,7 @@ import EnergyCount from './Energy/EnergyCount'
 import './Main.css'
 import RobotPopup from './Robot/RobotPopup'
 import TapZone from './TapZone'
-import YearRewardComponent from './YearReward/YearReward'
+import YearReward from './YearReward/YearReward'
 const tg = window.Telegram.WebApp
 
 const Main = () => {
@@ -109,7 +109,7 @@ const Main = () => {
 		)
 	}
 	if (yearReward && userData) {
-		return <YearRewardComponent userData={userData} />
+		return <YearReward userData={userData} />
 	}
 	return (
 		<div className='container main'>
