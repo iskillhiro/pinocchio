@@ -124,7 +124,7 @@ const TapZone = ({
 			debouncedUpdateUserData,
 		]
 	)
-	console.log(boostData)
+	console.log(boostData.upgradeBoosts)
 	if (boostData) {
 		return (
 			<div className='tap-zone' onTouchStart={handleTouchStart}>
