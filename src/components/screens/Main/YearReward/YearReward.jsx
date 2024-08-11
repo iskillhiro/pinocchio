@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axiosDB from '../../../../utils/axios/axiosConfig'
 const tg = window.Telegram.WebApp
 
-const YearReward = ({ userData }) => {
+const YearReward = ({ telegramId }) => {
 	const [isYearChecked, setIsYearChecked] = useState(false)
 	const [isPremiumChecked, setIsPremiumChecked] = useState(false)
 	const [rewardAdded, setRewardAdded] = useState(null)
@@ -11,7 +11,7 @@ const YearReward = ({ userData }) => {
 
 	useEffect(() => {
 		axiosDB
-			.post(`/bonus/${userData.telegramId}/${tg.initDataUnsafe.user.isPremium}`)
+			.post(`/bonus/${telegramId}/${tg.initDataUnsafe.user.isPremium}`)
 			.then(result => {
 				if (result.status === 200) {
 					setRewardAdded(result.data.reward)
@@ -20,7 +20,7 @@ const YearReward = ({ userData }) => {
 			.catch(error => {
 				console.error('Error fetching reward:', error)
 			})
-	}, [userData.telegramId])
+	}, [telegramId])
 
 	useEffect(() => {
 		if (isYearChecked) {
