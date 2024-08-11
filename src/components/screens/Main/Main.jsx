@@ -36,7 +36,7 @@ const Main = () => {
 		try {
 			const response = await axiosDB.get(`/user/${telegramId}`)
 			const user = response.data
-
+			console.log(user)
 			setCurrentEnergy(user.energy)
 			setCurrentMaxEnergy(user.maxEnergy)
 			setEnergyRegeneRate(user.upgradeBoosts[2].level)
