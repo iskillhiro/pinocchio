@@ -1,5 +1,8 @@
 import copy from 'copy-to-clipboard'
 import React, { useEffect, useState } from 'react'
+import bronzeCoin from '../../../assets/pictures/coins/bronze/coin_front.svg'
+import goldenCoin from '../../../assets/pictures/coins/golden/coin_front.svg'
+import soldoCoin from '../../../assets/pictures/coins/silver/coin_front.svg'
 import copyIcon from '../../../assets/pictures/copy.svg'
 import personIcon from '../../../assets/pictures/person.svg'
 import '../../../assets/style/global.css'
@@ -48,6 +51,11 @@ const Referrals = () => {
 			<h1 className='main-title'>referrals</h1>
 			<h3 className='post-title'>TOTAL REFERRALS: {referralData.length}</h3>
 			<div className='block referrals'>
+				<div className='currency-type'>
+					<img src={soldoCoin} alt='' />
+					<img src={goldenCoin} alt='' />
+					<img src={bronzeCoin} alt='' />
+				</div>
 				{referralData.map((referral, index) => (
 					<div key={index} id='referral'>
 						<div id='ref-block'>

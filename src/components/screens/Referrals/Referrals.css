@@ -16,6 +16,8 @@
 	max-height: 65%;
 	width: 100%;
 	overflow-y: auto;
+	position: relative;
+	padding-top: 40px;
 }
 .block.referrals::-webkit-scrollbar {
 	display: none;
@@ -39,4 +41,29 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--gap);
+}
+
+.currency-type {
+	position: absolute;
+	top: 10px;
+	display: flex;
+	width: 20px;
+	right: 150px;
+	display: flex;
+	gap: 50px;
+}
+.currency-type img {
+	width: 20px;
+}
+#money-count {
+	position: absolute;
+}
+#money-count:nth-child(4) {
+	right: 15px;
+}
+#money-count:nth-child(2) {
+	right: 155px;
+}
+#money-count:nth-child(3) {
+	right: 85px;
 }

@@ -44,7 +44,7 @@ const Main = () => {
 				dailyBoosts: user.boosts,
 			})
 			setCoinStage(user.coinStage)
-			setTaps(user.upgradeBoosts[2].level)
+			setTaps(user.upgradeBoosts[2].level * 25)
 			setCoins(user.stage === 1 ? user.soldoTaps : user.zecchinoTaps)
 
 			if (!user.yearBonusClaimed) setYearReward(true)

@@ -46,7 +46,7 @@ const TapZone = ({
 			} catch (error) {
 				console.error('Error updating user:', error)
 			}
-		}, 150)
+		}, 350)
 	}, [telegramId, updateUserData, boostActive])
 
 	const handleTouchStart = useCallback(
