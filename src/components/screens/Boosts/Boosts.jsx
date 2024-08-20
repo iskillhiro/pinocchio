@@ -211,7 +211,7 @@ const Boosts = () => {
 											? ' '
 											: `${boost.level * 50000}`
 										: '1 zechhino'
-									: '50000'}
+									: '500000'}
 							</p>
 
 							<div id='level'>
