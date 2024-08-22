@@ -18,17 +18,23 @@ const App = () => {
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		tg.ready()
-		tg.expand()
+		try {
+			tg.ready()
+			tg.expand()
+		} catch (error) {
+			console.error('Telegram WebApp initialization error:', error)
+		}
 
 		const id = getId()
 		if (id) {
 			setTelegramId(id)
 		}
 
-		setTimeout(() => {
+		const loadTimeout = setTimeout(() => {
 			setIsLoading(false)
 		}, 1000)
+
+		return () => clearTimeout(loadTimeout)
 	}, [])
 
 	const MemoizedNavigation = useMemo(() => {
