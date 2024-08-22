@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosDB from '../../../../utils/axios/axiosConfig'
+import { numberWithSpaces } from '../../../../utils/filterNumbers'
 import styles from './YearReward.module.css'
 
 const tg = window.Telegram.WebApp
@@ -76,7 +77,9 @@ const YearReward = ({ telegramId, setYearReward, coins, setCoins }) => {
 			{!loading && isYearChecked && (
 				<div>
 					<h1 className={styles.years}>{years}</h1>
-					<p className={styles.rewardText}>Reward {rewardAdded} soldo!</p>
+					<p className={styles.rewardText}>
+						Reward {numberWithSpaces(rewardAdded)} soldo!
+					</p>
 					<button
 						className={styles.gradient_btn}
 						onClick={() => handleGetReward()}
