@@ -15,6 +15,7 @@ const tg = window.Telegram.WebApp
 
 const App = () => {
 	const [telegramId, setTelegramId] = useState(null)
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
 		tg.ready()
@@ -24,16 +25,23 @@ const App = () => {
 		if (id) {
 			setTelegramId(id)
 		}
+
+		setTimeout(() => {
+			setIsLoading(false)
+		}, 1000)
 	}, [])
 
 	const MemoizedNavigation = useMemo(() => {
 		return <Navigation telegramId={telegramId} />
 	}, [telegramId])
 
+	if (isLoading) {
+		return <Loading />
+	}
+
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path='/' element={<Loading />} />
 				<Route path='/main' element={<Main />} />
 				<Route path='/coins' element={<Coins />} />
 				<Route path='/referrals' element={<Referrals />} />

@@ -19,7 +19,7 @@ const TapZone = ({
 	const tapTimeout = useRef(null)
 	const latestCoins = useRef(currentCoins)
 	const [totalTaps, setTotalTaps] = useState(0)
-	const [taps, setTaps] = useState([]) // Initialize taps state
+	const [taps, setTaps] = useState([])
 	const pendingTaps = useRef(0)
 	const [boostActive, setBoostActive] = useState(false)
 	latestCoins.current = currentCoins
@@ -53,7 +53,12 @@ const TapZone = ({
 		e => {
 			const touches = e.touches ? e.touches.length : 0
 
-			if (currentEnergy < energyReduction) {
+			const boostEndTime = new Date(boostData?.dailyBoosts?.[1]?.endTime || 0)
+			const isBoostActive = boostEndTime > Date.now()
+			setBoostActive(isBoostActive)
+
+			// If not enough energy and boost is not active, return early
+			if (currentEnergy < energyReduction && !isBoostActive) {
 				console.log(
 					`Not enough energy for reduction. Current energy: ${currentEnergy}`
 				)
@@ -64,28 +69,17 @@ const TapZone = ({
 				tg.HapticFeedback.impactOccurred('light')
 			}
 
-			const boostEndTime = new Date(boostData?.dailyBoosts?.[1]?.endTime || 0)
-			const isBoostActive = boostEndTime > Date.now()
-			setBoostActive(isBoostActive)
-
-			// If boost is active, energySpent is 0 and newEnergy remains the same
+			// If boost is active, energySpent is 0, and newEnergy remains the same
 			const energySpent = isBoostActive ? 0 : energyReduction * touches
 			const newEnergy = isBoostActive
 				? currentEnergy
-				: Math.max(0, currentEnergy - energyReduction)
+				: Math.max(0, currentEnergy - energyReduction * touches)
 
-			const coinsToAdd = Math.max(0, energySpent)
+			const coinsToAdd = energyReduction * touches * (isBoostActive ? 10 : 1)
 
-			if (newEnergy === currentEnergy && !isBoostActive) {
-				console.log(
-					`Energy was not updated. Current energy: ${currentEnergy}, energy spent: ${energySpent}`
-				)
-				return
-			}
+			// Calculate tap positions
 			const newTaps = []
-
-			// Loop through all touches (fingers) on the screen
-			for (let i = 0; i < e.touches.length; i++) {
+			for (let i = 0; i < touches; i++) {
 				const { clientX, clientY } = e.touches[i]
 				const rect = e.target.getBoundingClientRect()
 
@@ -95,15 +89,17 @@ const TapZone = ({
 				}
 
 				const newTap = {
-					id: Date.now() + i, // Unique ID
+					id: Date.now() + i,
 					x: clientX - rect.left,
 					y: clientY - rect.top,
 				}
 
 				newTaps.push(newTap)
 			}
+
 			setTaps(prevTaps => [...prevTaps, ...newTaps])
 
+			// Remove tap animations after 1 second
 			setTimeout(() => {
 				setTaps(prevTaps =>
 					prevTaps.filter(tap => !newTaps.some(newTap => newTap.id === tap.id))
@@ -127,6 +123,7 @@ const TapZone = ({
 			debouncedUpdateUserData,
 		]
 	)
+
 	if (boostData) {
 		return (
 			<div className='tap-zone' onTouchStart={handleTouchStart}>
@@ -148,6 +145,7 @@ const TapZone = ({
 			</div>
 		)
 	}
+	return null
 }
 
 export default TapZone
