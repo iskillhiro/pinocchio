@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axiosDB from '../../../../utils/axios/axiosConfig'
 import { numberWithSpaces } from '../../../../utils/filterNumbers'
+import MainCoins from '../Balance/MainCoins'
 import styles from './YearReward.module.css'
 
 const tg = window.Telegram.WebApp
@@ -80,7 +81,7 @@ const YearReward = ({ telegramId, setYearReward, coins, setCoins }) => {
 					<p className={styles.rewardText}>
 						Reward {numberWithSpaces(rewardAdded)} soldo!
 					</p>
-
+					<MainCoins coinStage={Math.floor(rewardAdded / 1000000)} stage={1} />
 					<button
 						className={styles.gradient_btn}
 						onClick={() => handleGetReward()}
