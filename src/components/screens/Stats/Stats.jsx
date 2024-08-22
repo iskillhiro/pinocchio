@@ -4,7 +4,6 @@ import axiosDB from '../../../utils/axios/axiosConfig.js'
 import { getId } from '../../../utils/config.js'
 import { numberWithSpaces } from '../../../utils/filterNumbers.js'
 import { Loader } from '../../ui/Loader/Loader.jsx'
-import Navigation from '../../ui/Navigation/Navigation.jsx'
 import './Stats.css'
 const Stats = () => {
 	const telegramId = getId()
@@ -41,8 +40,6 @@ const Stats = () => {
 			<h3 className='post-title'>
 				{numberWithSpaces(statistic.dailyUsers.length)}
 			</h3>
-
-			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

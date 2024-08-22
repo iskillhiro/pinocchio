@@ -11,7 +11,6 @@ import { getId } from '../../../utils/config'
 import { numberWithSpaces } from '../../../utils/filterNumbers'
 import formatDate from '../../../utils/formatDate/formatDate'
 import { Loader } from '../../ui/Loader/Loader'
-import Navigation from '../../ui/Navigation/Navigation'
 import './Wallet.css'
 
 const tg = window.Telegram.WebApp
@@ -127,8 +126,6 @@ const Wallet = () => {
 					))}
 				</div>
 			)}
-
-			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

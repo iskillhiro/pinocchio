@@ -3,7 +3,6 @@ import starIcon from '../../../assets/pictures/star.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config.js'
 import { Loader } from '../../ui/Loader/Loader.jsx'
-import Navigation from '../../ui/Navigation/Navigation'
 import './Boosts.css'
 import Popup from './Popup'
 import UpgradeBoostPopup from './UpgradeBoost.jsx'
@@ -205,13 +204,15 @@ const Boosts = () => {
 								)}
 							</button>
 							<p className='up-case' id='price'>
-								{boost.level !== 0
+								{boost.name !== 'auto'
 									? boost.currency === 'soldo'
 										? boost.level === boost.maxLevel
 											? ' '
 											: `${boost.level * 50000}`
 										: '1 zechhino'
-									: '500000'}
+									: boost.level > 0
+									? 500000 * boost.level
+									: 500000}
 							</p>
 
 							<div id='level'>
@@ -249,8 +250,6 @@ const Boosts = () => {
 					)}
 				</div>
 			</div>
-
-			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

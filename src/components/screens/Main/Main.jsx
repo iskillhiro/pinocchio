@@ -4,7 +4,6 @@ import wallet from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
 import { Loader } from '../../ui/Loader/Loader'
-import Navigation from '../../ui/Navigation/Navigation'
 import MainBalance from './Balance/Balance'
 import MainCoins from './Balance/MainCoins'
 import EnergyBar from './Energy/EnergyBar'
@@ -134,7 +133,6 @@ const Main = () => {
 				</Link>
 			</div>
 			<EnergyBar currentEnergy={currentEnergy} maxEnergy={currentMaxEnergy} />
-			<Navigation telegramId={telegramId} />
 			{showRobotPopup && (
 				<RobotPopup
 					message={robotMessage}

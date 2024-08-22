@@ -66,15 +66,17 @@ const TapZone = ({
 
 			const boostEndTime = new Date(boostData?.dailyBoosts?.[1]?.endTime || 0)
 			const isBoostActive = boostEndTime > Date.now()
-			isBoostActive ? setBoostActive(true) : setBoostActive(false)
-			const energySpent = isBoostActive
-				? energyReduction * touches * 10
-				: energyReduction * touches
+			setBoostActive(isBoostActive)
 
-			const newEnergy = Math.max(0, currentEnergy - energyReduction)
+			// If boost is active, energySpent is 0 and newEnergy remains the same
+			const energySpent = isBoostActive ? 0 : energyReduction * touches
+			const newEnergy = isBoostActive
+				? currentEnergy
+				: Math.max(0, currentEnergy - energyReduction)
+
 			const coinsToAdd = Math.max(0, energySpent)
 
-			if (newEnergy === currentEnergy) {
+			if (newEnergy === currentEnergy && !isBoostActive) {
 				console.log(
 					`Energy was not updated. Current energy: ${currentEnergy}, energy spent: ${energySpent}`
 				)
@@ -107,6 +109,7 @@ const TapZone = ({
 					prevTaps.filter(tap => !newTaps.some(newTap => newTap.id === tap.id))
 				)
 			}, 1000)
+
 			setCurrentEnergy(newEnergy)
 			setCurrentCoins(latestCoins.current + coinsToAdd)
 

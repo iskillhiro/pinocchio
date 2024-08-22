@@ -13,6 +13,12 @@ const Tasks = () => {
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
+		if (!telegramId) {
+			console.error('telegramId is not defined')
+			setLoading(false)
+			return
+		}
+
 		const getTasks = async () => {
 			try {
 				const response = await axiosDB.get(`/tasks/${telegramId}`)
@@ -34,7 +40,6 @@ const Tasks = () => {
 				telegramId: telegramId,
 			})
 
-			// Update task state after a successful request
 			setTaskData(prevData => {
 				const updatedIncompleteTasks = prevData.incompleteTasks.map(
 					taskBlock => {
@@ -45,7 +50,7 @@ const Tasks = () => {
 							return task
 						})
 
-						return { ...taskBlock, tasksBlock: updatedTasks } // !
+						return { ...taskBlock, tasksBlock: updatedTasks }
 					}
 				)
 
@@ -76,7 +81,7 @@ const Tasks = () => {
 				<div className='tasks-content'>
 					<h1 className='text-center gradient'>Soon...</h1>
 				</div>
-				<Navigation />
+				<Navigation telegramId={telegramId} />
 			</div>
 		)
 	}
@@ -120,7 +125,6 @@ const Tasks = () => {
 					</div>
 				))}
 			</div>
-			<Navigation telegramId={telegramId} />
 			{selectedTask && (
 				<TaskWindow
 					showTaskWindow={closeTaskWindow}

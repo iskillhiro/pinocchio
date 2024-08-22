@@ -6,7 +6,6 @@ import walletIcon from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
 import { Loader } from '../../ui/Loader/Loader'
-import Navigation from '../../ui/Navigation/Navigation'
 import './Coins'
 import './Coins.css'
 import ProgressBar from './ProgressBar'
@@ -232,7 +231,6 @@ const Coins = () => {
 					<img className='icon' src={walletIcon} alt='wallet' />
 				</a>
 			</div>
-			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }
