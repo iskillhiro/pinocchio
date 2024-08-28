@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import Boosts from './components/screens/Boosts/Boosts'
 import Coins from './components/screens/Coins/Coins'
 import Loading from './components/screens/Loading/Loading'
 import Main from './components/screens/Main/Main'
+import Manual from './components/screens/Manual/Manual'
 import Referrals from './components/screens/Referrals/Referrals'
 import Stats from './components/screens/Stats/Stats'
 import Tasks from './components/screens/Tasks/Tasks'
@@ -13,41 +14,32 @@ import { getId } from './utils/config'
 
 const tg = window.Telegram.WebApp
 
-const App = () => {
+const AppContent = () => {
 	const [telegramId, setTelegramId] = useState(null)
-	const [isLoading, setIsLoading] = useState(true)
+	const location = useLocation()
 
 	useEffect(() => {
-		try {
-			tg.ready()
-			tg.expand()
-		} catch (error) {
-			console.error('Telegram WebApp initialization error:', error)
-		}
+		tg.ready()
+		tg.expand()
 
 		const id = getId()
 		if (id) {
 			setTelegramId(id)
 		}
-
-		const loadTimeout = setTimeout(() => {
-			setIsLoading(false)
-		}, 1000)
-
-		return () => clearTimeout(loadTimeout)
 	}, [])
 
 	const MemoizedNavigation = useMemo(() => {
-		return <Navigation telegramId={telegramId} />
-	}, [telegramId])
-
-	if (isLoading) {
-		return <Loading />
-	}
+		if (location.pathname !== '/manual') {
+			return <Navigation telegramId={telegramId} />
+		}
+		return null
+	}, [location.pathname, telegramId])
 
 	return (
-		<BrowserRouter>
+		<>
 			<Routes>
+				<Route path='/' element={<Loading />} />
+				<Route path='/manual' element={<Manual />} />
 				<Route path='/main' element={<Main />} />
 				<Route path='/coins' element={<Coins />} />
 				<Route path='/referrals' element={<Referrals />} />
@@ -57,6 +49,14 @@ const App = () => {
 				<Route path='/boosts' element={<Boosts />} />
 			</Routes>
 			{MemoizedNavigation}
+		</>
+	)
+}
+
+const App = () => {
+	return (
+		<BrowserRouter>
+			<AppContent />
 		</BrowserRouter>
 	)
 }
