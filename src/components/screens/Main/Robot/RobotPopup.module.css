@@ -10,6 +10,7 @@
 	align-items: center;
 	padding: 20px;
 	height: 100%;
+	z-index: 999;
 }
 
 .robot_popup_content {
