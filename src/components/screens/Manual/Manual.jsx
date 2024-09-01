@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { animated, useSpring } from 'react-spring'
 
 const images = [
-	'https://avatars.mds.yandex.net/i?id=0a8dc1da8b47ac63e1b06dadc55e1a3f_l-5141109-images-thumbs&n=27&h=480&w=480',
-	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxR9HDlnMcTgDlh-WyL8lmU5BCRl7cJaVZvw&s',
-	'https://masterpiecer-images.s3.yandex.net/0e40edb447e111ee9bda5a1112d6d6c5:upscaled',
+	'/Manual/1.png',
+	'/Manual/2.png',
+	'/Manual/3.png',
+	'/Manual/4.png',
+	'/Manual/5.png',
+	'/Manual/6.png',
+	'/Manual/7.png',
+	'/Manual/8.png',
 ]
 
 const Manual = () => {
@@ -22,7 +27,7 @@ const Manual = () => {
 		} else {
 			setCurrentIndex((currentIndex + 1) % images.length)
 		}
-		api.start({ x: 0 }) // Reset x position for smooth transition
+		api.start({ x: 0 })
 	}
 
 	const progressBar = () => {

@@ -3,6 +3,7 @@ import starIcon from '../../../assets/pictures/star.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config.js'
 import { Loader } from '../../ui/Loader/Loader.jsx'
+import Navigation from '../../ui/Navigation/Navigation.jsx'
 import './Boosts.css'
 import Popup from './Popup'
 import UpgradeBoostPopup from './UpgradeBoost.jsx'
@@ -250,6 +251,7 @@ const Boosts = () => {
 					)}
 				</div>
 			</div>
+			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

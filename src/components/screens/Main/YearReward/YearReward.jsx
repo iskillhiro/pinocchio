@@ -81,7 +81,12 @@ const YearReward = ({ telegramId, setYearReward, coins, setCoins }) => {
 					<p className={styles.rewardText}>
 						Reward {numberWithSpaces(rewardAdded)} soldo!
 					</p>
-					<MainCoins coinStage={Math.floor(rewardAdded / 1000000)} stage={1} />
+					<div className={styles.coins}>
+						<MainCoins
+							coinStage={Math.floor(rewardAdded / 1000000)}
+							stage={1}
+						/>
+					</div>
 					<button
 						className={styles.gradient_btn}
 						onClick={() => handleGetReward()}

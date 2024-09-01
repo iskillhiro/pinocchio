@@ -133,6 +133,7 @@ const Tasks = () => {
 					completeTask={completeTask}
 				/>
 			)}
+			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

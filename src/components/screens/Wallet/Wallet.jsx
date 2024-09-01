@@ -11,6 +11,7 @@ import { getId } from '../../../utils/config'
 import { numberWithSpaces } from '../../../utils/filterNumbers'
 import formatDate from '../../../utils/formatDate/formatDate'
 import { Loader } from '../../ui/Loader/Loader'
+import Navigation from '../../ui/Navigation/Navigation'
 import './Wallet.css'
 
 const tg = window.Telegram.WebApp
@@ -57,7 +58,7 @@ const Wallet = () => {
 		)
 	}
 
-	const userAvatar = tg.initDataUnsafe.user.photo_url || bronzeCoinIcon
+	const userAvatar = tg.initDataUnsafe.user?.photo_url || bronzeCoinIcon
 
 	return (
 		<div className='container wallet'>
@@ -126,6 +127,7 @@ const Wallet = () => {
 					))}
 				</div>
 			)}
+			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }

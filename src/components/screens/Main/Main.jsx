@@ -4,6 +4,7 @@ import wallet from '../../../assets/pictures/wallet.svg'
 import axiosDB from '../../../utils/axios/axiosConfig'
 import { getId } from '../../../utils/config'
 import { Loader } from '../../ui/Loader/Loader'
+import Navigation from '../../ui/Navigation/Navigation'
 import MainBalance from './Balance/Balance'
 import MainCoins from './Balance/MainCoins'
 import EnergyBar from './Energy/EnergyBar'
@@ -141,6 +142,7 @@ const Main = () => {
 					process={process}
 				/>
 			)}
+			<Navigation telegramId={telegramId} />
 		</div>
 	)
 }
