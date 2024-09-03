@@ -81,7 +81,7 @@ const Referrals = () => {
 					Copy link
 				</button>
 			</div>
-			<Navigation telegramId={telegramId} />
+			<Navigation	 telegramId={telegramId} />
 		</div>
 	)
 }

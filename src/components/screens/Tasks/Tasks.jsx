@@ -12,6 +12,22 @@ const Tasks = () => {
 	const [selectedTask, setSelectedTask] = useState(null)
 	const [loading, setLoading] = useState(true)
 
+	// const AdController = window.Adsgram.init({ blockId: 'your-block-id' })
+	const showAd = () => {
+		AdController.show()
+			.then(result => {
+				// user watch ad till the end
+				// your code to reward user
+				// 		done: boolean; // true if user watch till the end, otherwise false
+				// 		description: string; // event description
+				// 		state: 'load' | 'render' | 'playing' | 'destroy'; // banner state
+				// 		error: boolean; // true if event was emitted due to error, otherwise false
+			})
+			.catch(result => {
+				// user get error during playing ad or skip ad
+				// do nothing or whatever you want
+			})
+	}
 	useEffect(() => {
 		if (!telegramId) {
 			console.error('telegramId is not defined')
@@ -81,6 +97,9 @@ const Tasks = () => {
 				<div className='tasks-content'>
 					<h1 className='text-center gradient'>Soon...</h1>
 				</div>
+				<button onClick={showAd} className='ad-btn'>
+					Show ad
+				</button>
 				<Navigation telegramId={telegramId} />
 			</div>
 		)
@@ -133,6 +152,9 @@ const Tasks = () => {
 					completeTask={completeTask}
 				/>
 			)}
+			<button onClick={showAd} className='ad-btn'>
+				Show ad
+			</button>
 			<Navigation telegramId={telegramId} />
 		</div>
 	)
