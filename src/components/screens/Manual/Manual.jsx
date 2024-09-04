@@ -1,34 +1,43 @@
 import React, { useEffect, useState } from 'react'
-import { animated, useSpring } from 'react-spring'
+import { animated } from 'react-spring'
 
 const images = [
-	'/Manual/1.png',
-	'/Manual/2.png',
-	'/Manual/3.png',
-	'/Manual/4.png',
-	'/Manual/5.png',
-	'/Manual/6.png',
-	'/Manual/7.png',
-	'/Manual/8.png',
+	'/Manual/1.svg',
+	'/Manual/2.svg',
+	'/Manual/3.svg',
+	'/Manual/4.svg',
+	'/Manual/5.svg',
+	'/Manual/6.svg',
+	'/Manual/7.svg',
+	'/Manual/8.svg',
 ]
 
 const Manual = () => {
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [isPaused, setIsPaused] = useState(false)
 
-	const [{ x }, api] = useSpring(() => ({ x: 0 }))
-
 	const handleClick = e => {
 		const clickX = e.clientX
 		const windowWidth = window.innerWidth
 
 		if (clickX < windowWidth / 2) {
-			setCurrentIndex((currentIndex - 1 + images.length) % images.length)
+			setCurrentIndex(
+				prevIndex => (prevIndex - 1 + images.length) % images.length
+			)
 		} else {
-			setCurrentIndex((currentIndex + 1) % images.length)
+			setCurrentIndex(prevIndex => (prevIndex + 1) % images.length)
 		}
-		api.start({ x: 0 })
 	}
+
+	useEffect(() => {
+		if (!isPaused) {
+			const interval = setInterval(() => {
+				setCurrentIndex(prevIndex => (prevIndex + 1) % images.length)
+			}, 3000)
+
+			return () => clearInterval(interval)
+		}
+	}, [isPaused])
 
 	const progressBar = () => {
 		return (
@@ -58,16 +67,6 @@ const Manual = () => {
 		)
 	}
 
-	useEffect(() => {
-		if (!isPaused) {
-			const interval = setInterval(() => {
-				setCurrentIndex((currentIndex + 1) % images.length)
-			}, 3000)
-
-			return () => clearInterval(interval)
-		}
-	}, [currentIndex, isPaused])
-
 	return (
 		<div
 			style={{
@@ -93,9 +92,9 @@ const Manual = () => {
 					backgroundPosition: 'center',
 					cursor: 'pointer',
 					position: 'absolute',
-					transition: 'transform 0.5s ease-in-out',
 					boxShadow: 'inset 0 0 80px rgba(0, 0, 0, 0.8)',
 					overflow: 'hidden',
+					transition: 'background-image 0.5s ease-in-out', // Добавьте плавный переход для backgroundImage
 				}}
 			/>
 
